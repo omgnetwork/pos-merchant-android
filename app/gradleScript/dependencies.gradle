@@ -1,0 +1,71 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+ext {
+    /* Version */
+    omisego = '1.0.1-alpha4'
+    supportLibrary = '27.1.1'
+    kotlin = '1.2.51'
+    retrofit = '2.4.0'
+    rxandroid = '2.0.1'
+    glide = '4.5.0'
+    okhttp3 = '3.9.1'
+    nav = '1.0.0-alpha04'
+
+    omisego = [
+            sdk: "co.omisego:omisego-admin:${omisego}",
+    ]
+    navigation = [
+            navFragment: "android.arch.navigation:navigation-fragment-ktx:${nav}",
+            navUI: "android.arch.navigation:navigation-ui-ktx:${nav}"
+    ]
+    supportDependencies = [
+            design   : "com.android.support:design:${supportLibrary}",
+            appCompat: "com.android.support:appcompat-v7:${supportLibrary}",
+            cardView : "com.android.support:cardview-v7:${supportLibrary}"
+    ]
+    kotlinDependencies = [
+            stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin}",
+    ]
+    retrofitDependencies = [
+            retrofit      : "com.squareup.retrofit2:retrofit:${retrofit}",
+            converterGson : "com.squareup.retrofit2:converter-gson:${retrofit}",
+            adapterRxJava2: "com.squareup.retrofit2:adapter-rxjava2:${retrofit}",
+            retrofitMock  : "com.squareup.retrofit2:retrofit-mock:${retrofit}",
+    ]
+    rxJava2 = [
+            rxandroid: "io.reactivex.rxjava2:rxandroid:${rxandroid}",
+    ]
+    glide = [
+            glide: "com.github.bumptech.glide:glide:${glide}",
+    ]
+    okHttp3 = [
+            loggingIntercepter: "com.squareup.okhttp3:logging-interceptor:${okhttp3}",
+            mockWebserver     : "com.squareup.okhttp3:mockwebserver:${okhttp3}",
+    ]
+    assertJ = [
+            core: "org.assertj:assertj-core:3.8.0",
+    ]
+    kluent = [
+            android: "org.amshove.kluent:kluent-android:1.30",
+    ]
+    junit = [
+            junit: "junit:junit:4.12",
+    ]
+    testRunner = [
+            runner: "com.android.support.test:runner:1.0.1",
+    ]
+    espresso = [
+            core: "com.android.support.test.espresso:espresso-core:3.0.1",
+    ]
+    custom = [
+            constraintLayout: 'com.android.support.constraint:constraint-layout:1.1.2',
+            stetho          : 'com.facebook.stetho:stetho-okhttp3:1.5.0',
+            shimmer         : 'com.facebook.shimmer:shimmer:0.2.0'
+    ]
+}

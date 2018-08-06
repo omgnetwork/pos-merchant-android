@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+apply plugin: "androidx.navigation.safeargs"
+apply from: 'gradleScript/dependencies.gradle'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "network.omisego.omgmerchant"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildToolsVersion '27.0.3'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+    lintOptions {
+        disable 'ParcelCreator'
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    /* OmiseGO */
+    implementation omisego.sdk
+
+    /* Kotlin */
+    implementation kotlinDependencies.stdlib
+
+    /* Navigation Component */
+    implementation navigation.navFragment
+    implementation navigation.navUI
+
+    /* Support library */
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.design
+    implementation supportDependencies.cardView
+
+    /* Networking */
+    implementation retrofitDependencies.retrofit
+    implementation retrofitDependencies.converterGson
+    implementation retrofitDependencies.adapterRxJava2
+
+    /* Reactive */
+    implementation rxJava2.rxandroid
+
+    /* Load image */
+    implementation glide.glide
+
+
+    implementation custom.constraintLayout
+    implementation custom.shimmer
+    implementation custom.stetho
+
+    implementation okHttp3.loggingIntercepter
+}

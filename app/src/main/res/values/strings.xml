@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">OMG Merchant</string>
+
+    <!-- Sign In -->
+    <string name="sign_in_forget_password">Forget Password</string>
+    <string name="sign_in_dont_have_account">Don\'t have account?</string>
+    <string name="sign_in_sign_up">Sign up</string>
+
+    <!-- Select Account -->
+    <string name="select_account_title">Select account</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_account_info">You are in %s account.</string>
+
+    <!-- Receive -->
+    <string name="receive_title">Receive</string>
+    <string name="receive_next">Next</string>
+
+    <!-- Topup -->
+    <string name="topup_title">Topup</string>
+    <string name="topup_next">Next</string>
+
+    <!-- Scan -->
+    <!-- e.g. 380.00 UXD -->
+    <string name="scan_amount">%,.2f %s</string>
+    <string name="scan_instruction">Align QR code here</string>
+
+    <!-- Feedback -->
+    <string name="feedback_payment_title">Payment successful</string>
+    <string name="feedback_topup_title">Topup successful</string>
+    <string name="feedback_customer_name">%s</string>
+    <string name="feedback_customer_id">ID: %s</string>
+    <string name="feedback_amount">%,.2f %s</string>
+    <!-- Passing a calendar instance to formatter -->
+    <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
+    <string name="feedback_done">Done</string>
+
+    <!-- More -->
+    <string name="more_title">More</string>
+    <string name="more_account">Account</string>
+    <string name="more_transaction">Transaction</string>
+    <string name="more_setting_and_help">Setting &amp; Help</string>
+    <string name="more_sign_out">Sign out</string>
+
+    <!-- Account -->
+    <string name="account_title">Account</string>
+
+    <!-- Transaction List -->
+    <string name="transaction_list_title">Transaction</string>
+    <!-- e.g. Jenny K. [3856...092] -->
+    <string name="transaction_list_info_name_id">%s [%s]</string>
+    <string name="transaction_list_info_amount">%,.2f %s</string>
+    <string name="transaction_list_info_date_time">%1$tb %1$te, %1$tI:%1$tM %1$Tp</string>
+
+    <!-- Setting -->
+    <string name="setting_title">Setting &amp; Help</string>
+    <string name="setting_fingerprint">Fingerprint</string>
+    <string name="setting_faq">FAQ</string>
+    <string name="setting_term_of_use">Term of use</string>
+    <string name="setting_privacy">Privacy</string>
+
+    <!-- Numpad -->
+    <string name="numpad_1">1</string>
+    <string name="numpad_2">2</string>
+    <string name="numpad_3">3</string>
+    <string name="numpad_4">4</string>
+    <string name="numpad_5">5</string>
+    <string name="numpad_6">6</string>
+    <string name="numpad_7">7</string>
+    <string name="numpad_8">8</string>
+    <string name="numpad_9">9</string>
+    <string name="numpad_0">10</string>
+    <string name="numpad_minus">-</string>
+    <string name="numpad_plus">+</string>
+    <string name="numpad_ac">AC</string>
+    <string name="numpad_.">.</string>
+    <string name="numpad_equal">=</string>
+    <string name="numpad_percent">%</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
