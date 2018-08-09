@@ -28,6 +28,10 @@ class ReceiveViewModel(
         liveCalculator.value = ""
     }
 
+    override fun onDelete() {
+        // Delete isn't available on the receive page.
+    }
+
     override fun onEvaluate(): Boolean {
         val evaluated = calculation.evaluate(liveCalculator.value!!)
         if (evaluated == liveCalculator.value) return false

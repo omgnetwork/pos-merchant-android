@@ -74,6 +74,7 @@
     <string name="numpad_minus">-</string>
     <string name="numpad_plus">+</string>
     <string name="numpad_ac">AC</string>
+    <string name="numpad_del">del</string>
     <string name="numpad_dot">.</string>
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>

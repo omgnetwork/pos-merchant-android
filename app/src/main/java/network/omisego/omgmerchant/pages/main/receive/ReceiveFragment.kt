@@ -38,7 +38,7 @@ class ReceiveFragment : Fragment() {
         spinner.adapter = ArrayAdapter<String>(spinner.context, R.layout.spinner_dropdown_item, mockTokens)
     }
 
-    fun setupDataBinding() {
+    private fun setupDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
         binding.setLifecycleOwner(this)

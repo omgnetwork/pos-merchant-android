@@ -20,6 +20,7 @@ import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_7
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_8
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_9
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_AC
+import network.omisego.omgmerchant.calculator.CalculatorButton.OP_DEL
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_DOT
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_EQUAL
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_MINUS
@@ -49,6 +50,9 @@ class CalculatorHandler(
                 OP_AC -> {
                     condition.handleAC { callback.onClear() }
                 }
+                OP_DEL -> {
+                    callback.onDelete()
+                }
                 OP_PLUS,
                 OP_MINUS -> {
                     with(condition) {
@@ -75,8 +79,9 @@ class CalculatorHandler(
     }
 
     interface Operation {
-        fun onAppend(digit: CharSequence)
+        fun onAppend(char: CharSequence)
         fun onClear()
+        fun onDelete()
         fun onEvaluate(): Boolean
     }
 }
