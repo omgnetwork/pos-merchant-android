@@ -16,13 +16,21 @@ ext {
     glide = '4.5.0'
     okhttp3 = '3.9.1'
     nav = '1.0.0-alpha04'
+    arch = "1.1.0"
 
     omisego = [
             sdk: "co.omisego:omisego-admin:${omisego}",
     ]
+    arch = [
+            viewmodel : "android.arch.lifecycle:viewmodel:${arch}",
+            extensions: "android.arch.lifecycle:extensions:${arch}"
+    ]
+    databinding = [
+            compiler: "androidx.databinding:databinding-compiler:3.2.0-beta05"
+    ]
     navigation = [
             navFragment: "android.arch.navigation:navigation-fragment-ktx:${nav}",
-            navUI: "android.arch.navigation:navigation-ui-ktx:${nav}"
+            navUI      : "android.arch.navigation:navigation-ui-ktx:${nav}"
     ]
     supportDependencies = [
             design   : "com.android.support:design:${supportLibrary}",
