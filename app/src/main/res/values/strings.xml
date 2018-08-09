@@ -11,7 +11,7 @@
 
     <!-- Welcome -->
     <string name="welcome_title">Welcome!</string>
-    <string name="welcome_account_info">You are in %s account.</string>
+    <string name="welcome_account_info">You are in %s \naccount.</string>
 
     <!-- Receive -->
     <string name="receive_title">Receive</string>
@@ -70,14 +70,11 @@
     <string name="numpad_7">7</string>
     <string name="numpad_8">8</string>
     <string name="numpad_9">9</string>
-    <string name="numpad_0">10</string>
+    <string name="numpad_0">0</string>
     <string name="numpad_minus">-</string>
     <string name="numpad_plus">+</string>
     <string name="numpad_ac">AC</string>
-    <string name="numpad_.">.</string>
+    <string name="numpad_dot">.</string>
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
