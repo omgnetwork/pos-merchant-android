@@ -21,7 +21,7 @@ class ReceiveViewModel(
     /* Implement CalculatorHandler.Operation */
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
-        liveCalculator.value += char
+            liveCalculator.value += char
     }
 
     override fun onClear() {

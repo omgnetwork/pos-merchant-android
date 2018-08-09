@@ -57,6 +57,7 @@ class Calculation {
 
     fun evaluate(expression: String): String {
         /* Split the expression into pairs */
+        if (expression == "%") return ""
         val elements = split(expression, charArrayOf('-', '+')) ?: return expression
         val operator = elements.first
         val (left, right) = elements.second
