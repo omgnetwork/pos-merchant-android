@@ -1,13 +1,307 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Receive Fragment" />
+    <data>
 
-</FrameLayout>
+        <variable
+            name="liveCalc"
+            type="network.omisego.omgmerchant.model.LiveCalculator" />
+
+        <variable
+            name="handler"
+            type="network.omisego.omgmerchant.calculator.CalculatorHandler" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/numpad_background_white"
+        tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment"
+        tools:layout_editor_absoluteY="81dp">
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d0d6d2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d0d6d2"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvNumPad2"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/etInputNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:gravity="end"
+            android:hint="@string/numpad_0"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:text="@{liveCalc}"
+            android:textColor="@color/colorBlack"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@+id/spinner"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etInputNumber"
+            tools:listitem="@android:layout/simple_spinner_dropdown_item" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="158dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="32dp" />
+
+        <TextView
+            android:id="@+id/tvNumPad1"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_1"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad4"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/tvNumPad2"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_2"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad5"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad1"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/tvNumPad3"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_3"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad6"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPadPercent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad2"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/tvNumPadPercent"
+            style="@style/OMGNumPad.Gray"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_percent"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPadPlus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad3"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/tvNumPad4"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_4"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad7"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad1" />
+
+        <TextView
+            android:id="@+id/tvNumPad5"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_5"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad8"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad4"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad2" />
+
+        <TextView
+            android:id="@+id/tvNumPad6"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_6"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad9"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPadPlus"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad5"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad3" />
+
+        <TextView
+            android:id="@+id/tvNumPadPlus"
+            style="@style/OMGNumPad.Gray"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_plus"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPadMinus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad6"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPadPercent" />
+
+        <TextView
+            android:id="@+id/tvNumPad8"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_8"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad0"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad7"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad5" />
+
+        <TextView
+            android:id="@+id/tvNumPad7"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_7"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPadAC"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad8"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad4" />
+
+        <TextView
+            android:id="@+id/tvNumPad9"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_9"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPadDot"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPadMinus"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad8"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad6" />
+
+        <TextView
+            android:id="@+id/tvNumPadMinus"
+            style="@style/OMGNumPad.Gray"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_minus"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPadEqual"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad9"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPadPlus" />
+
+        <TextView
+            android:id="@+id/tvNumPadAC"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_ac"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPad0"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad7" />
+
+        <TextView
+            android:id="@+id/tvNumPad0"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPadDot"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPadAC"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad8" />
+
+        <TextView
+            android:id="@+id/tvNumPadDot"
+            style="@style/OMGNumPad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_dot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumPadEqual"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPad0"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPad9" />
+
+        <TextView
+            android:id="@+id/tvNumPadEqual"
+            style="@style/OMGNumPad.Gray"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_equal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNumPadDot"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumPadMinus" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="32dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
