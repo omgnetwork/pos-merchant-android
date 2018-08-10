@@ -8,6 +8,7 @@ package network.omisego.omgmerchant.calculator
  */
 
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_0
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_1
@@ -20,7 +21,6 @@ import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_7
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_8
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_9
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_AC
-import network.omisego.omgmerchant.calculator.CalculatorButton.OP_DEL
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_DOT
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_EQUAL
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_MINUS
@@ -50,9 +50,6 @@ class CalculatorHandler(
                 OP_AC -> {
                     condition.handleAC { callback.onClear() }
                 }
-                OP_DEL -> {
-                    callback.onDelete()
-                }
                 OP_PLUS,
                 OP_MINUS -> {
                     with(condition) {
@@ -75,6 +72,8 @@ class CalculatorHandler(
                     }
                 }
             }
+        } else if (view is ImageButton) {
+            callback.onDelete()
         }
     }
 

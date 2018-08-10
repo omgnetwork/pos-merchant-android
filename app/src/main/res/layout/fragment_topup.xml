@@ -239,13 +239,13 @@
             app:layout_constraintStart_toEndOf="@+id/tvNumPadDot"
             app:layout_constraintTop_toBottomOf="@+id/tvNumPad8" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/tvNumPadDel"
-            style="@style/OMGNumPad"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
             android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_del"
+            android:src="@drawable/ic_del"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

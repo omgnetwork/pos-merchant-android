@@ -23,7 +23,6 @@ enum class CalculatorButton(val sign: CharSequence) {
     OP_MINUS("-"),
     OP_EQUAL("="),
     OP_DOT("."),
-    OP_DEL("del"),
     OP_AC("AC");
 
     companion object {
