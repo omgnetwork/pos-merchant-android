@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="decorator"
+            type="network.omisego.omgmerchant.utils.NumberDecorator" />
+
+        <variable
             name="liveCalc"
             type="network.omisego.omgmerchant.model.LiveCalculator" />
 
@@ -45,19 +49,23 @@
         <TextView
             android:id="@+id/etInputNumber"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="sans-serif-black"
-            android:gravity="end"
-            android:hint="@string/numpad_0"
-            android:maxLength="12"
+            android:gravity="end|center_vertical"
             android:maxLines="1"
-            android:text="@{liveCalc}"
+            android:scrollbars="horizontal"
+            android:scrollHorizontally="true"
+            android:text="@{decorator.formatByExpression(liveCalc)}"
             android:textColor="@color/colorBlack"
-            android:textSize="48sp"
+            app:autoSizeMaxTextSize="48sp"
+            app:autoSizeMinTextSize="28sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/spinner"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 

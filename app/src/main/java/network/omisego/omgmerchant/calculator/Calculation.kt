@@ -2,10 +2,6 @@
 
 package network.omisego.omgmerchant.calculator
 
-import co.omisego.omisego.extension.bd
-import network.omisego.omgmerchant.model.Equation
-import java.math.BigDecimal
-
 /*
  * OmiseGO
  *
@@ -13,16 +9,20 @@ import java.math.BigDecimal
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import co.omisego.omisego.extension.bd
+import network.omisego.omgmerchant.model.Equation
+import java.math.BigDecimal
+
 class Calculation {
     fun convert(left: String, operator: String, right: String): Equation {
         val last = left.toBigDecimal()
-        val percentRightIfNeeded = if (right.last() == '%') {
+        val calculatePercentIfNeeded = if (right.last() == '%') {
             val percent = right.substringBefore('%').toBigDecimal()
             calculatePercent(last, percent)
         } else {
             right.toBigDecimal()
         }
-        return Equation(last, CalculatorButton.from(operator)!!, percentRightIfNeeded)
+        return Equation(last, CalculatorButton.from(operator)!!, calculatePercentIfNeeded)
     }
 
     fun calculate(equation: Equation): String {
