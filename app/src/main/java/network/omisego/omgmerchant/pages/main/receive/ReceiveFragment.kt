@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
+import network.omisego.omgmerchant.utils.NumberDecorator
 
 class ReceiveFragment : Fragment() {
     private lateinit var binding: FragmentReceiveBinding
@@ -41,6 +43,8 @@ class ReceiveFragment : Fragment() {
     private fun setupDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
+        binding.decorator = NumberDecorator()
+        binding.etInputNumber.movementMethod = ScrollingMovementMethod()
         binding.setLifecycleOwner(this)
     }
 }
