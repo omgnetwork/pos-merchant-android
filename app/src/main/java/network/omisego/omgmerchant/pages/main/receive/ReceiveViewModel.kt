@@ -14,18 +14,19 @@ import network.omisego.omgmerchant.model.LiveCalculator
 
 class ReceiveViewModel(
     val handler: CalculatorHandler = CalculatorHandler(),
-    val liveCalculator: LiveCalculator = LiveCalculator(),
+    val liveCalculator: LiveCalculator = LiveCalculator("0"),
     val calculation: Calculation = Calculation()
 ) : ViewModel(), CalculatorHandler.Operation {
 
     /* Implement CalculatorHandler.Operation */
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
-            liveCalculator.value += char
+        if (liveCalculator.value == "0") liveCalculator.value = ""
+        liveCalculator.value += char
     }
 
     override fun onClear() {
-        liveCalculator.value = ""
+        liveCalculator.value = "0"
     }
 
     override fun onDelete() {

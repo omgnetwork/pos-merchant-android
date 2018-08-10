@@ -9,8 +9,8 @@ package network.omisego.omgmerchant.model
 
 import android.arch.lifecycle.MutableLiveData
 
-class LiveCalculator : MutableLiveData<String>() {
+class LiveCalculator(initValue: String = "") : MutableLiveData<String>() {
     init {
-        value = ""
+        value = initValue
     }
 }
