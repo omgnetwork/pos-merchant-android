@@ -13,15 +13,19 @@ import network.omisego.omgmerchant.model.LiveCalculator
 
 class TopupViewModel(
     val handler: CalculatorHandler = CalculatorHandler(),
-    val liveCalculator: LiveCalculator = LiveCalculator()
+    val liveCalculator: LiveCalculator = LiveCalculator("0")
 ) : ViewModel(), CalculatorHandler.Operation {
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
+        if (liveCalculator.value == "0") liveCalculator.value = ""
         liveCalculator.value += char
     }
 
     override fun onDelete() {
         liveCalculator.value = liveCalculator.value?.dropLast(1)
+        if (liveCalculator.value?.isEmpty() == true) {
+            liveCalculator.value = "0"
+        }
     }
 
     override fun onClear() {

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentTopupBinding
+import network.omisego.omgmerchant.utils.NumberDecorator
 
 class TopupFragment : Fragment() {
     private lateinit var binding: FragmentTopupBinding
@@ -41,6 +42,7 @@ class TopupFragment : Fragment() {
     private fun setupDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
+        binding.decorator = NumberDecorator()
         binding.setLifecycleOwner(this)
     }
 }
