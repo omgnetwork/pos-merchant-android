@@ -12,10 +12,12 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
+import network.omisego.omgmerchant.storage.Storage
 
 class MainFragment : Fragment() {
     private var showSplash = true
     private lateinit var pagerAdapter: MainPagerAdapter
+    private val credential by lazy { Storage.loadCredential() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -24,9 +26,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        if (showSplash) {
-            showSplash = false
+        if (credential.authenticationToken.isEmpty()) {
+            findNavController().navigate(R.id.action_main_to_sign_in)
+        } else if (showSplash) {
             findNavController().navigate(R.id.action_main_to_splash)
+            showSplash = false
         }
     }
 
