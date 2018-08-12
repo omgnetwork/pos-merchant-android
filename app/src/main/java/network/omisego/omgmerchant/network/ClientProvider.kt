@@ -19,7 +19,10 @@ object ClientProvider {
 
     private fun create(): OMGAPIAdmin {
         return OMGAPIAdmin(
-            EWalletAdmin.Builder { clientConfiguration = adminConfiguration }.build()
+            EWalletAdmin.Builder {
+                clientConfiguration = adminConfiguration
+                debug = true
+            }.build()
         )
     }
 }
