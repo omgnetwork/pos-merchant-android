@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorGrayToolbar</item>
         <item name="android:textColorPrimary">@color/colorGrayToolbarActionText</item>
@@ -23,7 +23,7 @@
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/numpad_background_white</item>
+
     </style>
 
     <style name="OMGNumPad.Gray">
