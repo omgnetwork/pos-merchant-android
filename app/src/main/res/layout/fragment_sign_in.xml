@@ -13,13 +13,14 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:layout_editor_absoluteY="81dp">
 
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="0dp"
-            android:layout_height="129dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="128dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/sign_in_hint_email"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,6 @@
             android:textColor="@color/colorBlue"
             app:layout_constraintBottom_toTopOf="@+id/tvSignUp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -98,25 +97,28 @@
             android:id="@+id/tvSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/sign_in_dont_have_account"
             app:layout_constraintBottom_toTopOf="@+id/btnSignIn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvForgetPassword" />
 
         <Button
             android:id="@+id/btnSignIn"
+            style="@style/AppTheme.OmiseGOButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            style="@style/AppTheme.OmiseGOButton"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:onClick="@{viewmodel.signin}"
             android:text="@string/sign_in_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

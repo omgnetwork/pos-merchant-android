@@ -3,8 +3,11 @@ package network.omisego.omgmerchant.pages.signin
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +18,9 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
 import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideViewModel
+import network.omisego.omgmerchant.extensions.runBelowM
+import network.omisego.omgmerchant.extensions.runOnM
+import network.omisego.omgmerchant.extensions.scrollBottom
 
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
@@ -27,17 +33,28 @@ class SignInFragment : Fragment() {
             container,
             false
         )
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            scrollBottom()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = provideViewModel()
-        startLogoAnimate()
+
+        runBelowM {
+            ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
+        }
+        runOnM {
+            startLogoAnimate()
+        }
         setupDataBinding()
         subscribeSignInResult()
         ivLogo.setOnClickListener {
-            startLogoAnimate()
+            runOnM {
+                startLogoAnimate()
+            }
         }
     }
 
@@ -59,6 +76,7 @@ class SignInFragment : Fragment() {
         binding.setLifecycleOwner(this)
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private fun startLogoAnimate() {
         val drawable = ivLogo.drawable
         if (drawable is AnimatedVectorDrawable) {
