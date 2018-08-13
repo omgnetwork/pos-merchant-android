@@ -19,15 +19,20 @@ class LiveRecyclerAdapter<T>(
     private val state: LiveData<StateRecyclerAdapter<T>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), LifecycleOwner {
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
-    private var lastState: StateRecyclerAdapter<T> = state.value!!
+    private var lastState: StateRecyclerAdapter<T>? = null
 
     init {
         lifecycleRegistry.markState(Lifecycle.State.INITIALIZED)
+    }
+
+    fun startListening() {
         state.observe(this, Observer {
-            when (it!!) {
+            if (it == null) return@Observer
+            val previousState = lastState
+            when (it) {
                 is StateRecyclerAdapter.Show<T, *> -> {
-                    if (lastState is StateRecyclerAdapter.Loading)
-                        notifyItemRangeRemoved(0, lastState.itemCount)
+                    if (previousState is StateRecyclerAdapter.Loading)
+                        notifyItemRangeRemoved(0, previousState.itemCount)
                     notifyItemRangeInserted(0, it.itemCount)
                 }
             }

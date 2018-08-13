@@ -43,6 +43,12 @@ class SelectAccountFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        listen()
+    }
+
+    private fun listen() {
+        adapter.startListening()
+        viewModel.liveState.value = StateRecyclerAdapter.Loading(layout = R.layout.viewholder_account_loading)
         viewModel.loadAccounts().observe(this, Observer {
             it?.handle(
                 this::handleLoadAccount,
@@ -54,6 +60,11 @@ class SelectAccountFragment : Fragment() {
                 Navigation.findNavController(this.rootView).navigate(R.id.action_nav_graph_self)
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        recyclerView.adapter = null
     }
 
     private fun handleLoadAccount(account: PaginationList<Account>) {

@@ -10,7 +10,6 @@ package network.omisego.omgmerchant.pages.account
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
-import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateRecyclerAdapter
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding
@@ -21,9 +20,7 @@ class SelectAccountViewModel(
     private val selectAccountRepository: SelectAccountRepository
 ) : ViewModel(), StateViewHolderBinding<Account, ViewholderAccountBinding> {
     val liveState: MutableLiveData<StateRecyclerAdapter<Account>> by lazy {
-        MutableLiveData<StateRecyclerAdapter<Account>>().apply {
-            value = StateRecyclerAdapter.Loading(layout = R.layout.viewholder_account_loading)
-        }
+        mutableLiveDataOf<StateRecyclerAdapter<Account>>()
     }
     val liveAccountSelect: MutableLiveData<Account> by lazy { mutableLiveDataOf<Account>() }
 
