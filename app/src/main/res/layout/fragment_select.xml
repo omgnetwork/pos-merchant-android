@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewmodel"
             type="network.omisego.omgmerchant.pages.account.SelectAccountViewModel" />
@@ -23,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="36dp"
             android:layout_marginEnd="8dp"
             android:text="@string/select_account_title"
             android:textColor="@color/colorBlack"
