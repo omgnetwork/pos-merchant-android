@@ -65,7 +65,6 @@ class SignInFragment : Fragment() {
                     it?.handle(this::handleSignInSuccess, this::handleSignInError)
                 })
             }
-
         }
     }
 
