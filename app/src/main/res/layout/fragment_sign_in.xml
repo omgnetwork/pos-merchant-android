@@ -43,6 +43,8 @@
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/sign_in_hint_email"
+            android:textColorHint="@color/color_gray_blue"
+            app:hintTextAppearance="@style/OMGHintText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivLogo"
@@ -57,7 +59,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.updateEmail(text) }"
-                android:textColor="@color/colorGrayText"
+                android:theme="@style/AppTheme.OMGEditText"
                 app:backgroundTint="@color/colorGrayLine" />
 
         </android.support.design.widget.TextInputLayout>
@@ -71,6 +73,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/sign_in_hint_password"
+            android:textColorHint="@color/color_gray_blue"
+            app:hintTextAppearance="@style/OMGHintText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilEmail"
@@ -85,7 +89,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.updatePassword(text) }"
-                android:textColor="@color/colorGrayText"
+                android:textColorHighlight="@color/colorBlue"
+                android:theme="@style/AppTheme.OMGEditText"
                 app:backgroundTint="@color/colorGrayLine" />
 
         </android.support.design.widget.TextInputLayout>
@@ -119,7 +124,7 @@
 
         <Button
             android:id="@+id/btnSignIn"
-            style="@style/AppTheme.OmiseGOButton"
+            style="@style/AppTheme.OMGButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginStart="40dp"

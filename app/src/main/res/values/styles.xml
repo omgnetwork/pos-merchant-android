@@ -4,13 +4,23 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorGrayToolbar</item>
-        <item name="android:textColorPrimary">@color/colorGrayToolbarActionText</item>
+        <item name="android:textColorPrimary">@color/colorGrayToolbar</item>
         <item name="android:textColorSecondary">@color/colorGrayToolbarActionText</item>
         <item name="colorPrimaryDark">@color/colorGrayToolbar</item>
         <item name="colorAccent">@color/colorGrayToolbarActionText</item>
     </style>
 
-    <style name="AppTheme.OmiseGOButton" parent="Widget.AppCompat.Button.Colored">
+    <style name="AppTheme.OMGEditText">
+        <item name="colorControlNormal">@color/colorGrayToolbarActionText</item>
+        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="colorControlHighlight">@color/colorBlue</item>
+    </style>
+
+    <style name="OMGHintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorBlue</item>
+    </style>
+
+    <style name="AppTheme.OMGButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/selector_blue_button</item>
         <item name="android:textColor">@color/colorWhiteNumPad</item>
     </style>

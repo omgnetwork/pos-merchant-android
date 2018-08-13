@@ -53,7 +53,7 @@ class MainFragment : Fragment() {
                 this?.let {
                     DrawableCompat.setTintList(
                         DrawableCompat.wrap(it),
-                        ContextCompat.getColorStateList(tabLayout.context, R.color.tab_icon)
+                        ContextCompat.getColorStateList(tabLayout.context, R.color.color_gray_blue)
                     )
                 }
             }
