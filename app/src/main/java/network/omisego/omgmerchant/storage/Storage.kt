@@ -2,7 +2,9 @@ package network.omisego.omgmerchant.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import co.omisego.omisego.model.Account
 import co.omisego.omisego.security.OMGKeyManager
+import co.omisego.omisego.utils.GsonProvider
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
@@ -19,6 +21,7 @@ import network.omisego.omgmerchant.utils.Contextor.context
  */
 
 object Storage {
+    private val gson by lazy { GsonProvider.create() }
     private val sharePref: SharedPreferences by lazy {
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
     }
@@ -45,5 +48,14 @@ object Storage {
             userId decryptWith keyManager,
             authenticationToken decryptWith keyManager
         )
+    }
+
+    fun saveAccount(account: Account) {
+        sharePref[StorageKey.KEY_ACCOUNT] = gson.toJson(account)
+    }
+
+    fun loadAccount(): Account? {
+        if (sharePref[StorageKey.KEY_ACCOUNT].isNullOrEmpty()) return null
+        return gson.fromJson<Account>(sharePref[StorageKey.KEY_ACCOUNT], Account::class.java)
     }
 }

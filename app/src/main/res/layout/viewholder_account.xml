@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.account.SelectAccountViewModel" />
+
         <variable
             name="account"
             type="co.omisego.omisego.model.Account" />
@@ -13,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_select_account"
+        android:onClick="@{() -> viewModel.handleAccountClick(account)}"
         android:clickable="true"
         android:focusable="true">
 
@@ -37,9 +43,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
+            android:text="@{account.name}"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
-            android:text="@{account.name}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivAccountLogo"
             app:layout_constraintTop_toTopOf="parent"

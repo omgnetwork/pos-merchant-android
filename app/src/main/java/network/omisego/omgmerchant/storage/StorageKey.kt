@@ -9,5 +9,6 @@ package network.omisego.omgmerchant.storage
 
 object StorageKey {
     const val KEY_USER_ID = "user_id"
+    const val KEY_ACCOUNT = "account"
     const val KEY_AUTHENTICATION_TOKEN = "authentication_token"
 }
