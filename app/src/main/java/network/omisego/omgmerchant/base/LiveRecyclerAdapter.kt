@@ -30,9 +30,6 @@ class LiveRecyclerAdapter<T>(
                         notifyItemRangeRemoved(0, lastState.itemCount)
                     notifyItemRangeInserted(0, it.itemCount)
                 }
-                is StateRecyclerAdapter.Loading<T> -> {
-//                    notifyItemRangeInserted(0, it.itemCount)
-                }
             }
             lastState = it
         })
@@ -46,8 +43,6 @@ class LiveRecyclerAdapter<T>(
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
         lifecycleRegistry.markState(Lifecycle.State.RESUMED)
     }
 
