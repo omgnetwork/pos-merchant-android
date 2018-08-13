@@ -1,12 +1,9 @@
 package network.omisego.omgmerchant.pages.account
 
-import android.arch.lifecycle.MutableLiveData
-import co.omisego.omisego.custom.OMGCallback
-import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Account
-import co.omisego.omisego.model.OMGResponse
-import co.omisego.omisego.model.pagination.PaginationList
+import android.arch.lifecycle.LiveData
 import co.omisego.omisego.model.params.AccountListParams
+import network.omisego.omgmerchant.extensions.subscribe
+import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.network.ClientProvider
 
 /*
@@ -17,17 +14,9 @@ import network.omisego.omgmerchant.network.ClientProvider
  */
 
 class SelectAccountRepository {
-    fun loadAccounts(liveResponse: Pair<MutableLiveData<List<Account>>, MutableLiveData<APIError>>) {
-        ClientProvider.client
-            ?.getAccounts(AccountListParams.create(searchTerm = null))
-            ?.enqueue(object : OMGCallback<PaginationList<Account>> {
-                override fun fail(response: OMGResponse<APIError>) {
-                    liveResponse.second.value = response.data
-                }
-
-                override fun success(response: OMGResponse<PaginationList<Account>>) {
-                    liveResponse.first.value = response.data.data
-                }
-            })
+    fun loadAccounts(): LiveData<APIResult> {
+        return ClientProvider.client
+            .getAccounts(AccountListParams.create(searchTerm = null))
+            .subscribe()
     }
 }

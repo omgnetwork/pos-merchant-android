@@ -62,7 +62,7 @@ class SignInFragment : Fragment() {
                 viewModel.showLoading(getString(R.string.sign_in_button_loading))
                 liveResult.observe(this, Observer {
                     viewModel.hideLoading(getString(R.string.sign_in_button))
-                    it?.solve(this::handleSignInSuccess, this::handleSignInError)
+                    it?.handle(this::handleSignInSuccess, this::handleSignInError)
                 })
             }
 
