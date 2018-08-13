@@ -9,6 +9,6 @@ package network.omisego.omgmerchant.extensions
 import android.support.v4.app.Fragment
 import android.util.Log
 
-fun Fragment.logi(message: Any?) = Log.i(this.javaClass.name, message?.toString())
+fun Fragment.logi(message: Any?) = Log.i(this.javaClass.simpleName, message?.toString())
 
-fun Fragment.logd(message: Any?) = Log.d(this.javaClass.name, message?.toString())
+fun Fragment.logd(message: Any?) = Log.d(this.javaClass.simpleName, message?.toString())

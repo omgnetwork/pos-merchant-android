@@ -15,11 +15,7 @@ object ClientProvider {
     private var adminConfiguration = AdminConfiguration(
         "https://ewallet.demo.omisego.io/api/admin/"
     )
-    var client: OMGAPIAdmin? = null
-        get() {
-            field = field ?: create()
-            return field
-        }
+    val client: OMGAPIAdmin by lazy { create() }
 
     private fun create(): OMGAPIAdmin {
         return OMGAPIAdmin(

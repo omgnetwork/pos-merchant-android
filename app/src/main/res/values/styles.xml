@@ -11,7 +11,7 @@
     </style>
 
     <style name="AppTheme.OmiseGOButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/ripple_btn_blue</item>
+        <item name="android:background">@drawable/selector_blue_button</item>
         <item name="android:textColor">@color/colorWhiteNumPad</item>
     </style>
 

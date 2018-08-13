@@ -1,12 +1,17 @@
 package network.omisego.omgmerchant.pages.signin
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
-import android.view.View
-import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
+import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.LiveState
+import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.Credential
+import network.omisego.omgmerchant.storage.Storage
+import network.omisego.omgmerchant.utils.Contextor.context
+import network.omisego.omgmerchant.utils.Validator
+import network.omisego.omgmerchant.utils.mapPropChanged
 
 /*
  * OmiseGO
@@ -18,27 +23,48 @@ import co.omisego.omisego.model.params.LoginParams
 class SignInViewModel(
     private val signInRepository: SignInRepository
 ) : ViewModel() {
-    val liveEmail: MutableLiveData<String> = MutableLiveData()
-    private val livePassword: MutableLiveData<String> = MutableLiveData()
-    private val errorResponse: MutableLiveData<APIError> by lazy { MutableLiveData<APIError>() }
-    private val successResponse: MutableLiveData<AuthenticationToken> by lazy { MutableLiveData<AuthenticationToken>() }
+    private val liveState: LiveState<SignInState> by lazy {
+        LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
+    }
+    val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
+    val liveLoading: LiveData<Boolean> by lazy { liveState.mapPropChanged { it.loading } }
+
+    val emailValidator: Validator by lazy { Validator.EmailValidator(true) }
+    val passwordValidator: Validator by lazy { Validator.PasswordValidator(true) }
     private var isSignIn: Boolean = false
 
     fun updateEmail(text: CharSequence) {
-        liveEmail.value = text.toString()
+        liveState.state { it.copy(email = text.toString()) }
     }
 
     fun updatePassword(text: CharSequence) {
-        livePassword.value = text.toString()
+        liveState.state { it.copy(password = text.toString()) }
     }
 
-    fun signin(view: View) {
+    fun signin(): LiveData<APIResult>? {
+        val (email, password) = liveState.value ?: return null
         isSignIn = true
-        val email = liveEmail.value ?: return
-        val password = livePassword.value ?: return
-        Log.d("SignIn", "email: $email, password: $password")
-        signInRepository.signIn(LoginParams(email, password), successResponse to errorResponse)
+        passwordValidator.byPass = false
+        emailValidator.byPass = false
+        return signInRepository.signIn(LoginParams(email, password))
     }
 
-    fun subscribeSignInResult() = successResponse to errorResponse
+    fun saveCredential(data: AuthenticationToken) {
+        Storage.saveCredential(Credential(
+            data.userId,
+            data.authenticationToken
+        ))
+    }
+
+    fun showLoading(text: String) {
+        liveState.state { it.copy(loading = true, btnText = text) }
+    }
+
+    fun hideLoading(text: String) {
+        liveState.state { it.copy(loading = false, btnText = text) }
+    }
+
+    init {
+        liveState.state { it.copy(loading = false) }
+    }
 }
