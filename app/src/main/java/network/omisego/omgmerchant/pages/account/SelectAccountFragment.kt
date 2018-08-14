@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.pagination.PaginationList
@@ -55,9 +55,9 @@ class SelectAccountFragment : Fragment() {
                 this::handleLoadAccountFail
             )
         })
-        viewModel.liveAccountSelect.observe(this, Observer {
-            it?.let {
-                Navigation.findNavController(this.rootView).navigate(R.id.action_nav_graph_self)
+        viewModel.liveAccountSelect.observe(this, Observer { account ->
+            account?.let {
+                findNavController().navigateUp()
             }
         })
     }
@@ -65,6 +65,14 @@ class SelectAccountFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         recyclerView.adapter = null
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun handleLoadAccount(account: PaginationList<Account>) {

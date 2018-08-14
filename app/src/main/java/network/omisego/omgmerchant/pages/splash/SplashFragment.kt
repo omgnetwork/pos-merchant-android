@@ -37,7 +37,7 @@ class SplashFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         handler.postDelayed({
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }, 2000)
     }
 

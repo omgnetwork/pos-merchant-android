@@ -2,18 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_root"
     app:startDestination="@id/main">
     <fragment
         android:id="@+id/main"
         android:name="network.omisego.omgmerchant.pages.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_main_to_sign_in"
-            app:destination="@id/sign_in"
-            app:popUpTo="@+id/main"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_main_to_splash"
             app:destination="@id/splash"
@@ -23,36 +18,47 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/main"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_main_to_sign_in"
+            app:destination="@id/sign_in"
+            app:popUpTo="@+id/main"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_main_to_selectAccount"
+            app:destination="@id/selectAccount"
+            app:popUpTo="@+id/main"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/splash"
         android:name="network.omisego.omgmerchant.pages.splash.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash">
-
-    </fragment>
+        tools:layout="@layout/fragment_splash" />
     <fragment
         android:id="@+id/sign_in"
         android:name="network.omisego.omgmerchant.pages.signin.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/action_sign_in_to_select_account"
-            app:destination="@id/selectAccount"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/main"
-            app:popUpToInclusive="true" />
+
     </fragment>
     <fragment
         android:id="@+id/selectAccount"
         android:name="network.omisego.omgmerchant.pages.account.SelectAccountFragment"
         android:label="fragment_select"
-        tools:layout="@layout/fragment_select"></fragment>
+        tools:layout="@layout/fragment_select">
+        <action
+            android:id="@+id/action_selectAccount_pop"
+            app:popUpTo="@id/selectAccount"
+            app:popUpToInclusive="true" />
+    </fragment>
     <action
-        android:id="@+id/action_nav_graph_self"
-        app:destination="@id/nav_graph"
-        app:popUpTo="@id/main" app:popUpToInclusive="true" app:launchSingleTop="true" />
+        android:id="@+id/action_global_sign_in"
+        app:destination="@id/sign_in"
+        app:popUpTo="@id/main"
+        app:popUpToInclusive="true"/>
+
+    <action
+        android:id="@+id/action_sign_in_pop"
+        app:popUpTo="@id/sign_in"
+        app:popUpToInclusive="true" />
 </navigation>
