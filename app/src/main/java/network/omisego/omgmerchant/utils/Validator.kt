@@ -18,72 +18,62 @@ import network.omisego.omgmerchant.model.ValidateResult
 sealed class Validator(
     open var byPass: LiveData<Boolean>
 ) : LifecycleOwner {
-    abstract val lifecycleOwnerRegistry: LifecycleRegistry
-    abstract var latestText: String
-    abstract var lastResult: ValidateResult
-    abstract var updateUI: ((ValidateResult) -> Unit)?
-    abstract fun onCleared()
+    private val lifecycleOwnerRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
+    var recentText: String = ""
+    var lastResult: ValidateResult = ValidateResult(true)
+    var updateUI: ((ValidateResult) -> Unit)? = null
+
     abstract fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult
 
-    class EmailValidator(override var byPass: LiveData<Boolean>) : Validator(byPass) {
-        override var updateUI: ((ValidateResult) -> Unit)? = null
-        override val lifecycleOwnerRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
-        override fun getLifecycle(): Lifecycle = lifecycleOwnerRegistry
-        override var lastResult: ValidateResult = ValidateResult(true)
-        override var latestText: String = ""
-        private val isInvalidEmailFormat: (String) -> Boolean = {
-            !Patterns.EMAIL_ADDRESS.matcher(it).matches()
-        }
-
-        override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
-            this.updateUI = updateUI
-            this.latestText = text
-            lastResult = when {
-                byPass.value == false && isInvalidEmailFormat(text) -> ValidateResult(false, "Email Address is invalid format")
-                else -> ValidateResult(true)
-            }
-            updateUI?.invoke(lastResult)
-            return lastResult
-        }
-
-        override fun onCleared() {
-            lifecycleOwnerRegistry.markState(Lifecycle.State.DESTROYED)
-        }
-
-        init {
-            lifecycleOwnerRegistry.markState(Lifecycle.State.STARTED)
-            byPass.observe(this, Observer { check(this.latestText, this.updateUI) })
-        }
+    fun onCleared() {
+        lifecycleOwnerRegistry.markState(Lifecycle.State.DESTROYED)
     }
 
-    class PasswordValidator(override var byPass: LiveData<Boolean>) : Validator(byPass) {
-        override var updateUI: ((ValidateResult) -> Unit)? = null
-        override val lifecycleOwnerRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
-        override var latestText: String = ""
-        override var lastResult: ValidateResult = ValidateResult(true)
-        private val isPasswordLessThanEight: (String) -> Boolean = {
-            it.length < 8
-        }
+    override fun getLifecycle(): Lifecycle = lifecycleOwnerRegistry
 
-        override fun getLifecycle(): Lifecycle = lifecycleOwnerRegistry
-        override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
-            this.updateUI = updateUI
-            this.latestText = text
-            lastResult = when {
-                byPass.value == false && isPasswordLessThanEight(text) -> ValidateResult(false, "Password must contain at least 8 characters")
-                else -> ValidateResult(true)
-            }
-            updateUI?.invoke(lastResult)
-            return lastResult
-        }
+    init {
+        lifecycleOwnerRegistry.markState(Lifecycle.State.STARTED)
+    }
+}
 
-        override fun onCleared() {
-            lifecycleOwnerRegistry.markState(Lifecycle.State.DESTROYED)
-        }
+class EmailValidator(override var byPass: LiveData<Boolean>) : Validator(byPass) {
+    private val isInvalidEmailFormat: (String) -> Boolean = {
+        !Patterns.EMAIL_ADDRESS.matcher(it).matches()
+    }
 
-        init {
-            lifecycleOwnerRegistry.markState(Lifecycle.State.STARTED)
-            byPass.observe(this, Observer { check(this.latestText, this.updateUI) })
+    override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
+        this.updateUI = updateUI
+        this.recentText = text
+        lastResult = when {
+            byPass.value == false && isInvalidEmailFormat(text) -> ValidateResult(false, "Email Address is invalid format")
+            else -> ValidateResult(true)
         }
+        updateUI?.invoke(lastResult)
+        return lastResult
+    }
+
+    init {
+        byPass.observe(this, Observer { check(this.recentText, this.updateUI) })
+    }
+}
+
+class PasswordValidator(override var byPass: LiveData<Boolean>) : Validator(byPass) {
+    private val isPasswordLessThanEight: (String) -> Boolean = {
+        it.length < 8
+    }
+
+    override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
+        this.updateUI = updateUI
+        this.recentText = text
+        lastResult = when {
+            byPass.value == false && isPasswordLessThanEight(text) -> ValidateResult(false, "Password must contain at least 8 characters")
+            else -> ValidateResult(true)
+        }
+        updateUI?.invoke(lastResult)
+        return lastResult
+    }
+
+    init {
+        byPass.observe(this, Observer { check(this.recentText, this.updateUI) })
     }
 }

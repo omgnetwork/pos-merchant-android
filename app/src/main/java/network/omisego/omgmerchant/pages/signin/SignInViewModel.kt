@@ -12,6 +12,8 @@ import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
 import network.omisego.omgmerchant.utils.Contextor.context
+import network.omisego.omgmerchant.utils.EmailValidator
+import network.omisego.omgmerchant.utils.PasswordValidator
 import network.omisego.omgmerchant.utils.Validator
 import network.omisego.omgmerchant.utils.mapPropChanged
 
@@ -31,8 +33,8 @@ class SignInViewModel(
     private val liveByPassValidation: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(true) }
     val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
     val liveLoading: LiveData<Boolean> by lazy { liveState.mapPropChanged { it.loading } }
-    val emailValidator: Validator by lazy { Validator.EmailValidator(liveByPassValidation) }
-    val passwordValidator: Validator by lazy { Validator.PasswordValidator(liveByPassValidation) }
+    val emailValidator: Validator by lazy { EmailValidator(liveByPassValidation) }
+    val passwordValidator: Validator by lazy { PasswordValidator(liveByPassValidation) }
 
     private var isSignIn: Boolean = false
 
