@@ -2,6 +2,7 @@ package network.omisego.omgmerchant.databinding
 
 import android.databinding.BindingAdapter
 import android.support.design.widget.TextInputLayout
+import network.omisego.omgmerchant.model.ValidateResult
 import network.omisego.omgmerchant.utils.MinimalTextChangeListener
 import network.omisego.omgmerchant.utils.Validator
 
@@ -16,14 +17,17 @@ object TextInputLayoutUtil {
     @JvmStatic
     @BindingAdapter("validator")
     fun validate(view: TextInputLayout, validator: Validator) {
-        view.editText?.addTextChangedListener(MinimalTextChangeListener {
-            val (pass, reason) = validator.check(it.toString())
+        val updateUI: (ValidateResult) -> Unit = {
+            val (pass, reason) = it
             if (!pass) {
                 view.error = reason
                 view.isErrorEnabled = true
             } else {
                 view.isErrorEnabled = false
             }
+        }
+        view.editText?.addTextChangedListener(MinimalTextChangeListener {
+            validator.check(it.toString(), updateUI)
         })
     }
 }

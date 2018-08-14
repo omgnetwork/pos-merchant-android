@@ -57,13 +57,15 @@ class SignInFragment : Fragment() {
                 startLogoAnimate()
             }
         }
-        btnSignIn.setOnClickListener {
-            val result = viewModel.signin()
-            viewModel.showLoading(getString(R.string.sign_in_button_loading))
-            result?.observe(this, Observer {
-                viewModel.hideLoading(getString(R.string.sign_in_button))
-                it?.solve(this::handleSignInSuccess, this::handleSignInError)
-            })
+        btnSignIn.setOnClickListener { _ ->
+            viewModel.signin()?.let { liveResult ->
+                viewModel.showLoading(getString(R.string.sign_in_button_loading))
+                liveResult.observe(this, Observer {
+                    viewModel.hideLoading(getString(R.string.sign_in_button))
+                    it?.solve(this::handleSignInSuccess, this::handleSignInError)
+                })
+            }
+
         }
     }
 

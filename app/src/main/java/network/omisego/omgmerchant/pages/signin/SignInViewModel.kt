@@ -1,11 +1,13 @@
 package network.omisego.omgmerchant.pages.signin
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.AuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
+import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
@@ -26,11 +28,12 @@ class SignInViewModel(
     private val liveState: LiveState<SignInState> by lazy {
         LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
     }
+    private val liveByPassValidation: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(true) }
     val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
     val liveLoading: LiveData<Boolean> by lazy { liveState.mapPropChanged { it.loading } }
+    val emailValidator: Validator by lazy { Validator.EmailValidator(liveByPassValidation) }
+    val passwordValidator: Validator by lazy { Validator.PasswordValidator(liveByPassValidation) }
 
-    val emailValidator: Validator by lazy { Validator.EmailValidator(true) }
-    val passwordValidator: Validator by lazy { Validator.PasswordValidator(true) }
     private var isSignIn: Boolean = false
 
     fun updateEmail(text: CharSequence) {
@@ -43,9 +46,9 @@ class SignInViewModel(
 
     fun signin(): LiveData<APIResult>? {
         val (email, password) = liveState.value ?: return null
+        liveByPassValidation.value = false
+        arrayOf(emailValidator, passwordValidator).find { !it.lastResult.pass }?.let { return null }
         isSignIn = true
-        passwordValidator.byPass = false
-        emailValidator.byPass = false
         return signInRepository.signIn(LoginParams(email, password))
     }
 
@@ -62,6 +65,12 @@ class SignInViewModel(
 
     fun hideLoading(text: String) {
         liveState.state { it.copy(loading = false, btnText = text) }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        emailValidator.onCleared()
+        passwordValidator.onCleared()
     }
 
     init {
