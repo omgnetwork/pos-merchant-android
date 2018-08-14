@@ -8,6 +8,16 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="action_global_sign_in">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_sign_in_pop">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="main">
                     <value>
                       <LayoutPositions>
@@ -68,15 +78,6 @@
                             <option name="x" value="247" />
                             <option name="y" value="447" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_sign_in_pop">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

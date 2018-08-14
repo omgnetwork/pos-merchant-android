@@ -67,14 +67,6 @@ class SelectAccountFragment : Fragment() {
         recyclerView.adapter = null
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun handleLoadAccount(account: PaginationList<Account>) {
         viewModel.liveState.value = StateRecyclerAdapter.Show(
             account.data,
