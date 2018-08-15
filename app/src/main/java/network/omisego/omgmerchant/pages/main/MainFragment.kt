@@ -1,5 +1,7 @@
 package network.omisego.omgmerchant.pages.main
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -18,11 +20,18 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.logi
+import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
+import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.storage.Storage
 
 class MainFragment : Fragment() {
-    private var showSplash = true
+    private lateinit var receiveViewModel: ReceiveViewModel
     private lateinit var pagerAdapter: MainPagerAdapter
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var topupViewModel: TopupViewModel
+    private var showSplash = true
+    private var menuNext: MenuItem? = null
+    private var currentPage: Int = 0
     private val credential
         get() = Storage.loadCredential()
     private val account
@@ -36,6 +45,10 @@ class MainFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_main, menu)
+        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = false }
+        mainViewModel.liveEnableNext.observe(this, Observer {
+            menuNext?.isEnabled = it ?: false
+        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -69,6 +82,9 @@ class MainFragment : Fragment() {
 
     private fun initView() {
         setupToolbar()
+        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
+        receiveViewModel = ViewModelProviders.of(activity!!)[ReceiveViewModel::class.java]
+        topupViewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
         pagerAdapter = MainPagerAdapter(childFragmentManager)
         viewpager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewpager)
@@ -91,13 +107,20 @@ class MainFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 val toolbarTitle = when (position) {
-                    0 -> "Receive"
-                    1 -> "Topup"
+                    0 -> {
+                        val receiveCalculatorValue = receiveViewModel.liveCalculator.value
+                        mainViewModel.liveEnableNext.value = !(receiveCalculatorValue == "0" || receiveCalculatorValue in arrayOf("-", "+"))
+                        "Receive"
+                    }
+                    1 -> {
+                        val topupCalculatorValue = topupViewModel.liveCalculator.value
+                        mainViewModel.liveEnableNext.value = topupCalculatorValue != "0"
+                        "Topup"
+                    }
                     2 -> "More"
                     else -> throw IllegalStateException("Unsupported operation")
                 }
                 toolbar.title = toolbarTitle
-                logi(position)
             }
         })
     }
