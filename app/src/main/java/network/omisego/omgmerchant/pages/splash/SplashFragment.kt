@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSplashBinding
-import network.omisego.omgmerchant.extensions.provideViewModel
+import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
@@ -29,9 +29,10 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = provideViewModel()
+        viewModel = provideAndroidViewModel()
         val account = viewModel.loadAccount()
         binding.account = account
+        binding.viewModel = viewModel
     }
 
     override fun onStart() {

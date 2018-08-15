@@ -13,8 +13,6 @@ import network.omisego.omgmerchant.pages.account.SelectAccountRepository
 import network.omisego.omgmerchant.pages.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
 import network.omisego.omgmerchant.pages.signin.SignInViewModel
-import network.omisego.omgmerchant.pages.splash.SplashRepository
-import network.omisego.omgmerchant.pages.splash.SplashViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
@@ -25,9 +23,6 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
                 return SelectAccountViewModel(SelectAccountRepository()) as T
-            }
-            modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                return SplashViewModel(SplashRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.splash.SplashViewModel" />
+
+        <variable
             name="account"
             type="co.omisego.omisego.model.Account" />
     </data>
@@ -57,7 +61,7 @@
             android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="@string/welcome_account_info"
+            android:text="@{viewModel.accountDescription}"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

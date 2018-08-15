@@ -33,7 +33,7 @@ class CalculatorHandler(
 ) {
     var operation: Operation? = null
 
-    fun handleNumPadPressed(view: View) {
+        fun handleNumPadPressed(view: View) {
         val callback = operation ?: return
         if (view is TextView) {
             val button = CalculatorButton.from(view.text) ?: return

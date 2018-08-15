@@ -7,15 +7,23 @@ package network.omisego.omgmerchant.pages.splash
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
+import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class SplashViewModel(
+    private val app: Application,
     private val splashRepository: SplashRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
     val liveAccount: MutableLiveData<Account> by lazy { mutableLiveDataOf<Account>() }
+    val accountDescription: String
+        get() = app.getString(R.string.welcome_account_info, liveAccount.value?.name)
 
-    fun loadAccount() = splashRepository.loadAccount()
+    fun loadAccount(): Account? {
+        liveAccount.value = splashRepository.loadAccount()
+        return liveAccount.value
+    }
 }
