@@ -7,6 +7,9 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
@@ -26,7 +29,24 @@ class MainFragment : Fragment() {
         get() = Storage.loadAccount()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        setHasOptionsMenu(true)
+        return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.next -> {
+                logi("Go to scanner")
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

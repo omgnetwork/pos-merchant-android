@@ -83,4 +83,7 @@
     <string name="numpad_dot">.</string>
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
+
+    <!-- Main -->
+    <string name="main_menu_next">Next</string>
 </resources>
