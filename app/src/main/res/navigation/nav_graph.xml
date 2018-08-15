@@ -28,6 +28,14 @@
             app:destination="@id/selectAccount"
             app:popUpTo="@+id/main"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_main_to_scanFragment"
+            app:destination="@id/scanFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/main" />
     </fragment>
     <fragment
         android:id="@+id/splash"
@@ -55,10 +63,19 @@
         android:id="@+id/action_global_sign_in"
         app:destination="@id/sign_in"
         app:popUpTo="@id/main"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="true" />
 
     <action
         android:id="@+id/action_sign_in_pop"
         app:popUpTo="@id/sign_in"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="network.omisego.omgmerchant.pages.scan.ScanFragment"
+        android:label="ScanFragment">
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:argType="string" />
+    </fragment>
 </navigation>

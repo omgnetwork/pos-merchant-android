@@ -21,7 +21,7 @@ class ReceiveFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ReceiveViewModel
     private val calculatorObserver = Observer<String> {
-        mainViewModel.liveEnableNext.value = !(it == "0" || it in arrayOf("-", "+"))
+        mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
     }
     private val mockTokens = listOf("OMG", "BTC", "ETH")
 

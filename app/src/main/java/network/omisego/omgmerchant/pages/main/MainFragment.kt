@@ -55,6 +55,14 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
+                findNavController().navigate(R.id.action_main_to_scanFragment, Bundle().apply {
+                    val amount = if (currentPage == 0) {
+                        receiveViewModel.liveCalculator.value
+                    } else {
+                        topupViewModel.liveCalculator.value
+                    }
+                    this.putString("amount", amount)
+                })
                 logi("Go to scanner")
                 true
             }
@@ -106,10 +114,11 @@ class MainFragment : Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
+                currentPage = position
                 val toolbarTitle = when (position) {
                     0 -> {
                         val receiveCalculatorValue = receiveViewModel.liveCalculator.value
-                        mainViewModel.liveEnableNext.value = !(receiveCalculatorValue == "0" || receiveCalculatorValue in arrayOf("-", "+"))
+                        mainViewModel.liveEnableNext.value = receiveCalculatorValue != "0" && receiveCalculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1
                         "Receive"
                     }
                     1 -> {
