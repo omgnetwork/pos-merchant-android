@@ -1,28 +1,27 @@
-package network.omisego.omgmerchant.pages.main.receive
+package network.omisego.omgmerchant.pages.main.topup
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
+import network.omisego.omgmerchant.databinding.FragmentTopupBinding
 import network.omisego.omgmerchant.utils.NumberDecorator
 
-class ReceiveFragment : Fragment() {
-    private lateinit var binding: FragmentReceiveBinding
-    private lateinit var viewModel: ReceiveViewModel
+class TopupFragment : Fragment() {
+    private lateinit var binding: FragmentTopupBinding
+    private lateinit var viewModel: TopupViewModel
     private val mockTokens = listOf("OMG", "BTC", "ETH")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_receive,
+            R.layout.fragment_topup,
             container,
             false
         )
@@ -31,7 +30,7 @@ class ReceiveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[ReceiveViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[TopupViewModel::class.java]
         setupDataBinding()
         setupSpinner()
     }
@@ -44,7 +43,6 @@ class ReceiveFragment : Fragment() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
         binding.decorator = NumberDecorator()
-        binding.etInputNumber.movementMethod = ScrollingMovementMethod()
         binding.setLifecycleOwner(this)
     }
 }
