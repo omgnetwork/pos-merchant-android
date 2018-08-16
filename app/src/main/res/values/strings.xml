@@ -28,7 +28,8 @@
 
     <!-- Scan -->
     <!-- e.g. 380.00 UXD -->
-    <string name="scan_amount">%,.2f %s</string>
+    <string name="scan_title">Scan</string>
+    <string name="scan_amount" formatted="false">%,.2f %s</string>
     <string name="scan_instruction">Align QR code here</string>
 
     <!-- Feedback -->
