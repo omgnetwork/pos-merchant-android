@@ -3,8 +3,8 @@
     android:color="?android:colorControlHighlight">
     <item android:id="@android:id/mask">
         <shape android:shape="oval">
-            <solid android:color="?android:colorAccent" />
+            <solid android:color="#ddffffff" />
         </shape>
     </item>
-    <item android:drawable="@android:color/transparent" />
+    <item android:drawable="@drawable/shape_transparent" />
 </ripple>
