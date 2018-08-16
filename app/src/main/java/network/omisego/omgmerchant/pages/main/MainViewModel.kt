@@ -9,7 +9,8 @@ package network.omisego.omgmerchant.pages.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class MainViewModel : ViewModel() {
-    val liveEnableNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
 }

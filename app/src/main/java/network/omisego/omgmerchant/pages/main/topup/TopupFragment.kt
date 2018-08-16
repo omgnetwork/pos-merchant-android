@@ -24,6 +24,13 @@ class TopupFragment : Fragment() {
     }
     private val mockTokens = listOf("OMG", "BTC", "ETH")
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
+        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
+        viewModel.liveCalculator.observe(this, calculatorObserver)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -36,8 +43,6 @@ class TopupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
-        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
         setupDataBinding()
         setupSpinner()
     }
@@ -53,13 +58,8 @@ class TopupFragment : Fragment() {
         binding.setLifecycleOwner(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.liveCalculator.observe(this, calculatorObserver)
-    }
-
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.liveCalculator.removeObserver(calculatorObserver)
     }
 }

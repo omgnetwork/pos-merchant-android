@@ -37,6 +37,13 @@ class MainFragment : Fragment() {
     private val account
         get() = Storage.loadAccount()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
+        receiveViewModel = ViewModelProviders.of(activity!!)[ReceiveViewModel::class.java]
+        topupViewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         setHasOptionsMenu(true)
@@ -45,7 +52,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_main, menu)
-        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = false }
+        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
         mainViewModel.liveEnableNext.observe(this, Observer {
             menuNext?.isEnabled = it ?: false
         })
@@ -61,7 +68,8 @@ class MainFragment : Fragment() {
                     } else {
                         topupViewModel.liveCalculator.value
                     }
-                    this.putString("amount", amount)
+                    this.putDouble("amount", amount?.toDouble()!!)
+//                    this.putParcelable("token", tok)
                 })
                 logi("Go to scanner")
                 true
@@ -90,9 +98,6 @@ class MainFragment : Fragment() {
 
     private fun initView() {
         setupToolbar()
-        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
-        receiveViewModel = ViewModelProviders.of(activity!!)[ReceiveViewModel::class.java]
-        topupViewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
         pagerAdapter = MainPagerAdapter(childFragmentManager)
         viewpager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewpager)
@@ -126,7 +131,10 @@ class MainFragment : Fragment() {
                         mainViewModel.liveEnableNext.value = topupCalculatorValue != "0"
                         "Topup"
                     }
-                    2 -> "More"
+                    2 -> {
+                        mainViewModel.liveEnableNext.value = false
+                        "More"
+                    }
                     else -> throw IllegalStateException("Unsupported operation")
                 }
                 toolbar.title = toolbarTitle
