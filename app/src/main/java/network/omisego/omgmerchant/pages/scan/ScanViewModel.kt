@@ -18,6 +18,7 @@ import network.omisego.omgmerchant.model.APIResult
 class ScanViewModel(
     private val scanRepository: ScanRepository
 ) : ViewModel() {
+    lateinit var transactionType: String
     lateinit var token: Token
     var amount: Double = 0.0
     val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
@@ -34,11 +35,23 @@ class ScanViewModel(
     }
 
     private fun provideTransactionCreateParams(payload: String): TransactionCreateParams {
-        return TransactionCreateParams(
-            fromAddress = payload,
-            toAddress = scanRepository.loadWallet().address,
-            amount = amount.bd.multiply(token.subunitToUnit).setScale(0),
-            tokenId = token.id
-        )
+        when (transactionType) {
+            "receive" -> {
+                return TransactionCreateParams(
+                    fromAddress = payload,
+                    toAddress = scanRepository.loadWallet().address,
+                    amount = amount.bd.multiply(token.subunitToUnit).setScale(0),
+                    tokenId = token.id
+                )
+            }
+            else -> {
+                return TransactionCreateParams(
+                    fromAddress = scanRepository.loadWallet().address,
+                    toAddress = payload,
+                    amount = amount.bd.multiply(token.subunitToUnit).setScale(0),
+                    tokenId = token.id
+                )
+            }
+        }
     }
 }

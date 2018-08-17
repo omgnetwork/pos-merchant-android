@@ -9,7 +9,6 @@ package network.omisego.omgmerchant.pages.feedback
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.model.Feedback
 
@@ -36,8 +35,6 @@ class FeedbackViewModel(
         get() = app.getString(R.string.feedback_customer_id, feedback.source.userId)
     val userName: String
         get() = "${feedback.source.user?.metadata?.get("first_name")} ${feedback.source.user?.metadata?.get("last_name")}"
-    val token: Token?
-        get() = feedback.source.token
     val date: String
         get() = app.getString(R.string.feedback_date_time, feedback.createdAt)
 

@@ -22,12 +22,18 @@ class ScanRepository {
         ClientProvider.client.transfer(params).subscribe(liveTransaction)
 
     fun saveFeedback(transactionType: String, transaction: Transaction) {
-        Storage.saveFeedback(
-            Feedback(
+        val feedback =
+            if (transactionType.equals("receive", true)) Feedback(
                 transactionType,
                 transaction.createdAt,
                 transaction.from
-            )
-        )
+            ) else {
+                Feedback(
+                    transactionType,
+                    transaction.createdAt,
+                    transaction.to
+                )
+            }
+        Storage.saveFeedback(feedback)
     }
 }
