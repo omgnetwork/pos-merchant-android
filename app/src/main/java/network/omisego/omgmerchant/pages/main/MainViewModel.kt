@@ -14,14 +14,15 @@ import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.pages.main.shared.spinner.LoadTokenViewModel
 
 class MainViewModel(
     private val tokenRepository: TokenRepository,
     private val walletRepository: WalletRepository,
     private val accountRepository: AccountRepository
-) : ViewModel() {
+) : ViewModel(), LoadTokenViewModel {
+    override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
-    val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveWalletAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
 
     fun getTokens() = liveTokenAPIResult.fetchedThenCache {

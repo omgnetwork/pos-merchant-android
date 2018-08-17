@@ -6,6 +6,8 @@ import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorHandler
 import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.pages.main.shared.spinner.LiveTokenSpinner
+import network.omisego.omgmerchant.pages.main.shared.spinner.TokenSpinnerViewModel
 
 /*
  * OmiseGO
@@ -16,10 +18,11 @@ import network.omisego.omgmerchant.model.LiveCalculator
 
 class ReceiveViewModel(
     val handler: CalculatorHandler,
-    val liveCalculator: LiveCalculator,
+    override val liveCalculator: LiveCalculator,
     val calculation: Calculation
-) : ViewModel(), CalculatorHandler.Operation {
-    val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+) : ViewModel(), CalculatorHandler.Operation, TokenSpinnerViewModel {
+    override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+    var liveTokenSpinner: LiveTokenSpinner? = null
 
     /* Implement CalculatorHandler.Operation */
     override fun onAppend(char: CharSequence) {
@@ -41,6 +44,15 @@ class ReceiveViewModel(
         if (evaluated == liveCalculator.value) return false
         liveCalculator.value = evaluated
         return true
+    }
+
+    override fun startListeningTokenSpinner() {
+        liveTokenSpinner?.listen()
+        liveTokenSpinner?.start()
+    }
+
+    override fun onCleared() {
+        liveTokenSpinner?.stop()
     }
 
     init {
