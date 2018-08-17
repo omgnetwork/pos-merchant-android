@@ -14,6 +14,7 @@ import network.omisego.omgmerchant.calculator.CalculatorHandler
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.account.SelectAccountRepository
 import network.omisego.omgmerchant.pages.account.SelectAccountViewModel
+import network.omisego.omgmerchant.pages.main.AccountRepository
 import network.omisego.omgmerchant.pages.main.MainViewModel
 import network.omisego.omgmerchant.pages.main.TokenRepository
 import network.omisego.omgmerchant.pages.main.WalletRepository
@@ -50,7 +51,8 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(
                     TokenRepository(),
-                    WalletRepository()
+                    WalletRepository(),
+                    AccountRepository()
                 ) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {

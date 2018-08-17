@@ -16,6 +16,8 @@ import network.omisego.omgmerchant.network.ClientProvider
 
 class TokenRepository {
     fun listTokens(params: TokenListParams, liveAPIResult: MutableLiveData<APIResult>): LiveData<APIResult> {
-        return ClientProvider.client.getTokens(params).subscribe(liveAPIResult)
+        return ClientProvider.client
+            .getTokens(params)
+            .subscribe(liveAPIResult)
     }
 }

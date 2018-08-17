@@ -15,7 +15,7 @@ import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.network.ClientProvider
 
 class WalletRepository {
-    fun loadWallet(params: AccountWalletListParams, liveWallet: MutableLiveData<APIResult>): LiveData<APIResult> {
+    fun getWallet(params: AccountWalletListParams, liveWallet: MutableLiveData<APIResult>): LiveData<APIResult> {
         return ClientProvider.client
             .getAccountWallets(params)
             .subscribe(liveWallet)

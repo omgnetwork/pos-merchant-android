@@ -110,7 +110,7 @@ class MainFragment : Fragment() {
         } else if (showSplash) {
             NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
             showSplash = false
-            mainViewModel.loadWallet().observe(this, Observer {
+            mainViewModel.getWallet().observe(this, Observer {
                 it?.handle(
                     this::handleLoadWalletSuccess,
                     this::handleLoadWalletFail
