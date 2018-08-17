@@ -1,7 +1,6 @@
 package network.omisego.omgmerchant.pages.main
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -14,12 +13,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Wallet
+import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.logi
+import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.storage.Storage
@@ -36,12 +41,14 @@ class MainFragment : Fragment() {
         get() = Storage.loadCredential()
     private val account
         get() = Storage.loadAccount()
+    private val feedback
+        get() = Storage.loadFeedback()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel = ViewModelProviders.of(activity!!)[MainViewModel::class.java]
-        receiveViewModel = ViewModelProviders.of(activity!!)[ReceiveViewModel::class.java]
-        topupViewModel = ViewModelProviders.of(activity!!)[TopupViewModel::class.java]
+        mainViewModel = provideActivityViewModel()
+        receiveViewModel = provideActivityViewModel()
+        topupViewModel = provideActivityViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,16 +69,24 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
-                findNavController().navigate(R.id.action_main_to_scanFragment, Bundle().apply {
+                val bundle = Bundle().apply {
                     val amount = if (currentPage == 0) {
+                        this.putString("transaction_type", "receive")
                         receiveViewModel.liveCalculator.value
                     } else {
+                        this.putString("transaction_type", "topup")
                         topupViewModel.liveCalculator.value
                     }
+                    val token = if (currentPage == 0) {
+                        receiveViewModel.liveToken.value
+                    } else {
+                        topupViewModel.liveToken.value
+                    }
                     this.putDouble("amount", amount?.toDouble()!!)
-//                    this.putParcelable("token", tok)
-                })
-                logi("Go to scanner")
+                    this.putParcelable("token", token!!)
+
+                }
+                NavHostFragment.findNavController(this).navigate(R.id.action_main_to_scanFragment, bundle)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -90,10 +105,29 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_global_sign_in)
         } else if (account == null) {
             findNavController().navigate(R.id.action_main_to_selectAccount)
+        } else if (feedback != null) {
+            val bundle = Bundle().apply { this.putParcelable("feedback", feedback!!) }
+            findNavController().navigate(R.id.action_main_to_feedback, bundle)
         } else if (showSplash) {
             findNavController().navigate(R.id.action_main_to_splash)
             showSplash = false
+            mainViewModel.loadWallet().observe(this, Observer {
+                it?.handle(
+                    this::handleLoadWalletSuccess,
+                    this::handleLoadWalletFail
+                )
+            })
         }
+    }
+
+    private fun handleLoadWalletSuccess(listWallet: PaginationList<Wallet>) {
+        logi(listWallet)
+        Storage.saveWallet(listWallet.data.findLast { it.name == "primary" }!!)
+    }
+
+    private fun handleLoadWalletFail(error: APIError) {
+        logi(error)
+        toast(error.description)
     }
 
     private fun initView() {

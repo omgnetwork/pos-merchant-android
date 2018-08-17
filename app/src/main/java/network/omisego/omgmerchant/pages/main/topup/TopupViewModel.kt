@@ -1,6 +1,8 @@
 package network.omisego.omgmerchant.pages.main.topup
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.CalculatorHandler
 import network.omisego.omgmerchant.model.LiveCalculator
 
@@ -12,9 +14,11 @@ import network.omisego.omgmerchant.model.LiveCalculator
  */
 
 class TopupViewModel(
-    val handler: CalculatorHandler = CalculatorHandler(),
-    val liveCalculator: LiveCalculator = LiveCalculator("0")
+    val handler: CalculatorHandler,
+    val liveCalculator: LiveCalculator
 ) : ViewModel(), CalculatorHandler.Operation {
+    val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
         if (liveCalculator.value == "0") liveCalculator.value = ""

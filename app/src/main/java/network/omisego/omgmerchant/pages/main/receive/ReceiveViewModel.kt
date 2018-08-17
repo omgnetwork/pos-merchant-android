@@ -1,6 +1,8 @@
 package network.omisego.omgmerchant.pages.main.receive
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorHandler
 import network.omisego.omgmerchant.model.LiveCalculator
@@ -13,10 +15,11 @@ import network.omisego.omgmerchant.model.LiveCalculator
  */
 
 class ReceiveViewModel(
-    val handler: CalculatorHandler = CalculatorHandler(),
-    val liveCalculator: LiveCalculator = LiveCalculator("0"),
-    val calculation: Calculation = Calculation()
+    val handler: CalculatorHandler,
+    val liveCalculator: LiveCalculator,
+    val calculation: Calculation
 ) : ViewModel(), CalculatorHandler.Operation {
+    val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
 
     /* Implement CalculatorHandler.Operation */
     override fun onAppend(char: CharSequence) {
