@@ -88,6 +88,7 @@
     <!-- Main -->
     <string name="main_menu_next">Next</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Permission -->
+    <string name="camera_permission_explain">Camera access is needed to scan the QR code.</string>
+    <string name="permission_setting">Settings</string>
 </resources>

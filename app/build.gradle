@@ -74,6 +74,7 @@ dependencies {
     implementation custom.shimmer
     implementation custom.stetho
     implementation custom.dropdown
+    implementation custom.dexter
     implementation okHttp3.loggingIntercepter
     testImplementation assertJ.core
     testImplementation junit.junit

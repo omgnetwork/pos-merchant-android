@@ -1,9 +1,11 @@
 package network.omisego.omgmerchant.pages.scan
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,13 @@ import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.transaction.Transaction
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
+import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentScanBinding
 import network.omisego.omgmerchant.extensions.logi
@@ -52,6 +61,46 @@ class ScanFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
+        handleCameraPermission()
+    }
+
+    private fun handleCameraPermission() {
+        val snackbarPermissionListener = SnackbarOnDeniedPermissionListener.Builder
+            .with(view, R.string.camera_permission_explain)
+            .withOpenSettingsButton(R.string.permission_setting)
+            .withCallback(object : Snackbar.Callback() {
+                override fun onShown(snackbar: Snackbar?) {}
+                override fun onDismissed(snackbar: Snackbar?, event: Int) {}
+            })
+            .build()
+
+        Dexter.withActivity(activity!!)
+            .withPermission(Manifest.permission.CAMERA)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    binding.scanner.startCameraWithVerifier(viewModel.verifier)
+                }
+
+                override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+                    snackbarPermissionListener.onPermissionRationaleShouldBeShown(permission, token)
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    snackbarPermissionListener.onPermissionDenied(response)
+                }
+            })
+            .check()
+    }
+
+    private fun handleTransferSuccess(transaction: Transaction) {
+        logi(transaction)
+        viewModel.saveFeedback(transactionType, transaction)
+        findNavController().navigateUp()
+    }
+
+    private fun handleTransferFail(error: APIError) {
+        logi(error)
+        toast(error.description)
     }
 
     override fun onStart() {
@@ -64,18 +113,6 @@ class ScanFragment : Fragment() {
                 this::handleTransferFail
             )
         })
-    }
-
-    private fun handleTransferSuccess(transaction: Transaction) {
-        logi(transaction)
-        viewModel.saveFeedback(transactionType, transaction)
-        findNavController().navigateUp()
-        // Save transaction in the share preference and clear when showing the success screen
-    }
-
-    private fun handleTransferFail(error: APIError) {
-        logi(error)
-        toast(error.description)
     }
 
     override fun onStop() {
