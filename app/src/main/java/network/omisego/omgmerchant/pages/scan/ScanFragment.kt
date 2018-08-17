@@ -57,6 +57,12 @@ class ScanFragment : Fragment() {
         transactionType = arguments?.getString("transaction_type") ?: transactionType
         viewModel.amount = amount
         viewModel.token = token
+        viewModel.transactionType = transactionType
+        binding.tvTitle.text = if (transactionType.equals("receive", true)) {
+            getString(R.string.scan_title_payment)
+        } else {
+            getString(R.string.scan_title_topup)
+        }
         binding.tvAmount.text = getString(R.string.scan_amount, amount, token.symbol)
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
