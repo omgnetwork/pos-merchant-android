@@ -27,7 +27,11 @@ class FeedbackViewModel(
             }
         }
     val amount: String
-        get() = app.getString(R.string.feedback_amount, feedback.source.amount, feedback.source.token.symbol)
+        get() = app.getString(
+            R.string.feedback_amount,
+            feedback.source.amount.divide(feedback.source.token.subunitToUnit),
+            feedback.source.token.symbol
+        )
     val userId: String
         get() = app.getString(R.string.feedback_customer_id, feedback.source.userId)
     val userName: String
