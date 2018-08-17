@@ -14,7 +14,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.pagination.PaginationList
@@ -102,14 +101,14 @@ class MainFragment : Fragment() {
     private fun setupConditionalNavigationGraph() {
         val (userId, authenticationToken) = credential
         if (userId.isEmpty() || authenticationToken.isEmpty()) {
-            findNavController().navigate(R.id.action_global_sign_in)
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
         } else if (account == null) {
-            findNavController().navigate(R.id.action_main_to_selectAccount)
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
         } else if (feedback != null) {
             val bundle = Bundle().apply { this.putParcelable("feedback", feedback!!) }
-            findNavController().navigate(R.id.action_main_to_feedback, bundle)
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_feedback, bundle)
         } else if (showSplash) {
-            findNavController().navigate(R.id.action_main_to_splash)
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
             showSplash = false
             mainViewModel.loadWallet().observe(this, Observer {
                 it?.handle(
