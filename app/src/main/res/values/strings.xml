@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OMG Merchant</string>
+    <string name="app_name">POS Merchant</string>
 
     <!-- Sign In -->
     <string name="sign_in_hint_email">Email</string>
