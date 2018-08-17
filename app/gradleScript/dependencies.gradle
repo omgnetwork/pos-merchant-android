@@ -8,7 +8,7 @@ allprojects {
 
 ext {
     /* Version */
-    omisego = '1.0.1-alpha10'
+    omisego = '1.0.1-alpha19'
     supportLibrary = '27.1.1'
     kotlin = '1.2.51'
     retrofit = '2.4.0'
@@ -74,6 +74,7 @@ ext {
     custom = [
             constraintLayout: 'com.android.support.constraint:constraint-layout:1.1.2',
             stetho          : 'com.facebook.stetho:stetho-okhttp3:1.5.0',
-            shimmer         : 'com.facebook.shimmer:shimmer:0.2.0'
+            shimmer         : 'com.facebook.shimmer:shimmer:0.2.0',
+            dropdown        : 'com.jaredrummler:material-spinner:1.2.5'
     ]
 }

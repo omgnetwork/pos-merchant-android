@@ -73,6 +73,7 @@ dependencies {
     implementation custom.constraintLayout
     implementation custom.shimmer
     implementation custom.stetho
+    implementation custom.dropdown
     implementation okHttp3.loggingIntercepter
     testImplementation assertJ.core
     testImplementation junit.junit
