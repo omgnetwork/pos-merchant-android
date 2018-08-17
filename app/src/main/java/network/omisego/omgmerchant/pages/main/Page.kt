@@ -7,9 +7,6 @@ package network.omisego.omgmerchant.pages.main
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import co.omisego.omisego.model.Account
-import network.omisego.omgmerchant.storage.Storage
-
-class AccountRepository {
-    fun getAccount(): Account? = Storage.loadAccount()
-}
+const val PAGE_RECEIVE = 0
+const val PAGE_TOPUP = 1
+const val PAGE_MORE = 2

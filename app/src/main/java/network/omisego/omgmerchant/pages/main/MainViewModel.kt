@@ -14,25 +14,39 @@ import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.main.shared.spinner.LoadTokenViewModel
 
 class MainViewModel(
     private val tokenRepository: TokenRepository,
     private val walletRepository: WalletRepository,
-    private val accountRepository: AccountRepository
+    private val mainRepository: MainRepository
 ) : ViewModel(), LoadTokenViewModel {
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
-    val liveWalletAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+
+    fun getAccount() = mainRepository.getAccount()
+
+    fun getCredential() = mainRepository.getCredential()
+
+    fun getFeedback() = mainRepository.getFeedback()
 
     fun getTokens() = liveTokenAPIResult.fetchedThenCache {
         tokenRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
     }
 
-    fun getWallet() = liveWalletAPIResult.fetchedThenCache {
-        walletRepository.getWallet(
-            AccountWalletListParams.create(id = accountRepository.getAccount()!!.id, searchTerm = null),
-            it
-        )
+    fun loadWalletAndSave() {
+        walletRepository.loadWalletAndSave(AccountWalletListParams.create(id = mainRepository.getAccount()!!.id, searchTerm = null))
+    }
+
+    fun handleEnableNextButtonByPager(liveCalculator: LiveCalculator, page: Int) {
+        when (page) {
+            PAGE_RECEIVE -> {
+                liveEnableNext.value = liveCalculator.value != "0" &&
+                    liveCalculator.value?.indexOfAny(charArrayOf('-', '+')) == -1
+            }
+            PAGE_TOPUP -> liveEnableNext.value = liveCalculator.value != "0"
+            PAGE_MORE -> liveEnableNext.value = false
+        }
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -14,34 +13,29 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
-import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
-import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
-import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
-import network.omisego.omgmerchant.storage.Storage
+import network.omisego.omgmerchant.utils.MinimalPageChangeListener
 
 class MainFragment : Fragment() {
+
+    /* ViewModel */
     private lateinit var receiveViewModel: ReceiveViewModel
-    private lateinit var pagerAdapter: MainPagerAdapter
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
+
+    /* Adapter */
+    private lateinit var pagerAdapter: MainPagerAdapter
+
+    /* Local */
     private var showSplash = true
     private var menuNext: MenuItem? = null
     private var currentPage: Int = 0
-    private val credential
-        get() = Storage.loadCredential()
-    private val account
-        get() = Storage.loadAccount()
-    private val feedback
-        get() = Storage.loadFeedback()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,37 +92,6 @@ class MainFragment : Fragment() {
         setupConditionalNavigationGraph()
     }
 
-    private fun setupConditionalNavigationGraph() {
-        val (userId, authenticationToken) = credential
-        if (userId.isEmpty() || authenticationToken.isEmpty()) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
-        } else if (account == null) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
-        } else if (feedback != null) {
-            val bundle = Bundle().apply { this.putParcelable("feedback", feedback!!) }
-            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_feedback, bundle)
-        } else if (showSplash) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
-            showSplash = false
-            mainViewModel.getWallet().observe(this, Observer {
-                it?.handle(
-                    this::handleLoadWalletSuccess,
-                    this::handleLoadWalletFail
-                )
-            })
-        }
-    }
-
-    private fun handleLoadWalletSuccess(listWallet: PaginationList<Wallet>) {
-        logi(listWallet)
-        Storage.saveWallet(listWallet.data.findLast { it.name == "primary" }!!)
-    }
-
-    private fun handleLoadWalletFail(error: APIError) {
-        logi(error)
-        toast(error.description)
-    }
-
     private fun initView() {
         setupToolbar()
         pagerAdapter = MainPagerAdapter(childFragmentManager)
@@ -140,45 +103,52 @@ class MainFragment : Fragment() {
             getTabAt(2)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_more)
         }
         tintTabLayoutIcon()
-        changeToolbarTitleWhenPageChanged()
+        listenPageChanged()
     }
 
-    private fun changeToolbarTitleWhenPageChanged() {
-        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
+    private fun setupConditionalNavigationGraph() {
+        val (userId, authenticationToken) = mainViewModel.getCredential()
+        if (userId.isEmpty() || authenticationToken.isEmpty()) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
+        } else if (mainViewModel.getAccount() == null) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
+        } else if (mainViewModel.getFeedback() != null) {
+            val bundle = Bundle().apply { this.putParcelable("feedback", mainViewModel.getFeedback()!!) }
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_feedback, bundle)
+        } else if (showSplash) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
+            showSplash = false
+            mainViewModel.loadWalletAndSave()
+        }
+    }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                currentPage = position
-                val toolbarTitle = when (position) {
-                    0 -> {
-                        val receiveCalculatorValue = receiveViewModel.liveCalculator.value
-                        mainViewModel.liveEnableNext.value = receiveCalculatorValue != "0" && receiveCalculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1
-                        "Receive"
-                    }
-                    1 -> {
-                        val topupCalculatorValue = topupViewModel.liveCalculator.value
-                        mainViewModel.liveEnableNext.value = topupCalculatorValue != "0"
-                        "Topup"
-                    }
-                    2 -> {
-                        mainViewModel.liveEnableNext.value = false
-                        "More"
-                    }
-                    else -> throw IllegalStateException("Unsupported operation")
+    private fun listenPageChanged() {
+        viewpager.addOnPageChangeListener(MinimalPageChangeListener { position ->
+            currentPage = position
+            val toolbarTitle = when (position) {
+                PAGE_RECEIVE -> {
+                    mainViewModel.handleEnableNextButtonByPager(receiveViewModel.liveCalculator, PAGE_RECEIVE)
+                    getString(R.string.receive_title)
                 }
-                toolbar.title = toolbarTitle
+                PAGE_TOPUP -> {
+                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
+                    getString(R.string.topup_title)
+                }
+                PAGE_MORE -> {
+                    /* liveCalculator isn't necessary in this case */
+                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
+                    getString(R.string.more_title)
+                }
+                else -> throw IllegalStateException("Unsupported operation")
             }
+            toolbar.title = toolbarTitle
         })
     }
 
     private fun setupToolbar() {
         val hostActivity = activity as AppCompatActivity
         hostActivity.setSupportActionBar(toolbar)
-        toolbar.title = "Receive"
+        toolbar.title = getString(R.string.receive_title)
     }
 
     private fun tintTabLayoutIcon() {
