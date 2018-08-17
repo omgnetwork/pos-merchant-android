@@ -9,13 +9,16 @@ package network.omisego.omgmerchant.pages.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.os.Bundle
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.shared.spinner.LoadTokenViewModel
+import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 
 class MainViewModel(
     private val tokenRepository: TokenRepository,
@@ -48,5 +51,26 @@ class MainViewModel(
             PAGE_TOPUP -> liveEnableNext.value = liveCalculator.value != "0"
             PAGE_MORE -> liveEnableNext.value = false
         }
+    }
+
+    fun createBundleForScanPage(
+        receiveViewModel: ReceiveViewModel,
+        topupViewModel: TopupViewModel,
+        page: Int
+    ): Bundle {
+        val bundle = Bundle()
+        when (page) {
+            PAGE_RECEIVE -> {
+                bundle.putString("transaction_type", "receive")
+                bundle.putDouble("amount", receiveViewModel.liveCalculator.value!!.toDouble())
+                bundle.putParcelable("token", receiveViewModel.liveToken.value!!)
+            }
+            PAGE_TOPUP -> {
+                bundle.putString("transaction_type", "topup")
+                bundle.putDouble("amount", topupViewModel.liveCalculator.value!!.toDouble())
+                bundle.putParcelable("token", topupViewModel.liveToken.value!!)
+            }
+        }
+        return bundle
     }
 }

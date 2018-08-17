@@ -62,23 +62,7 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
-                val bundle = Bundle().apply {
-                    val amount = if (currentPage == 0) {
-                        this.putString("transaction_type", "receive")
-                        receiveViewModel.liveCalculator.value
-                    } else {
-                        this.putString("transaction_type", "topup")
-                        topupViewModel.liveCalculator.value
-                    }
-                    val token = if (currentPage == 0) {
-                        receiveViewModel.liveToken.value
-                    } else {
-                        topupViewModel.liveToken.value
-                    }
-                    this.putDouble("amount", amount?.toDouble()!!)
-                    this.putParcelable("token", token!!)
-
-                }
+                val bundle = mainViewModel.createBundleForScanPage(receiveViewModel, topupViewModel, currentPage)
                 NavHostFragment.findNavController(this).navigate(R.id.action_main_to_scanFragment, bundle)
                 true
             }
