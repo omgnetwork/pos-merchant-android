@@ -15,8 +15,9 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import network.omisego.omgmerchant.model.APIResult
 
-fun <T> OMGCall<T>.subscribe(): LiveData<APIResult> {
-    val liveCallback: MutableLiveData<APIResult> = MutableLiveData()
+fun <T> OMGCall<T>.subscribe(
+    liveCallback: MutableLiveData<APIResult> = MutableLiveData()
+): LiveData<APIResult> {
     this.enqueue(object : OMGCallback<T> {
         override fun fail(response: OMGResponse<APIError>) {
             liveCallback.value = APIResult.Fail(response.data)
