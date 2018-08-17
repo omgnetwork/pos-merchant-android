@@ -39,6 +39,8 @@
         <action
             android:id="@+id/action_main_to_feedback"
             app:destination="@+id/feedback"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/main" />
     </fragment>
     <fragment
