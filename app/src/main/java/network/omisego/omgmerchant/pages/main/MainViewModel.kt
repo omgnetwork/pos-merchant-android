@@ -78,4 +78,8 @@ class MainViewModel(
             }
         }
     }
+
+    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
+        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
+    }
 }

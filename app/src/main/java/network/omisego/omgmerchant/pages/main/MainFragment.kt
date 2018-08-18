@@ -100,8 +100,7 @@ class MainFragment : Fragment() {
         } else if (mainViewModel.getAccount() == null) {
             NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
         } else if (mainViewModel.getFeedback() != null) {
-            val bundle = Bundle().apply { this.putParcelable("feedback", mainViewModel.getFeedback()!!) }
-            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_feedback, bundle)
+            NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForFeedbackPage())
         } else if (showSplash) {
             NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
             showSplash = false

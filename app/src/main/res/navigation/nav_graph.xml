@@ -94,5 +94,9 @@
     <fragment
         android:id="@+id/feedback"
         android:name="network.omisego.omgmerchant.pages.feedback.FeedbackFragment"
-        android:label="FeedbackFragment" />
+        android:label="FeedbackFragment">
+        <argument
+            android:name="feedback"
+            app:argType="network.omisego.omgmerchant.model.Feedback" />
+    </fragment>
 </navigation>

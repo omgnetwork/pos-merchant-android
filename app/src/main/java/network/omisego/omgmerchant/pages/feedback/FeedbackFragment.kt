@@ -18,7 +18,7 @@ class FeedbackFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideAndroidViewModel()
-        viewModel.feedback = arguments?.getParcelable("feedback")!!
+        viewModel.feedback = FeedbackFragmentArgs.fromBundle(arguments).feedback
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
