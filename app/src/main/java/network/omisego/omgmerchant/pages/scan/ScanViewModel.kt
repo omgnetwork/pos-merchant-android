@@ -7,26 +7,41 @@ package network.omisego.omgmerchant.pages.scan
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
+import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.model.APIResult
 
 class ScanViewModel(
+    private val app: Application,
     private val scanRepository: ScanRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
     lateinit var transactionType: String
     lateinit var token: Token
     var amount: Double = 0.0
     val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
-    val verifier: AddressVerifier by lazy {
-        AddressVerifier(this).apply {
+    val verifier: ScanAddressVerifier by lazy {
+        ScanAddressVerifier(this).apply {
             this.getTransactionCreateParams = this@ScanViewModel::provideTransactionCreateParams
         }
     }
+
+    val amountText: String
+        get() = app.getString(R.string.scan_amount, amount, token.symbol)
+
+    val title: String
+        get() {
+            return if (transactionType == "receive") {
+                app.getString(R.string.scan_title_payment)
+            } else {
+                app.getString(R.string.scan_title_topup)
+            }
+        }
 
     fun transfer(params: TransactionCreateParams) = scanRepository.transfer(params, liveTransaction)
 

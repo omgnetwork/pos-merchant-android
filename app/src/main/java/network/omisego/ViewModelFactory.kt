@@ -20,8 +20,6 @@ import network.omisego.omgmerchant.pages.main.TokenRepository
 import network.omisego.omgmerchant.pages.main.WalletRepository
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.scan.ScanRepository
-import network.omisego.omgmerchant.pages.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
 import network.omisego.omgmerchant.pages.signin.SignInViewModel
 
@@ -53,11 +51,6 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                     TokenRepository(),
                     WalletRepository(),
                     MainRepository()
-                ) as T
-            }
-            modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
-                return ScanViewModel(
-                    ScanRepository()
                 ) as T
             }
             else -> {

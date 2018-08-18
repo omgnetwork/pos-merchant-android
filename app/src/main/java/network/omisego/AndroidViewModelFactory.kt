@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.pages.feedback.FeedbackRepository
 import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
+import network.omisego.omgmerchant.pages.scan.ScanRepository
+import network.omisego.omgmerchant.pages.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.splash.SplashRepository
 import network.omisego.omgmerchant.pages.splash.SplashViewModel
 
@@ -18,12 +20,15 @@ import network.omisego.omgmerchant.pages.splash.SplashViewModel
 @Suppress("UNCHECKED_CAST")
 class AndroidViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        when {
+        return when {
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                return SplashViewModel(application, SplashRepository()) as T
+                SplashViewModel(application, SplashRepository()) as T
             }
             modelClass.isAssignableFrom(FeedbackViewModel::class.java) -> {
-                return FeedbackViewModel(application, FeedbackRepository()) as T
+                FeedbackViewModel(application, FeedbackRepository()) as T
+            }
+            modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
+                ScanViewModel(application, ScanRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

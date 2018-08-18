@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data></data>
+    <data>
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.scan.ScanViewModel" />
+    </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -43,7 +47,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-black"
-            android:text="@string/scan_title"
+            android:text="@{viewModel.title}"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/tvAmount"
@@ -61,7 +65,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-medium"
-            android:text="300.00 USD"
+            android:text="@{viewModel.amountText}"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="24sp"

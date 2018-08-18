@@ -24,7 +24,7 @@ import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentScanBinding
 import network.omisego.omgmerchant.extensions.logi
-import network.omisego.omgmerchant.extensions.provideViewModel
+import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
 class ScanFragment : Fragment() {
@@ -36,7 +36,7 @@ class ScanFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = provideViewModel()
+        viewModel = provideAndroidViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,18 +52,19 @@ class ScanFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /* Retrieve passed arguments from main fragment */
         token = arguments?.getParcelable("token") ?: return
-        amount = arguments?.getDouble("amount") ?: 0.0
-        transactionType = arguments?.getString("transaction_type") ?: transactionType
+        amount = arguments?.getDouble("amount") ?: return
+        transactionType = arguments?.getString("transaction_type") ?: return
+
+        /* Setup ViewModel */
         viewModel.amount = amount
         viewModel.token = token
         viewModel.transactionType = transactionType
-        binding.tvTitle.text = if (transactionType.equals("receive", true)) {
-            getString(R.string.scan_title_payment)
-        } else {
-            getString(R.string.scan_title_topup)
-        }
-        binding.tvAmount.text = getString(R.string.scan_amount, amount, token.symbol)
+
+        /* Binding */
+        binding.viewModel = viewModel
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
