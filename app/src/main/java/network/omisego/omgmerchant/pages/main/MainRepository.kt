@@ -14,4 +14,5 @@ class MainRepository {
     fun getAccount(): Account? = Storage.loadAccount()
     fun getCredential() = Storage.loadCredential()
     fun getFeedback() = Storage.loadFeedback()
+    fun hasCredential() = Storage.hasCredential()
 }

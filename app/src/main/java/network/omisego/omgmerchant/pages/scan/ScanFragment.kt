@@ -57,7 +57,6 @@ class ScanFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        handleCameraPermission()
     }
 
     private fun handleCameraPermission() {
@@ -102,13 +101,13 @@ class ScanFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.verifier.register()
-        binding.scanner.startCameraWithVerifier(viewModel.verifier)
         viewModel.liveTransaction.observe(this, Observer {
             it?.handle(
                 this::handleTransferSuccess,
                 this::handleTransferFail
             )
         })
+        handleCameraPermission()
     }
 
     override fun onStop() {
@@ -118,6 +117,7 @@ class ScanFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        logi("Destroy")
         viewModel.verifier.unregister()
     }
 }

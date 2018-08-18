@@ -95,8 +95,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupConditionalNavigationGraph() {
-        val (userId, authenticationToken) = mainViewModel.getCredential()
-        if (userId.isEmpty() || authenticationToken.isEmpty()) {
+        if (!mainViewModel.hasCredential()) {
             NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
         } else if (mainViewModel.getAccount() == null) {
             NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
@@ -150,5 +149,8 @@ class MainFragment : Fragment() {
                 }
             }
         }
+
+        /* Init first tab to select */
+        tabLayout[0]?.select()
     }
 }

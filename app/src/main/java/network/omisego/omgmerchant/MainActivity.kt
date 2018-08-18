@@ -20,7 +20,9 @@ class MainActivity : AppCompatActivity() {
             Log.d("NavGraph", destination.label?.toString() ?: "")
         }
         mainViewModel = provideViewModel()
-        mainViewModel.getTokens()
+        if (mainViewModel.hasCredential()) {
+            mainViewModel.getTokens()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

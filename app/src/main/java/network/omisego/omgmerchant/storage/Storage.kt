@@ -7,6 +7,7 @@ import co.omisego.omisego.model.User
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.security.OMGKeyManager
 import co.omisego.omisego.utils.GsonProvider
+import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
@@ -37,16 +38,21 @@ object Storage {
     }
 
     fun saveCredential(credential: Credential) {
-        sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN encryptWith keyManager] = credential.authenticationToken encryptWith keyManager
-        sharePref[StorageKey.KEY_USER_ID encryptWith keyManager] = credential.userId encryptWith keyManager
+        async {
+            sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN] = credential.authenticationToken encryptWith keyManager
+            sharePref[StorageKey.KEY_USER_ID] = credential.userId encryptWith keyManager
+        }
     }
 
+    fun hasCredential() =
+        sharePref.contains(StorageKey.KEY_AUTHENTICATION_TOKEN) && sharePref.contains(StorageKey.KEY_USER_ID)
+
     fun loadCredential(): Credential {
-        val userId = sharePref[StorageKey.KEY_USER_ID encryptWith keyManager]
-        val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN encryptWith keyManager]
-        if (userId.isNullOrEmpty()) {
+        if (!hasCredential()) {
             return Credential("", "")
         }
+        val userId = sharePref[StorageKey.KEY_USER_ID]!!
+        val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN]!!
         return Credential(
             userId decryptWith keyManager,
             authenticationToken decryptWith keyManager

@@ -37,7 +37,10 @@ class MainViewModel(
 
     fun getTokens() = liveTokenAPIResult.fetchedThenCache {
         tokenRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
+        liveTokenAPIResult
     }
+
+    fun hasCredential() = mainRepository.hasCredential()
 
     fun loadWalletAndSave() {
         walletRepository.loadWalletAndSave(AccountWalletListParams.create(id = mainRepository.getAccount()!!.id, searchTerm = null))
