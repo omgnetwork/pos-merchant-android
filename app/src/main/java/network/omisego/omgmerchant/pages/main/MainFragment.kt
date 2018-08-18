@@ -122,7 +122,7 @@ class MainFragment : Fragment() {
                 }
                 PAGE_MORE -> {
                     /* liveCalculator isn't necessary in this case */
-                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
+                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_MORE)
                     getString(R.string.more_title)
                 }
                 else -> throw IllegalStateException("Unsupported operation")
@@ -148,8 +148,5 @@ class MainFragment : Fragment() {
                 }
             }
         }
-
-        /* Init first tab to select */
-        tabLayout[0]?.select()
     }
 }
