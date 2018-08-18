@@ -20,10 +20,10 @@ import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.LiveCalculator
 
 class LiveTokenSpinner(
-    val spinner: MaterialSpinner,
+    private var spinner: MaterialSpinner? = null,
     val viewModel: TokenSpinnerViewModel,
-    val loadTokenViewModel: LoadTokenViewModel,
-    val errorMsg: String? = null
+    private val loadTokenViewModel: LoadTokenViewModel,
+    private val errorMsg: String? = null
 ) : LifecycleOwner {
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
     private var tokenList: MutableList<Token> = mutableListOf()
@@ -31,19 +31,19 @@ class LiveTokenSpinner(
     override fun getLifecycle() = lifecycleRegistry
 
     fun listen() {
-        spinner.setOnItemSelectedListener { _, position, _, _ ->
+        spinner?.setOnItemSelectedListener { _, position, _, _ ->
             viewModel.liveToken.value = tokenList[position]
         }
     }
 
     fun setTokens(tokens: PaginationList<Token>) {
         tokenList.addAll(tokens.data)
-        viewModel.liveToken.value = tokenList[0]
-        spinner.setItems(tokens.data.map { it.symbol.toUpperCase() })
+        viewModel.liveToken.value = viewModel.liveToken.value ?: tokenList[0]
+        spinner?.setItems(tokens.data.map { it.symbol.toUpperCase() })
     }
 
     fun setError(error: APIError) {
-        spinner.setItems(errorMsg ?: error.description)
+        spinner?.setItems(errorMsg ?: error.description)
     }
 
     fun start() {

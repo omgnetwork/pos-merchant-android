@@ -11,6 +11,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.pages.scan.SCAN_RECEIVE
 
 class FeedbackViewModel(
     val app: Application,
@@ -19,7 +20,7 @@ class FeedbackViewModel(
     lateinit var feedback: Feedback
     val title: String
         get() {
-            return if (feedback.transactionType.equals("receive", true)) {
+            return if (feedback.transactionType.equals(SCAN_RECEIVE, true)) {
                 app.getString(R.string.feedback_payment_title)
             } else {
                 app.getString(R.string.feedback_topup_title)

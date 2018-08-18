@@ -62,8 +62,12 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
-                val bundle = mainViewModel.createBundleForScanPage(receiveViewModel, topupViewModel, currentPage)
-                NavHostFragment.findNavController(this).navigate(R.id.action_main_to_scanFragment, bundle)
+                val action = mainViewModel.createActionForScanPage(
+                    receiveViewModel,
+                    topupViewModel,
+                    currentPage
+                )
+                NavHostFragment.findNavController(this).navigate(action)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

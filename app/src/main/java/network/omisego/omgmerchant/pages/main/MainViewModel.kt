@@ -9,7 +9,6 @@ package network.omisego.omgmerchant.pages.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.os.Bundle
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.extensions.fetchedThenCache
@@ -19,6 +18,8 @@ import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.shared.spinner.LoadTokenViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
+import network.omisego.omgmerchant.pages.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.pages.scan.SCAN_TOPUP
 
 class MainViewModel(
     private val tokenRepository: TokenRepository,
@@ -53,24 +54,25 @@ class MainViewModel(
         }
     }
 
-    fun createBundleForScanPage(
+    fun createActionForScanPage(
         receiveViewModel: ReceiveViewModel,
         topupViewModel: TopupViewModel,
         page: Int
-    ): Bundle {
-        val bundle = Bundle()
-        when (page) {
+    ): MainFragmentDirections.ActionMainToScan {
+        return when (page) {
             PAGE_RECEIVE -> {
-                bundle.putString("transaction_type", "receive")
-                bundle.putDouble("amount", receiveViewModel.liveCalculator.value!!.toDouble())
-                bundle.putParcelable("token", receiveViewModel.liveToken.value!!)
+                MainFragmentDirections.ActionMainToScan(receiveViewModel.liveToken.value!!)
+                    .setAmount(receiveViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_RECEIVE)
             }
             PAGE_TOPUP -> {
-                bundle.putString("transaction_type", "topup")
-                bundle.putDouble("amount", topupViewModel.liveCalculator.value!!.toDouble())
-                bundle.putParcelable("token", topupViewModel.liveToken.value!!)
+                MainFragmentDirections.ActionMainToScan(topupViewModel.liveToken.value!!)
+                    .setAmount(topupViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_TOPUP)
+            }
+            else -> {
+                throw IllegalStateException("Page $page doesn't currently support.")
             }
         }
-        return bundle
     }
 }

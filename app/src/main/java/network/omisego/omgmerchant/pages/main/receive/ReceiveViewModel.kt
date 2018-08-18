@@ -19,7 +19,7 @@ import network.omisego.omgmerchant.pages.main.shared.spinner.TokenSpinnerViewMod
 class ReceiveViewModel(
     val handler: CalculatorHandler,
     override val liveCalculator: LiveCalculator,
-    val calculation: Calculation
+    private val calculation: Calculation
 ) : ViewModel(), CalculatorHandler.Operation, TokenSpinnerViewModel {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null

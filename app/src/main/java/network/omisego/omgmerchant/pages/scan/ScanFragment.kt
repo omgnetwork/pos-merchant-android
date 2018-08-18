@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.transaction.Transaction
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -28,9 +27,6 @@ import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
 class ScanFragment : Fragment() {
-    private var amount: Double = 0.0
-    private var transactionType = "receive"
-    private lateinit var token: Token
     private lateinit var binding: FragmentScanBinding
     private lateinit var viewModel: ScanViewModel
 
@@ -53,15 +49,8 @@ class ScanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /* Retrieve passed arguments from main fragment */
-        token = arguments?.getParcelable("token") ?: return
-        amount = arguments?.getDouble("amount") ?: return
-        transactionType = arguments?.getString("transaction_type") ?: return
-
         /* Setup ViewModel */
-        viewModel.amount = amount
-        viewModel.token = token
-        viewModel.transactionType = transactionType
+        viewModel.args = ScanFragmentArgs.fromBundle(arguments)
 
         /* Binding */
         binding.viewModel = viewModel
@@ -101,7 +90,7 @@ class ScanFragment : Fragment() {
 
     private fun handleTransferSuccess(transaction: Transaction) {
         logi(transaction)
-        viewModel.saveFeedback(transactionType, transaction)
+        viewModel.saveFeedback(transaction)
         findNavController().navigateUp()
     }
 

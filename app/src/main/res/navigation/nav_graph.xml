@@ -29,7 +29,7 @@
             app:popUpTo="@+id/main"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_main_to_scanFragment"
+            android:id="@+id/action_main_to_scan"
             app:destination="@+id/scan"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -82,6 +82,13 @@
         <argument
             android:name="amount"
             android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="token"
+            app:argType="co.omisego.omisego.model.Token" />
+        <argument
+            android:name="transaction_type"
+            android:defaultValue="receive"
             app:argType="string" />
     </fragment>
     <fragment

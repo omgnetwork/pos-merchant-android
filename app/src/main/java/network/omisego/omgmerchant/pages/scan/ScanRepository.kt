@@ -23,7 +23,7 @@ class ScanRepository {
 
     fun saveFeedback(transactionType: String, transaction: Transaction) {
         val feedback =
-            if (transactionType.equals("receive", true)) Feedback(
+            if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
                 transactionType,
                 transaction.createdAt,
                 transaction.from
