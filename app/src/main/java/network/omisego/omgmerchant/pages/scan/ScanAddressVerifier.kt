@@ -16,7 +16,7 @@ import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
 import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 
-class AddressVerifier(
+class ScanAddressVerifier(
     val viewModel: ScanViewModel
 ) : OMGQRScannerContract.Logic.Verifier, LifecycleOwner {
     override var postVerification: OMGQRScannerContract.Logic.PostVerification? = null
