@@ -23,7 +23,6 @@
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:background="@drawable/numpad_background_white"
         tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment"
         tools:layout_editor_absoluteY="81dp">
@@ -33,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#d0d6d2"
+            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,6 @@
             android:background="#d0d6d2"
             app:layout_constraintBottom_toTopOf="@+id/guide_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guide_divider" />
 
@@ -68,7 +67,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line1"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="0" />
 
