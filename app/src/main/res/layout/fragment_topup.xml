@@ -99,136 +99,136 @@
             app:layout_constraintGuide_end="32dp" />
 
         <TextView
-            android:id="@+id/tvNumPad1"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_1"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad4"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <TextView
-            android:id="@+id/tvNumPad2"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_2"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad5"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad1"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <TextView
-            android:id="@+id/tvNumPad3"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_3"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad2"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <TextView
-            android:id="@+id/tvNumPad4"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_4"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad7"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad1" />
-
-        <TextView
-            android:id="@+id/tvNumPad5"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_5"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad8"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad4"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad2" />
-
-        <TextView
-            android:id="@+id/tvNumPad6"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_6"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad5"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad3" />
-
-        <TextView
-            android:id="@+id/tvNumPad8"
-            style="@style/OMGNumPad"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/numpad_background_white"
-            android:onClick="@{handler::handleNumPadPressed}"
-            android:text="@string/numpad_8"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPad0"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad9"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad7"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad5" />
-
-        <TextView
-            android:id="@+id/tvNumPad7"
+            android:id="@+id/tvNum7"
             style="@style/OMGNumPad"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/numpad_background_white"
             android:onClick="@{handler::handleNumPadPressed}"
             android:text="@string/numpad_7"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPadDot"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPad8"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum4"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum8"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad4" />
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
         <TextView
-            android:id="@+id/tvNumPad9"
+            android:id="@+id/tvNum8"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_8"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum5"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNum7"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/tvNum9"
             style="@style/OMGNumPad"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/numpad_background_white"
             android:onClick="@{handler::handleNumPadPressed}"
             android:text="@string/numpad_9"
-            app:layout_constraintBottom_toTopOf="@+id/tvNumPadDel"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPad8"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad6" />
+            app:layout_constraintStart_toEndOf="@+id/tvNum8"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
         <TextView
-            android:id="@+id/tvNumPadDot"
+            android:id="@+id/tvNum4"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_4"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum1"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum7" />
+
+        <TextView
+            android:id="@+id/tvNum5"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_5"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum2"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNum4"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum8" />
+
+        <TextView
+            android:id="@+id/tvNum6"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_6"
+            app:layout_constraintBottom_toTopOf="@+id/tvNum3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNum5"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum9" />
+
+        <TextView
+            android:id="@+id/tvNum2"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_2"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumPad0"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNum1"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum5" />
+
+        <TextView
+            android:id="@+id/tvNum1"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_1"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumDot"
+            app:layout_constraintEnd_toStartOf="@+id/tvNum2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum4" />
+
+        <TextView
+            android:id="@+id/tvNum3"
+            style="@style/OMGNumPad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/numpad_background_white"
+            android:onClick="@{handler::handleNumPadPressed}"
+            android:text="@string/numpad_3"
+            app:layout_constraintBottom_toTopOf="@+id/tvNumDel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvNum2"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum6" />
+
+        <TextView
+            android:id="@+id/tvNumDot"
             style="@style/OMGNumPad"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -240,7 +240,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad7" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNum1" />
 
         <TextView
             android:id="@+id/tvNumPad0"
@@ -251,13 +251,13 @@
             android:onClick="@{handler::handleNumPadPressed}"
             android:text="@string/numpad_0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvNumPadDel"
+            app:layout_constraintEnd_toStartOf="@+id/tvNumDel"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvNumPadDot"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad8" />
+            app:layout_constraintStart_toEndOf="@+id/tvNumDot"
+            app:layout_constraintTop_toBottomOf="@+id/tvNum2" />
 
         <ImageButton
-            android:id="@+id/tvNumPadDel"
+            android:id="@+id/tvNumDel"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/numpad_background_white"
@@ -267,7 +267,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tvNumPad0"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumPad9" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNum3" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline3"
