@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="menu"
+            type="network.omisego.omgmerchant.model.MoreMenu" />
 
     </data>
 
@@ -22,7 +25,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text=""
+            tools:text=""
+            android:text="@{menu.icon}"
             android:textColor="@color/colorBlue"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
-            android:text="TextView"
+            android:text="@{menu.title}"
             android:textColor="@color/colorGrayToolbar"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

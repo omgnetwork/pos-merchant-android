@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.pages.feedback.FeedbackRepository
 import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
+import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
 import network.omisego.omgmerchant.pages.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.splash.SplashRepository
@@ -29,6 +30,9 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(application, ScanRepository()) as T
+            }
+            modelClass.isAssignableFrom(MoreViewModel::class.java) -> {
+                MoreViewModel(application) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
