@@ -7,4 +7,4 @@ package network.omisego.omgmerchant.model
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-data class MoreMenu(val icon: String, val title: String)
+data class SettingMenu(val icon: String, val title: String)

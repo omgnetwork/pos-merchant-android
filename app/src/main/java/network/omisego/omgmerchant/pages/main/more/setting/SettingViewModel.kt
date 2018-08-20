@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.pages.main.more
+package network.omisego.omgmerchant.pages.main.more.setting
 
 /*
  * OmiseGO
@@ -15,7 +15,7 @@ import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.SettingMenu
 import network.omisego.omgmerchant.storage.Storage
 
-class MoreViewModel(
+class SettingViewModel(
     val app: Application
 ) : AndroidViewModel(app) {
     val menus: List<SettingMenu> = listOf(

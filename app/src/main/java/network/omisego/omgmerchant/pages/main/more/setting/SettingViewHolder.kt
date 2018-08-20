@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.pages.main.more
+package network.omisego.omgmerchant.pages.main.more.setting
 
 import android.support.v7.widget.RecyclerView
 import network.omisego.omgmerchant.databinding.ViewholderMoreMenuBinding
@@ -10,4 +10,4 @@ import network.omisego.omgmerchant.databinding.ViewholderMoreMenuBinding
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-class MoreViewHolder(val binding: ViewholderMoreMenuBinding) : RecyclerView.ViewHolder(binding.root) {}
+class SettingViewHolder(val binding: ViewholderMoreMenuBinding) : RecyclerView.ViewHolder(binding.root) {}

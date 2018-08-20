@@ -18,6 +18,8 @@ import network.omisego.omgmerchant.pages.main.MainRepository
 import network.omisego.omgmerchant.pages.main.MainViewModel
 import network.omisego.omgmerchant.pages.main.TokenRepository
 import network.omisego.omgmerchant.pages.main.WalletRepository
+import network.omisego.omgmerchant.pages.main.more.account.SettingAccountRepository
+import network.omisego.omgmerchant.pages.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
@@ -52,6 +54,9 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                     WalletRepository(),
                     MainRepository()
                 ) as T
+            }
+            modelClass.isAssignableFrom(SettingAccountViewModel::class.java) -> {
+                return SettingAccountViewModel(SettingAccountRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

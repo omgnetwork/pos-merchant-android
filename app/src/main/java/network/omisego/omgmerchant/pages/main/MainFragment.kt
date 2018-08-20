@@ -19,7 +19,7 @@ import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
-import network.omisego.omgmerchant.pages.main.more.MoreViewModel
+import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.utils.MinimalPageChangeListener
@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
     private lateinit var receiveViewModel: ReceiveViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
-    private lateinit var moreViewModel: MoreViewModel
+    private lateinit var settingViewModel: SettingViewModel
 
     /* Adapter */
     private lateinit var pagerAdapter: MainPagerAdapter
@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
         mainViewModel = provideActivityViewModel()
         receiveViewModel = provideActivityViewModel()
         topupViewModel = provideActivityViewModel()
-        moreViewModel = provideActivityAndroidViewModel()
+        settingViewModel = provideActivityAndroidViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -116,7 +116,7 @@ class MainFragment : Fragment() {
         }
 
         /* Observe sign */
-        moreViewModel.liveSignOut.observe(this, Observer {
+        settingViewModel.liveSignOut.observe(this, Observer {
             it?.let { isSignOut ->
                 if (isSignOut) {
                     NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
@@ -130,10 +130,12 @@ class MainFragment : Fragment() {
             currentPage = position
             val toolbarTitle = when (position) {
                 PAGE_RECEIVE -> {
+                    settingViewModel.liveMenu.value = null
                     mainViewModel.handleEnableNextButtonByPager(receiveViewModel.liveCalculator, PAGE_RECEIVE)
                     getString(R.string.receive_title)
                 }
                 PAGE_TOPUP -> {
+                    settingViewModel.liveMenu.value = null
                     mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
                     getString(R.string.topup_title)
                 }

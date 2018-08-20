@@ -7,7 +7,11 @@
 
         <variable
             name="menu"
-            type="network.omisego.omgmerchant.model.MoreMenu" />
+            type="network.omisego.omgmerchant.model.SettingMenu" />
+
+        <variable
+            name="viewmodel"
+            type="network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel" />
 
     </data>
 
@@ -16,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_select_account"
+        android:onClick="@{() -> viewmodel.handleClickMenu(menu)}"
         android:clickable="true">
 
         <TextView
