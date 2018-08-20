@@ -17,7 +17,9 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
+import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.utils.MinimalPageChangeListener
@@ -28,6 +30,7 @@ class MainFragment : Fragment() {
     private lateinit var receiveViewModel: ReceiveViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
+    private lateinit var moreViewModel: MoreViewModel
 
     /* Adapter */
     private lateinit var pagerAdapter: MainPagerAdapter
@@ -42,6 +45,7 @@ class MainFragment : Fragment() {
         mainViewModel = provideActivityViewModel()
         receiveViewModel = provideActivityViewModel()
         topupViewModel = provideActivityViewModel()
+        moreViewModel = provideActivityAndroidViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -110,6 +114,15 @@ class MainFragment : Fragment() {
             showSplash = false
             mainViewModel.loadWalletAndSave()
         }
+
+        /* Observe sign */
+        moreViewModel.liveSignOut.observe(this, Observer {
+            it?.let { isSignOut ->
+                if (isSignOut) {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
+                }
+            }
+        })
     }
 
     private fun listenPageChanged() {

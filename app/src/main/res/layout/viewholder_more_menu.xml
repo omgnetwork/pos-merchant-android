@@ -15,23 +15,25 @@
         android:id="@+id/layoutViewHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ripple_select_account">
+        android:background="@drawable/ripple_select_account"
+        android:clickable="true">
 
         <TextView
             android:id="@+id/tvIcon"
             style="@style/OMGIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            tools:text=""
             android:text="@{menu.icon}"
             android:textColor="@color/colorBlue"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="" />
 
         <TextView
             android:id="@+id/tvMenuName"

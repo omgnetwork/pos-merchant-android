@@ -44,6 +44,17 @@ object Storage {
         }
     }
 
+    fun clearEverything() {
+        sharePref.edit()
+            .remove(StorageKey.KEY_USER_ID)
+            .remove(StorageKey.KEY_AUTHENTICATION_TOKEN)
+            .remove(StorageKey.KEY_ACCOUNT)
+            .remove(StorageKey.KEY_WALLET)
+            .remove(StorageKey.KEY_USER)
+            .remove(StorageKey.KEY_FEEDBACK)
+            .apply()
+    }
+
     fun hasCredential() =
         sharePref.contains(StorageKey.KEY_AUTHENTICATION_TOKEN) && sharePref.contains(StorageKey.KEY_USER_ID)
 
