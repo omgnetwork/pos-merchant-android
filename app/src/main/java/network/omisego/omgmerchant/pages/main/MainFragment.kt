@@ -128,6 +128,7 @@ class MainFragment : Fragment() {
     private fun listenPageChanged() {
         viewpager.addOnPageChangeListener(MinimalPageChangeListener { position ->
             currentPage = position
+            menuNext?.isVisible = true
             val toolbarTitle = when (position) {
                 PAGE_RECEIVE -> {
                     settingViewModel.liveMenu.value = null
@@ -142,6 +143,7 @@ class MainFragment : Fragment() {
                 PAGE_MORE -> {
                     /* liveCalculator isn't necessary in this case */
                     mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_MORE)
+                    menuNext?.isVisible = false
                     getString(R.string.more_title)
                 }
                 else -> throw IllegalStateException("Unsupported operation")
@@ -154,6 +156,14 @@ class MainFragment : Fragment() {
         val hostActivity = activity as AppCompatActivity
         hostActivity.setSupportActionBar(toolbar)
         toolbar.title = getString(R.string.receive_title)
+        settingViewModel.liveMenu.observe(this, Observer { it ->
+            if (it == null) {
+                toolbar.navigationIcon = null
+            } else {
+                toolbar.navigationIcon = context?.getDrawableCompat(R.drawable.ic_arrow_back)
+            }
+        })
+        toolbar.setNavigationOnClickListener { settingViewModel.liveMenu.value = null }
     }
 
     private fun tintTabLayoutIcon() {
