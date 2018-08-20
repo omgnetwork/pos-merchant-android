@@ -18,8 +18,8 @@ import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 
 class ScanAddressVerifier(
     val viewModel: ScanViewModel
-) : OMGQRScannerContract.Logic.Verifier, LifecycleOwner {
-    override var postVerification: OMGQRScannerContract.Logic.PostVerification? = null
+) : OMGQRScannerContract.Preview.Verifier, LifecycleOwner {
+    override var postVerification: OMGQRScannerContract.Preview.PostVerification? = null
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
     var getTransactionCreateParams: ((payload: String) -> TransactionCreateParams)? = null
 

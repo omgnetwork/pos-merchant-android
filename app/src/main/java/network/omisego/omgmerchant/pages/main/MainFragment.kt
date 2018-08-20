@@ -90,12 +90,12 @@ class MainFragment : Fragment() {
             getTabAt(1)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_topup)
             getTabAt(2)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_more)
         }
-        /* A bit hacky to select the first tab as a default tab.
-        *  It doesn't make sense because the index is 1 which should be a second tab, but ¯\_(ツ)_/¯
-        */
-        tabLayout[1]?.select()
         tintTabLayoutIcon()
         listenPageChanged()
+
+        /* A bit hacky way to select the first tab as a default tab.*/
+        tabLayout[2]?.select()
+        tabLayout[0]?.select()
     }
 
     private fun setupConditionalNavigationGraph() {
