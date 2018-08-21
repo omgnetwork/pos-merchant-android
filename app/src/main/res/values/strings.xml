@@ -94,6 +94,6 @@
     <string name="camera_permission_explain">Camera access is needed to scan the QR code.</string>
     <string name="permission_setting">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- setting_account -->
+    <string name="setting_account_change_notification">You\'ve changed account to %s</string>
 </resources>

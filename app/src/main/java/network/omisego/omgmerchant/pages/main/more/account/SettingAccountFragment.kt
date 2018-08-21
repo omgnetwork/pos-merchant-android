@@ -59,10 +59,6 @@ class SettingAccountFragment : Fragment() {
                 this::handleLoadAccountFail
             )
         })
-        viewModel.liveAccountSelect.observe(this, Observer { account ->
-            account?.let {
-            }
-        })
     }
 
     private fun handleLoadAccount(account: PaginationList<Account>) {

@@ -1,27 +1,11 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFragmentMore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGrayLine"
     android:paddingTop="8dp"
     tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:id="@+id/rootFragmentMore"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v4.widget.NestedScrollView>
-
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>
