@@ -4,10 +4,10 @@
     <!-- Sign In -->
     <string name="sign_in_hint_email">Email</string>
     <string name="sign_in_hint_password">Password</string>
-    <string name="sign_in_forget_password">Forget Password</string>
-    <string name="sign_in_dont_have_account">Don\'t have account? Sign up</string>
+    <string name="sign_in_forget_password">Forgot Your Password?</string>
+    <string name="sign_in_dont_have_account">Don\'t have an account yet? Sign up</string>
     <string name="sign_in_sign_up">Sign up</string>
-    <string name="sign_in_button">SignIn</string>
+    <string name="sign_in_button">Sign In</string>
     <string name="sign_in_button_loading">Loading…</string>
     <string name="sign_in_success">Sign in as %s successfully.</string>
 
@@ -16,21 +16,21 @@
 
     <!-- Welcome -->
     <string name="welcome_title">Welcome!</string>
-    <string name="welcome_account_info">You are in %s \naccount.</string>
+    <string name="welcome_account_info">You are in the %s \naccount.</string>
 
     <!-- Receive -->
     <string name="receive_title">Receive</string>
     <string name="receive_next">Next</string>
 
     <!-- Topup -->
-    <string name="topup_title">Topup</string>
+    <string name="topup_title">Top-up</string>
     <string name="topup_next">Next</string>
 
     <!-- Scan -->
     <!-- e.g. 380.00 UXD -->
     <string name="scan_title">Scan</string>
     <string name="scan_title_payment">Scan to Receive</string>
-    <string name="scan_title_topup">Scan to Topup</string>
+    <string name="scan_title_topup">Scan to Top-up</string>
     <string name="scan_amount" formatted="false">%,.2f %s</string>
     <string name="scan_instruction">Align QR code here</string>
 
@@ -47,8 +47,8 @@
     <!-- More -->
     <string name="more_title">More</string>
     <string name="more_account">Account</string>
-    <string name="more_transaction">Transaction</string>
-    <string name="more_setting_and_help">Setting &amp; Help</string>
+    <string name="more_transaction">Transactions</string>
+    <string name="more_setting_and_help">Settings &amp; Help</string>
     <string name="more_sign_out">Sign out</string>
 
     <!-- Account -->

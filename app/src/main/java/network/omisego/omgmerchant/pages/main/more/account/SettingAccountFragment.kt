@@ -14,16 +14,16 @@ import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_setting_account.*
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.base.LiveRecyclerAdapter
-import network.omisego.omgmerchant.base.StateRecyclerAdapter
+import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
 import network.omisego.omgmerchant.databinding.FragmentSettingAccountBinding
+import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
 class SettingAccountFragment : Fragment() {
     private lateinit var binding: FragmentSettingAccountBinding
     private lateinit var viewModel: SettingAccountViewModel
-    private lateinit var adapter: LiveRecyclerAdapter<Account>
+    private lateinit var adapter: LoadingRecyclerAdapter<Account, ViewholderSettingAccountBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class SettingAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = LiveRecyclerAdapter(viewModel.liveState)
+        adapter = LoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_setting_account, viewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -51,8 +51,7 @@ class SettingAccountFragment : Fragment() {
     }
 
     private fun listen() {
-        adapter.startListening()
-        viewModel.liveState.value = StateRecyclerAdapter.Loading(layout = R.layout.viewholder_account_loading)
+        adapter.addLoadingItems(10)
         viewModel.loadAccounts().observe(this, Observer {
             it?.handle(
                 this::handleLoadAccount,
@@ -62,11 +61,7 @@ class SettingAccountFragment : Fragment() {
     }
 
     private fun handleLoadAccount(account: PaginationList<Account>) {
-        viewModel.liveState.value = StateRecyclerAdapter.Show(
-            account.data,
-            R.layout.viewholder_setting_account,
-            viewModel
-        )
+        adapter.addItems(account.data)
     }
 
     private fun handleLoadAccountFail(error: APIError) {
