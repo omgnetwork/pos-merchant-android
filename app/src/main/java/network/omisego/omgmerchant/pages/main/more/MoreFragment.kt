@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
+import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
@@ -15,9 +16,12 @@ import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListFr
 
 class MoreFragment : Fragment() {
     private lateinit var viewModel: SettingViewModel
+    private lateinit var toolbarViewModel: ToolbarViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        toolbarViewModel = provideActivityAndroidViewModel()
+        viewModel = provideActivityAndroidViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -26,7 +30,6 @@ class MoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = provideActivityAndroidViewModel()
 
         childFragmentManager
             .beginTransaction()
@@ -40,18 +43,21 @@ class MoreFragment : Fragment() {
                         .beginTransaction()
                         .replace(R.id.rootFragmentMore, SettingAccountFragment())
                         .commit()
+                    toolbarViewModel.liveToolbarText.value = getString(R.string.account_title)
                 }
                 viewModel.menus[1] -> {
                     childFragmentManager
                         .beginTransaction()
                         .replace(R.id.rootFragmentMore, TransactionListFragment())
                         .commit()
+                    toolbarViewModel.liveToolbarText.value = getString(R.string.transaction_list_title)
                 }
                 null -> {
                     childFragmentManager
                         .beginTransaction()
                         .replace(R.id.rootFragmentMore, SettingFragment())
                         .commit()
+                    toolbarViewModel.liveToolbarText.value = getString(R.string.more_title)
                 }
             }
         })

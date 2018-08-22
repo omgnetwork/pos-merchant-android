@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.pagination.PaginationList
 import co.omisego.omisego.model.transaction.Transaction
-import kotlinx.android.synthetic.main.fragment_select.*
+import kotlinx.android.synthetic.main.fragment_transaction_list.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
 import network.omisego.omgmerchant.custom.MarginDividerDecorator
@@ -47,6 +47,10 @@ class TransactionListFragment : Fragment() {
         setupRecyclerView()
         loadTransaction()
         subscribeTransactionInfo()
+        swipeRefresh.setOnRefreshListener {
+            adapter.clearItems()
+            loadTransaction()
+        }
     }
 
     private fun loadTransaction() {
@@ -64,10 +68,12 @@ class TransactionListFragment : Fragment() {
 
     private fun handleLoadTransactionSuccess(listTransaction: PaginationList<Transaction>) {
         adapter.addItems(listTransaction.data)
+        swipeRefresh.isRefreshing = false
     }
 
     private fun handleLoadTransactionFail(error: APIError) {
         toast(error.description)
+        swipeRefresh.isRefreshing = false
     }
 
     private fun setupRecyclerView() {

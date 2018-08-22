@@ -31,6 +31,7 @@ class MainFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
     private lateinit var settingViewModel: SettingViewModel
+    private lateinit var toolbarViewModel: ToolbarViewModel
 
     /* Adapter */
     private lateinit var pagerAdapter: MainPagerAdapter
@@ -46,6 +47,7 @@ class MainFragment : Fragment() {
         receiveViewModel = provideActivityViewModel()
         topupViewModel = provideActivityViewModel()
         settingViewModel = provideActivityAndroidViewModel()
+        toolbarViewModel = provideActivityAndroidViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -148,14 +150,13 @@ class MainFragment : Fragment() {
                 }
                 else -> throw IllegalStateException("Unsupported operation")
             }
-            toolbar.title = toolbarTitle
+            toolbarViewModel.liveToolbarText.value = toolbarTitle
         })
     }
 
     private fun setupToolbar() {
         val hostActivity = activity as AppCompatActivity
         hostActivity.setSupportActionBar(toolbar)
-        toolbar.title = getString(R.string.receive_title)
         settingViewModel.liveMenu.observe(this, Observer { it ->
             if (it == null) {
                 toolbar.navigationIcon = null
@@ -163,6 +164,10 @@ class MainFragment : Fragment() {
                 toolbar.navigationIcon = context?.getDrawableCompat(R.drawable.ic_arrow_back)
             }
         })
+        toolbarViewModel.liveToolbarText.observe(this, Observer {
+            toolbar.title = it
+        })
+        toolbarViewModel.liveToolbarText.value = getString(R.string.receive_title)
         toolbar.setNavigationOnClickListener { settingViewModel.liveMenu.value = null }
     }
 
