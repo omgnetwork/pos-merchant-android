@@ -10,6 +10,7 @@ package network.omisego.omgmerchant.pages.main.more.transaction
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.pagination.Paginable
 import co.omisego.omisego.model.transaction.Transaction
@@ -18,12 +19,14 @@ import co.omisego.omisego.model.transaction.list.TransactionListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
+import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 
 class TransactionListViewModel(
     private val app: Application,
     private val repository: TransactionListRepository
 ) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
+    val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
     val account: Account
         get() = repository.getAccount()!!
     val TransactionSource.username: String
@@ -79,6 +82,12 @@ class TransactionListViewModel(
 
     fun formatDate(transaction: Transaction): String {
         return app.getString(R.string.transaction_list_info_date_time, transaction.createdAt)
+    }
+
+    fun giveTransactionStatusDescription(transaction: Transaction) {
+        transaction.error?.let {
+            liveTransactionFailedDescription.value = transaction.error?.description
+        }
     }
 
     fun getTransaction(): LiveData<APIResult> {

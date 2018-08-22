@@ -46,12 +46,19 @@ class TransactionListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         loadTransaction()
+        subscribeTransactionInfo()
     }
 
     private fun loadTransaction() {
         adapter.addLoadingItems(10)
         viewModel.getTransaction().observe(this, Observer {
             it?.handle(this::handleLoadTransactionSuccess, this::handleLoadTransactionFail)
+        })
+    }
+
+    private fun subscribeTransactionInfo() {
+        viewModel.liveTransactionFailedDescription.observe(this, Observer {
+            toast(it!!)
         })
     }
 
