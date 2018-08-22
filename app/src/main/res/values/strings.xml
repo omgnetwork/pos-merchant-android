@@ -96,4 +96,7 @@
 
     <!-- setting_account -->
     <string name="setting_account_change_notification">You\'ve changed account to %s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

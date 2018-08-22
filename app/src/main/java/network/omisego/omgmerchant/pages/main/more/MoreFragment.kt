@@ -11,6 +11,7 @@ import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListFragment
 
 class MoreFragment : Fragment() {
     private lateinit var viewModel: SettingViewModel
@@ -38,6 +39,12 @@ class MoreFragment : Fragment() {
                     childFragmentManager
                         .beginTransaction()
                         .replace(R.id.rootFragmentMore, SettingAccountFragment())
+                        .commit()
+                }
+                viewModel.menus[1] -> {
+                    childFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.rootFragmentMore, TransactionListFragment())
                         .commit()
                 }
                 null -> {

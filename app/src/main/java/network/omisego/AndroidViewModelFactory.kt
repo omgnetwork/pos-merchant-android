@@ -7,6 +7,8 @@ import network.omisego.omgmerchant.pages.feedback.FeedbackRepository
 import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
 import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListRepository
+import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
 import network.omisego.omgmerchant.pages.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.splash.SplashRepository
@@ -37,6 +39,9 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
                 SettingViewModel(application) as T
+            }
+            modelClass.isAssignableFrom(TransactionListViewModel::class.java) -> {
+                TransactionListViewModel(application, TransactionListRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
