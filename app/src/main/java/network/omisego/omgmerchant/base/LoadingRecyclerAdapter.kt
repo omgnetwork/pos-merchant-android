@@ -16,34 +16,44 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import java.util.UUID
 
-class LoadingRecyclerAdapter<T, V : ViewDataBinding>(
+class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
     @LayoutRes private val loadingRes: Int,
     @LayoutRes private val contentRes: Int,
     private val stateViewHolderBinding: StateViewHolderBinding<T, V>
 ) : RecyclerView.Adapter<StateViewHolder>() {
-    private val contentItems: MutableList<T> = mutableListOf()
-    private val loadingItems: MutableList<String> = mutableListOf()
+    private val contentLoadingList: MutableList<Any> = mutableListOf()
+    private val contentList: MutableList<T> = mutableListOf()
 
     fun addItems(newContentItems: List<T>) {
-        contentItems.addAll(newContentItems)
-        dispatchUpdate()
-        loadingItems.clear()
+        contentList.addAll(newContentItems)
+        dispatchUpdate(contentLoadingList, contentList)
+        contentLoadingList.clear()
+        contentLoadingList.addAll(contentList)
+    }
+
+    fun reloadItems(newContentItems: List<T>) {
+        contentList.clear()
+        contentList.addAll(newContentItems)
+        dispatchUpdate(contentLoadingList, contentList)
+        contentLoadingList.clear()
+        contentLoadingList.addAll(contentList)
     }
 
     fun addLoadingItems(totalLoadingItems: Int) {
         for (item in 0 until totalLoadingItems) {
-            loadingItems.add(UUID.randomUUID().toString())
+            contentLoadingList.add(UUID.randomUUID().toString())
         }
-        dispatchUpdate()
+        dispatchUpdate(contentList, contentLoadingList)
     }
 
     fun clearItems() {
-        contentItems.clear()
-        loadingItems.clear()
+        contentLoadingList.clear()
+        dispatchUpdate(contentList, contentLoadingList)
+        contentList.clear()
     }
 
-    private fun dispatchUpdate() {
-        val diff = LoadingDiffCallback(loadingItems, contentItems)
+    private fun dispatchUpdate(oldList: List<Any>, newList: List<Any>) {
+        val diff = LoadingDiffCallback(oldList, newList)
         val result = DiffUtil.calculateDiff(diff)
         result.dispatchUpdatesTo(this)
     }
@@ -71,19 +81,19 @@ class LoadingRecyclerAdapter<T, V : ViewDataBinding>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position >= contentItems.size) {
+        return if (contentLoadingList[position] is String) {
             1
         } else {
             2
         }
     }
 
-    override fun getItemCount() = loadingItems.size + contentItems.size
+    override fun getItemCount() = contentLoadingList.size
 
     override fun onBindViewHolder(holder: StateViewHolder, position: Int) {
         when (holder) {
             is StateViewHolder.Show<*> -> {
-                stateViewHolderBinding.bind((holder as StateViewHolder.Show<V>).binding, contentItems[position])
+                stateViewHolderBinding.bind((holder as StateViewHolder.Show<V>).binding, contentList[position])
             }
         }
     }

@@ -12,6 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
+import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.pagination.Paginable
 import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.TransactionSource
@@ -29,6 +30,8 @@ class TransactionListViewModel(
     val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
     val account: Account
         get() = repository.getAccount()!!
+    val wallet: Wallet
+        get() = repository.getWallet()!!
     val TransactionSource.username: String
         get() = "${this.user?.metadata?.get("first_name")} ${this.user?.metadata?.get("last_name")}"
     val Transaction.isTopup: Boolean
@@ -38,8 +41,6 @@ class TransactionListViewModel(
         binding.transaction = data
         binding.viewModel = this
     }
-
-    private val params by lazy { TransactionListParams.create(searchTerm = null) }
 
     fun formatUsername(transaction: Transaction): String {
         return if (transaction.isTopup) {
@@ -61,9 +62,9 @@ class TransactionListViewModel(
         return when (transaction.status) {
             Paginable.Transaction.TransactionStatus.CONFIRMED -> {
                 if (transaction.to.accountId != null) {
-                    "Receive"
+                    app.getString(R.string.receive_title)
                 } else {
-                    "Top-up"
+                    app.getString(R.string.topup_title)
                 }
             }
             else -> {
@@ -88,9 +89,31 @@ class TransactionListViewModel(
         transaction.error?.let {
             liveTransactionFailedDescription.value = transaction.error?.description
         }
+        if (transaction.error == null) {
+            liveTransactionFailedDescription.value = if (transaction.isTopup) {
+                app.getString(
+                    R.string.transaction_list_topup_info,
+                    transaction.to.amount.divide(transaction.to.token.subunitToUnit),
+                    transaction.to.token.symbol,
+                    transaction.to.userId
+                )
+            } else {
+                app.getString(
+                    R.string.transaction_list_receive_info,
+                    transaction.from.amount.divide(transaction.from.token.subunitToUnit),
+                    transaction.from.token.symbol,
+                    transaction.from.userId
+                )
+            }
+        }
     }
 
-    fun getTransaction(): LiveData<APIResult> {
+    fun getTransaction(page: Int): LiveData<APIResult> {
+        val params = TransactionListParams.create(
+            page = page,
+            perPage = 20,
+            searchTerm = wallet.address
+        )
         return repository.getTransactions(params)
     }
 }

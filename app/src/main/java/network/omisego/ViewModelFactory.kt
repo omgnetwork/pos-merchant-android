@@ -56,7 +56,7 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 ) as T
             }
             modelClass.isAssignableFrom(SettingAccountViewModel::class.java) -> {
-                return SettingAccountViewModel(SettingAccountRepository()) as T
+                return SettingAccountViewModel(SettingAccountRepository(), WalletRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

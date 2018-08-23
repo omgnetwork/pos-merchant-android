@@ -10,26 +10,15 @@ import android.support.v7.util.DiffUtil
  */
 
 class LoadingDiffCallback(
-    private val loadingItems: List<String>,
-    private val contentItems: List<*>
+    private val contentItems: List<*>,
+    private val allItems: List<Any>
 ) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldPos: Int, newPos: Int): Boolean {
-        return if (oldPos < contentItems.size && newPos < contentItems.size) {
-            contentItems[oldPos] == contentItems[newPos]
-        } else {
-            false
-        }
+        return contentItems[oldPos] == allItems[newPos]
     }
-
-    override fun getOldListSize() = loadingItems.size
-    override fun getNewListSize() = contentItems.size
-
+    override fun getOldListSize() = contentItems.size
+    override fun getNewListSize() = allItems.size
     override fun areContentsTheSame(oldPos: Int, newPos: Int): Boolean {
-        val totalSize = contentItems.size + loadingItems.size
-        return if (oldPos < contentItems.size && newPos < totalSize) {
-            false
-        } else {
-            !(oldPos < totalSize && newPos < contentItems.size)
-        }
+        return contentItems[oldPos] == allItems[newPos]
     }
 }

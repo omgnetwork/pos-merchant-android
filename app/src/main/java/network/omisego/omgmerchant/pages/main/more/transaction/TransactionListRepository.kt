@@ -22,4 +22,6 @@ class TransactionListRepository {
     }
 
     fun getAccount() = Storage.loadAccount()
+
+    fun getWallet() = Storage.loadWallet()
 }
