@@ -33,7 +33,7 @@ class TransactionListViewModel(
     val wallet: Wallet
         get() = repository.getWallet()!!
     val TransactionSource.username: String
-        get() = "${this.user?.metadata?.get("first_name")} ${this.user?.metadata?.get("last_name")}"
+        get() = "${this.user?.email}"
     val Transaction.isTopup: Boolean
         get() = this.from.accountId != null
 
