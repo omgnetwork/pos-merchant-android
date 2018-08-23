@@ -49,7 +49,9 @@ class ScanAddressVerifier(
 
     private fun handleVerification(payload: String) {
         postVerification?.onStopLoading()
-        postVerification?.onRemoveCache(payload)
+        /* Just don't remove the cache because we don't want to take a possibility of duplicating the transaction*/
+//        postVerification?.onRemoveCache(payload)
+//        Log.d("OMGQRScannerPreview", "Removed: $payload")
     }
 
     fun register() {
