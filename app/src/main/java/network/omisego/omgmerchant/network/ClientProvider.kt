@@ -24,6 +24,7 @@ object ClientProvider {
     lateinit var client: OMGAPIAdmin
     val deferredClient = async {
         adminConfiguration = AdminConfiguration(
+//            "http://192.168.82.11:4000/api/admin/",
             "https://ewallet.demo.omisego.io/api/admin/",
             credential.userId,
             credential.authenticationToken
@@ -43,7 +44,7 @@ object ClientProvider {
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BASIC
+                        level = HttpLoggingInterceptor.Level.BODY
                     }
                 )
             }.build()

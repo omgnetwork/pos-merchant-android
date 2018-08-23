@@ -8,6 +8,7 @@ import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
 import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListRepository
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
@@ -46,6 +47,9 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(ToolbarViewModel::class.java) -> {
                 ToolbarViewModel(application) as T
+            }
+            modelClass.isAssignableFrom(SettingHelpViewModel::class.java) -> {
+                SettingHelpViewModel(application) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

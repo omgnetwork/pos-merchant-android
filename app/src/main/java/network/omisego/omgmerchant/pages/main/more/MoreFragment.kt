@@ -12,6 +12,7 @@ import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpFragment
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListFragment
 
 class MoreFragment : Fragment() {
@@ -41,6 +42,7 @@ class MoreFragment : Fragment() {
                 viewModel.menus[0] -> {
                     childFragmentManager
                         .beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.rootFragmentMore, SettingAccountFragment())
                         .commit()
                     toolbarViewModel.liveToolbarText.value = getString(R.string.account_title)
@@ -48,9 +50,18 @@ class MoreFragment : Fragment() {
                 viewModel.menus[1] -> {
                     childFragmentManager
                         .beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.rootFragmentMore, TransactionListFragment())
                         .commit()
                     toolbarViewModel.liveToolbarText.value = getString(R.string.transaction_list_title)
+                }
+                viewModel.menus[2] -> {
+                    childFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.rootFragmentMore, SettingHelpFragment())
+                        .commit()
+                    toolbarViewModel.liveToolbarText.value = getString(R.string.setting_help_title)
                 }
                 null -> {
                     childFragmentManager

@@ -41,7 +41,7 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
 
     fun addLoadingItems(totalLoadingItems: Int) {
         for (item in 0 until totalLoadingItems) {
-            contentLoadingList.add(UUID.randomUUID().toString())
+            contentLoadingList.add(UUID.randomUUID())
         }
         dispatchUpdate(contentList, contentLoadingList)
     }
@@ -81,7 +81,7 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (contentLoadingList[position] is String) {
+        return if (contentLoadingList[position] is UUID) {
             1
         } else {
             2
