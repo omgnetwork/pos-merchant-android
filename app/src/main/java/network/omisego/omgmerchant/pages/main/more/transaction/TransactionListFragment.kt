@@ -95,7 +95,9 @@ class TransactionListFragment : Fragment() {
     private fun loadTransaction(page: Int) {
         recyclerView.visibility = View.VISIBLE
         recyclerView.removeItemDecoration(dividerDecorator)
-        adapter.addLoadingItems(TOTAL_MOCK_LOADING_ITEM)
+        if(!swipeRefresh.isRefreshing) {
+            adapter.addLoadingItems(TOTAL_MOCK_LOADING_ITEM)
+        }
         loading = true
         viewModel.getTransaction(page).observe(this, Observer {
             it?.handle(this::handleLoadTransactionSuccess, this::handleLoadTransactionFail)
