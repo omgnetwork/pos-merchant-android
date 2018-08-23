@@ -6,6 +6,10 @@
         <variable
             name="title"
             type="String" />
+
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel" />
     </data>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,6 +19,7 @@
         android:background="@drawable/ripple_select_account"
         android:clickable="true"
         android:gravity="start"
+        android:onClick="@{() -> viewModel.handleClickMenu(title)}"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"

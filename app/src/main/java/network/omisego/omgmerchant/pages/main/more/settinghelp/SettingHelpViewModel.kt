@@ -9,16 +9,24 @@ package network.omisego.omgmerchant.pages.main.more.settinghelp
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
+import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class SettingHelpViewModel(
     val app: Application
 ) : AndroidViewModel(app), StateViewHolderBinding<String, ViewholderSettingHelpBinding> {
+    val liveClickMenu: MutableLiveData<String> by lazy { mutableLiveDataOf<String>() }
 
     override fun bind(binding: ViewholderSettingHelpBinding, data: String) {
         binding.title = data
+        binding.viewModel = this
+    }
+
+    fun handleClickMenu(title: String) {
+        liveClickMenu.value = app.getString(R.string.setting_help_coming_soon)
     }
 
     val menus: List<String> by lazy {

@@ -1,5 +1,6 @@
 package network.omisego.omgmerchant.pages.main.more.settinghelp
 
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,6 +14,7 @@ import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
 import network.omisego.omgmerchant.databinding.FragmentSettingHelpBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.extensions.toast
 
 class SettingHelpFragment : Fragment() {
     private lateinit var binding: FragmentSettingHelpBinding
@@ -37,6 +39,13 @@ class SettingHelpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+
+        binding.viewModel = viewModel
+        viewModel.liveClickMenu.observe(this, Observer { it ->
+            it?.let {
+                toast(it)
+            }
+        })
     }
 
     private fun setupRecyclerView() {
