@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.AuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
+import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
@@ -55,12 +56,12 @@ class SignInViewModel(
         return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
     }
 
-    fun saveCredential(data: AuthenticationToken) {
-        Storage.saveCredential(Credential(
+    suspend fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
+        Storage.saveUser(data.user)
+        return Storage.saveCredential(Credential(
             data.userId,
             data.authenticationToken
         ))
-        Storage.saveUser(data.user)
     }
 
     fun showLoading(text: String) {
