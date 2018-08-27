@@ -7,7 +7,6 @@ package network.omisego.omgmerchant.pages.main
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.util.Log
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
@@ -25,7 +24,6 @@ class WalletRepository {
                 .getAccountWallets(params)
                 .enqueue(object : OMGCallback<PaginationList<Wallet>> {
                     override fun fail(response: OMGResponse<APIError>) {
-                        Log.i(this.javaClass.simpleName, response.data.description)
                     }
 
                     override fun success(response: OMGResponse<PaginationList<Wallet>>) {

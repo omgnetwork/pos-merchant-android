@@ -20,7 +20,6 @@ import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentTransactionListBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
 import network.omisego.omgmerchant.extensions.dpToPx
-import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -88,7 +87,6 @@ class TransactionListFragment : Fragment() {
 
     private fun onLoadMore() {
         if (loading || isLastPage) return
-        logi("Loadmore")
         loadTransaction(currentPage + 1)
     }
 
