@@ -33,7 +33,7 @@ class TransactionListViewModel(
     val wallet: Wallet
         get() = repository.getWallet()!!
     val TransactionSource.username: String
-        get() = "${this.user?.email}"
+        get() = "${this.user?.email ?: this.user?.username}"
     val Transaction.isTopup: Boolean
         get() = this.from.accountId != null
 
@@ -74,11 +74,24 @@ class TransactionListViewModel(
     }
 
     fun formatAmount(transaction: Transaction): String {
-        return app.getString(
+        val amountText = app.getString(
             R.string.transaction_list_info_amount,
             transaction.from.amount.divide(transaction.from.token.subunitToUnit),
             transaction.from.token.symbol
         )
+
+        return when (transaction.status) {
+            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
+                if (transaction.to.accountId != null) {
+                    "+ $amountText"
+                } else {
+                    "- $amountText"
+                }
+            }
+            else -> {
+                amountText
+            }
+        }
     }
 
     fun formatDate(transaction: Transaction): String {
