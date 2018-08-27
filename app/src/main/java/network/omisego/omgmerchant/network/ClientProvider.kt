@@ -3,6 +3,7 @@ package network.omisego.omgmerchant.network
 import co.omisego.omisego.OMGAPIAdmin
 import co.omisego.omisego.model.AdminConfiguration
 import co.omisego.omisego.network.ewallet.EWalletAdmin
+import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
 
@@ -17,12 +18,20 @@ object ClientProvider {
     private val credential: Credential
         get() = Storage.loadCredential()
 
-    private var adminConfiguration = AdminConfiguration(
-        "https://ewallet.demo.omisego.io/api/admin/",
-        credential.userId,
-        credential.authenticationToken
-    )
-    val client: OMGAPIAdmin by lazy { create() }
+    private lateinit var adminConfiguration: AdminConfiguration
+    lateinit var client: OMGAPIAdmin
+    val deferredClient = async {
+        adminConfiguration = AdminConfiguration(
+            "https://ewallet.demo.omisego.io/api/admin/",
+            credential.userId,
+            credential.authenticationToken
+        )
+        create()
+    }
+
+    fun init() {
+        async { client = deferredClient.await() }
+    }
 
     private fun create(): OMGAPIAdmin {
         return OMGAPIAdmin(

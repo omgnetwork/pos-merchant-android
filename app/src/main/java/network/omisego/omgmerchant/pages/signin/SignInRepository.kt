@@ -8,13 +8,14 @@ package network.omisego.omgmerchant.pages.signin
  */
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.params.LoginParams
 import network.omisego.omgmerchant.extensions.subscribe
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.network.ClientProvider
 
 class SignInRepository {
-    fun signIn(params: LoginParams): LiveData<APIResult> {
-        return ClientProvider.client.login(params).subscribe()
+    fun signIn(params: LoginParams, liveAPIResult: MutableLiveData<APIResult>): LiveData<APIResult> {
+        return ClientProvider.client.login(params).subscribe(liveAPIResult)
     }
 }

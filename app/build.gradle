@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 apply from: 'gradleScript/dependencies.gradle'
 
 android {
@@ -11,11 +12,16 @@ android {
     defaultConfig {
         applicationId "network.omisego.omgmerchant"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName appVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            ext.enableCrashlytics = monitorCrash
+        }
     }
     sourceSets {
         test.java.srcDirs += 'src/test/kotlin'
@@ -47,7 +53,10 @@ repositories {
 
 dependencies {
     /* OmiseGO */
-    implementation omisego.sdk
+    //    implementation omisego.sdk
+    implementation project(':omisego-core')
+    implementation project(':omisego-admin')
+
     /* Kotlin */
     implementation kotlinDependencies.stdlib
     /* Navigation Component */
@@ -73,8 +82,19 @@ dependencies {
     implementation custom.constraintLayout
     implementation custom.shimmer
     implementation custom.stetho
+    implementation custom.dropdown
+    implementation custom.dexter
     implementation okHttp3.loggingIntercepter
+    implementation firebase.crashlytics
     testImplementation assertJ.core
     testImplementation junit.junit
     testImplementation kluent.android
 }
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'

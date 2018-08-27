@@ -14,4 +14,6 @@
     <color name="colorGreen">#0EBF9A</color>
     <color name="colorRed">#EF3526</color>
     <color name="colorWhiteNumPad">#F0F2F5</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="colorPink">#f44336</color>
 </resources>

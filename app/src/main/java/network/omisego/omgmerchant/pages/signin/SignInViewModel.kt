@@ -33,6 +33,7 @@ class SignInViewModel(
     private val liveByPassValidation: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(true) }
     val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
     val liveLoading: LiveData<Boolean> by lazy { liveState.mapPropChanged { it.loading } }
+    private val liveAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val emailValidator: Validator by lazy { EmailValidator(liveByPassValidation) }
     val passwordValidator: Validator by lazy { PasswordValidator(liveByPassValidation) }
 
@@ -51,7 +52,7 @@ class SignInViewModel(
         liveByPassValidation.value = false
         arrayOf(emailValidator, passwordValidator).find { !it.lastResult.pass }?.let { return null }
         isSignIn = true
-        return signInRepository.signIn(LoginParams(email, password))
+        return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
     }
 
     fun saveCredential(data: AuthenticationToken) {
@@ -59,6 +60,7 @@ class SignInViewModel(
             data.userId,
             data.authenticationToken
         ))
+        Storage.saveUser(data.user)
     }
 
     fun showLoading(text: String) {

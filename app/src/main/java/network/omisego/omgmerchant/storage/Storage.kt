@@ -3,14 +3,18 @@ package network.omisego.omgmerchant.storage
 import android.content.Context
 import android.content.SharedPreferences
 import co.omisego.omisego.model.Account
+import co.omisego.omisego.model.User
+import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.security.OMGKeyManager
 import co.omisego.omisego.utils.GsonProvider
+import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.set
 import network.omisego.omgmerchant.model.Credential
+import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.utils.Contextor.context
 
 /*
@@ -34,16 +38,21 @@ object Storage {
     }
 
     fun saveCredential(credential: Credential) {
-        sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN encryptWith keyManager] = credential.authenticationToken encryptWith keyManager
-        sharePref[StorageKey.KEY_USER_ID encryptWith keyManager] = credential.userId encryptWith keyManager
+        async {
+            sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN] = credential.authenticationToken encryptWith keyManager
+            sharePref[StorageKey.KEY_USER_ID] = credential.userId encryptWith keyManager
+        }
     }
 
+    fun hasCredential() =
+        sharePref.contains(StorageKey.KEY_AUTHENTICATION_TOKEN) && sharePref.contains(StorageKey.KEY_USER_ID)
+
     fun loadCredential(): Credential {
-        val userId = sharePref[StorageKey.KEY_USER_ID encryptWith keyManager]
-        val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN encryptWith keyManager]
-        if (userId.isEmpty()) {
+        if (!hasCredential()) {
             return Credential("", "")
         }
+        val userId = sharePref[StorageKey.KEY_USER_ID]!!
+        val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN]!!
         return Credential(
             userId decryptWith keyManager,
             authenticationToken decryptWith keyManager
@@ -57,5 +66,36 @@ object Storage {
     fun loadAccount(): Account? {
         if (sharePref[StorageKey.KEY_ACCOUNT].isNullOrEmpty()) return null
         return gson.fromJson<Account>(sharePref[StorageKey.KEY_ACCOUNT], Account::class.java)
+    }
+
+    fun saveWallet(wallet: Wallet) {
+        sharePref[StorageKey.KEY_WALLET] = gson.toJson(wallet)
+    }
+
+    fun loadWallet(): Wallet? {
+        if (sharePref[StorageKey.KEY_WALLET].isNullOrEmpty()) return null
+        return gson.fromJson<Wallet>(sharePref[StorageKey.KEY_WALLET], Wallet::class.java)
+    }
+
+    fun saveUser(user: User) {
+        sharePref[StorageKey.KEY_USER] = gson.toJson(user)
+    }
+
+    fun loadUser(): User? {
+        if (sharePref[StorageKey.KEY_USER].isNullOrEmpty()) return null
+        return gson.fromJson<User>(sharePref[StorageKey.KEY_USER], User::class.java)
+    }
+
+    fun saveFeedback(feedback: Feedback) {
+        sharePref[StorageKey.KEY_FEEDBACK] = gson.toJson(feedback)
+    }
+
+    fun loadFeedback(): Feedback? {
+        if (sharePref[StorageKey.KEY_FEEDBACK].isNullOrEmpty()) return null
+        return gson.fromJson<Feedback>(sharePref[StorageKey.KEY_FEEDBACK], Feedback::class.java)
+    }
+
+    fun deleteFeedback() {
+        sharePref[StorageKey.KEY_FEEDBACK] = ""
     }
 }

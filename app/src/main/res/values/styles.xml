@@ -7,7 +7,7 @@
         <item name="android:textColorPrimary">@color/colorGrayToolbar</item>
         <item name="android:textColorSecondary">@color/colorGrayToolbarActionText</item>
         <item name="colorPrimaryDark">@color/colorGrayToolbar</item>
-        <item name="colorAccent">@color/colorGrayToolbarActionText</item>
+        <item name="colorAccent">@color/colorPink</item>
     </style>
 
     <style name="AppTheme.OMGEditText">
@@ -38,7 +38,6 @@
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">center</item>
-
     </style>
 
     <style name="OMGNumPad.Gray">
@@ -52,4 +51,6 @@
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+
 </resources>

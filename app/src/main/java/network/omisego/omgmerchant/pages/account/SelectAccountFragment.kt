@@ -26,6 +26,11 @@ class SelectAccountFragment : Fragment() {
     private lateinit var viewModel: SelectAccountViewModel
     private lateinit var adapter: LiveRecyclerAdapter<Account>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = provideViewModel()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -38,7 +43,6 @@ class SelectAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = provideViewModel()
         adapter = LiveRecyclerAdapter(viewModel.liveState)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -60,11 +64,6 @@ class SelectAccountFragment : Fragment() {
                 findNavController().navigateUp()
             }
         })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        recyclerView.adapter = null
     }
 
     private fun handleLoadAccount(account: PaginationList<Account>) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OMG Merchant</string>
+    <string name="app_name">POS Merchant</string>
 
     <!-- Sign In -->
     <string name="sign_in_hint_email">Email</string>
@@ -28,7 +28,10 @@
 
     <!-- Scan -->
     <!-- e.g. 380.00 UXD -->
-    <string name="scan_amount">%,.2f %s</string>
+    <string name="scan_title">Scan</string>
+    <string name="scan_title_payment">Scan to Receive</string>
+    <string name="scan_title_topup">Scan to Topup</string>
+    <string name="scan_amount" formatted="false">%,.2f %s</string>
     <string name="scan_instruction">Align QR code here</string>
 
     <!-- Feedback -->
@@ -83,4 +86,11 @@
     <string name="numpad_dot">.</string>
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
+
+    <!-- Main -->
+    <string name="main_menu_next">Next</string>
+
+    <!-- Permission -->
+    <string name="camera_permission_explain">Camera access is needed to scan the QR code.</string>
+    <string name="permission_setting">Settings</string>
 </resources>
