@@ -9,6 +9,8 @@ package network.omisego
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import network.omisego.omgmerchant.pages.account.SelectAccountRepository
+import network.omisego.omgmerchant.pages.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
 import network.omisego.omgmerchant.pages.signin.SignInViewModel
 
@@ -18,6 +20,9 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
         when {
             modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
                 return SignInViewModel(SignInRepository()) as T
+            }
+            modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
+                return SelectAccountViewModel(SelectAccountRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

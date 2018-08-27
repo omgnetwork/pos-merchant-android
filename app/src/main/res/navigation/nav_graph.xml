@@ -43,12 +43,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/sign_in"
+            app:popUpTo="@+id/main"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/selectAccount"
         android:name="network.omisego.omgmerchant.pages.account.SelectAccountFragment"
         android:label="fragment_select"
-        tools:layout="@layout/fragment_select"></fragment><action android:id="@+id/action_nav_graph_self" app:destination="@id/nav_graph" app:launchSingleTop="true"/>
+        tools:layout="@layout/fragment_select"></fragment>
+    <action
+        android:id="@+id/action_nav_graph_self"
+        app:destination="@id/nav_graph"
+        app:popUpTo="@id/main" app:popUpToInclusive="true" app:launchSingleTop="true" />
 </navigation>

@@ -13,7 +13,7 @@ sealed class APIResult {
     class Success<T>(val data: T) : APIResult()
     class Fail<APIError>(val error: APIError) : APIResult()
 
-    fun <T> solve(handleSuccess: (T) -> Unit, handleError: (APIError) -> Unit) {
+    fun <T> handle(handleSuccess: (T) -> Unit, handleError: (APIError) -> Unit) {
         when (this) {
             is Success<*> -> {
                 handleSuccess(this.data as T)
