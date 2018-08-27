@@ -9,11 +9,18 @@ package network.omisego.omgmerchant.pages.main
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class ToolbarViewModel(
     val app: Application
 ) : AndroidViewModel(app) {
-    val liveToolbarText: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+    private val liveToolbarTitle: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+
+    fun setToolbarTitle(text: String) {
+        liveToolbarTitle.value = text
+    }
+
+    fun getLiveToolbarTitle(): LiveData<String> = liveToolbarTitle
 }
