@@ -18,7 +18,7 @@ class SelectAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvSelectAccount.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_selectAccount_to_main)
+            Navigation.findNavController(it).navigate(R.id.action_nav_graph_self)
         }
     }
 }

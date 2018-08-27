@@ -2,9 +2,14 @@
     <string name="app_name">OMG Merchant</string>
 
     <!-- Sign In -->
+    <string name="sign_in_hint_email">Email</string>
+    <string name="sign_in_hint_password">Password</string>
     <string name="sign_in_forget_password">Forget Password</string>
-    <string name="sign_in_dont_have_account">Don\'t have account?</string>
+    <string name="sign_in_dont_have_account">Don\'t have account? Sign up</string>
     <string name="sign_in_sign_up">Sign up</string>
+    <string name="sign_in_button">SignIn</string>
+    <string name="sign_in_button_loading">Loading…</string>
+    <string name="sign_in_success">Sign in as %s successfully.</string>
 
     <!-- Select Account -->
     <string name="select_account_title">Select account</string>

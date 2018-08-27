@@ -7,7 +7,7 @@ apply plugin: 'kotlin-kapt'
 apply from: 'gradleScript/dependencies.gradle'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "network.omisego.omgmerchant"
         minSdkVersion 21
@@ -48,44 +48,32 @@ repositories {
 dependencies {
     /* OmiseGO */
     implementation omisego.sdk
-
     /* Kotlin */
     implementation kotlinDependencies.stdlib
-
     /* Navigation Component */
     implementation navigation.navFragment
     implementation navigation.navUI
-
     /* Architecture Component */
     implementation arch.viewmodel
     implementation arch.extensions
-
     /* Databinding */
     kapt databinding.compiler
-
     /* Support library */
     implementation supportDependencies.appCompat
     implementation supportDependencies.design
     implementation supportDependencies.cardView
-
     /* Networking */
     implementation retrofitDependencies.retrofit
     implementation retrofitDependencies.converterGson
     implementation retrofitDependencies.adapterRxJava2
-
     /* Reactive */
     implementation rxJava2.rxandroid
-
     /* Load image */
     implementation glide.glide
-
-
     implementation custom.constraintLayout
     implementation custom.shimmer
     implementation custom.stetho
-
     implementation okHttp3.loggingIntercepter
-
     testImplementation assertJ.core
     testImplementation junit.junit
     testImplementation kluent.android

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_splash.*
 import network.omisego.omgmerchant.R
 
 class SplashFragment : Fragment() {
@@ -19,7 +18,6 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tvAccountDescription.text = getString(R.string.welcome_account_info, "Minor")
     }
 
     override fun onStart() {
