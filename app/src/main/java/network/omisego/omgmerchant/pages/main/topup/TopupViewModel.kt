@@ -10,15 +10,15 @@ package network.omisego.omgmerchant.pages.main.topup
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Token
-import network.omisego.omgmerchant.calculator.CalculatorHandler
+import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.main.shared.spinner.LiveTokenSpinner
 import network.omisego.omgmerchant.pages.main.shared.spinner.TokenSpinnerViewModel
 
 class TopupViewModel(
-    val handler: CalculatorHandler,
+    val handler: CalculatorInteraction,
     override val liveCalculator: LiveCalculator
-) : ViewModel(), CalculatorHandler.Operation, TokenSpinnerViewModel {
+) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null
 

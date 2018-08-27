@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.Calculation
-import network.omisego.omgmerchant.calculator.CalculatorHandler
+import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.main.shared.spinner.LiveTokenSpinner
 import network.omisego.omgmerchant.pages.main.shared.spinner.TokenSpinnerViewModel
@@ -17,14 +17,14 @@ import network.omisego.omgmerchant.pages.main.shared.spinner.TokenSpinnerViewMod
  */
 
 class ReceiveViewModel(
-    val handler: CalculatorHandler,
+    val handler: CalculatorInteraction,
     override val liveCalculator: LiveCalculator,
     private val calculation: Calculation
-) : ViewModel(), CalculatorHandler.Operation, TokenSpinnerViewModel {
+) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null
 
-    /* Implement CalculatorHandler.Operation */
+    /* Implement CalculatorInteraction.Operation */
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
         if (liveCalculator.value == "0") liveCalculator.value = ""

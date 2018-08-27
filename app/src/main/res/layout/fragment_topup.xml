@@ -14,7 +14,7 @@
 
         <variable
             name="handler"
-            type="network.omisego.omgmerchant.calculator.CalculatorHandler" />
+            type="network.omisego.omgmerchant.calculator.CalculatorInteraction" />
     </data>
 
     <android.support.constraint.ConstraintLayout

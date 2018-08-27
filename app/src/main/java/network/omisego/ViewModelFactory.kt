@@ -10,7 +10,7 @@ package network.omisego
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
-import network.omisego.omgmerchant.calculator.CalculatorHandler
+import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.account.SelectAccountRepository
 import network.omisego.omgmerchant.pages.account.SelectAccountViewModel
@@ -37,14 +37,14 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(ReceiveViewModel::class.java) -> {
                 return ReceiveViewModel(
-                    CalculatorHandler(),
+                    CalculatorInteraction(),
                     LiveCalculator("0"),
                     Calculation()
                 ) as T
             }
             modelClass.isAssignableFrom(TopupViewModel::class.java) -> {
                 return TopupViewModel(
-                    CalculatorHandler(),
+                    CalculatorInteraction(),
                     LiveCalculator("0")
                 ) as T
             }
