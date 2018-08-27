@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
+import network.omisego.omgmerchant.extensions.replaceFragment
+import network.omisego.omgmerchant.extensions.replaceFragmentBackstack
 import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingFragment
@@ -31,44 +33,24 @@ class MoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        childFragmentManager
-            .beginTransaction()
-            .replace(R.id.rootFragmentMore, SettingFragment())
-            .commit()
-
-        viewModel.liveMenu.observe(this, Observer {
+        replaceFragment(R.id.rootFragmentMore, SettingFragment())
+        viewModel.getLiveMenu().observe(this, Observer {
             when (it) {
                 viewModel.menus[0] -> {
-                    childFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.rootFragmentMore, SettingAccountFragment())
-                        .commit()
-                    toolbarViewModel.liveToolbarText.value = getString(R.string.account_title)
+                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingAccountFragment())
+                    toolbarViewModel.setToolbarTitle(getString(R.string.account_title))
                 }
                 viewModel.menus[1] -> {
-                    childFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.rootFragmentMore, TransactionListFragment())
-                        .commit()
-                    toolbarViewModel.liveToolbarText.value = getString(R.string.transaction_list_title)
+                    replaceFragmentBackstack(R.id.rootFragmentMore, TransactionListFragment())
+                    toolbarViewModel.setToolbarTitle(getString(R.string.transaction_list_title))
                 }
                 viewModel.menus[2] -> {
-                    childFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.rootFragmentMore, SettingHelpFragment())
-                        .commit()
-                    toolbarViewModel.liveToolbarText.value = getString(R.string.setting_help_title)
+                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingHelpFragment())
+                    toolbarViewModel.setToolbarTitle(getString(R.string.setting_help_title))
                 }
                 null -> {
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.rootFragmentMore, SettingFragment())
-                        .commit()
-                    toolbarViewModel.liveToolbarText.value = getString(R.string.more_title)
+                    replaceFragment(R.id.rootFragmentMore, SettingFragment())
+                    toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
                 }
             }
         })
