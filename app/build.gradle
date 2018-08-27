@@ -84,9 +84,8 @@ dependencies {
     implementation custom.dexter
     implementation okHttp3.loggingIntercepter
     implementation firebase.crashlytics
-    testImplementation assertJ.core
-    testImplementation junit.junit
-    testImplementation kluent.android
+
+    testImplementation test
 }
 
 kotlin {
