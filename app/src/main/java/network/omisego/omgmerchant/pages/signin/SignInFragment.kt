@@ -65,7 +65,6 @@ class SignInFragment : Fragment() {
                     it?.handle(this::handleSignInSuccess, this::handleSignInError)
                 })
             }
-
         }
     }
 
@@ -77,7 +76,7 @@ class SignInFragment : Fragment() {
     private fun handleSignInSuccess(data: AuthenticationToken) {
         toast(getString(R.string.sign_in_success, data.account.name))
         viewModel.saveCredential(data)
-        findNavController().navigate(R.id.action_sign_in_to_select_account)
+        findNavController().navigateUp()
     }
 
     private fun setupDataBinding() {

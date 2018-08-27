@@ -17,7 +17,10 @@ import network.omisego.omgmerchant.storage.Storage
 class MainFragment : Fragment() {
     private var showSplash = true
     private lateinit var pagerAdapter: MainPagerAdapter
-    private val credential by lazy { Storage.loadCredential() }
+    private val credential
+        get() = Storage.loadCredential()
+    private val account
+        get() = Storage.loadAccount()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -26,8 +29,15 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        if (credential.authenticationToken.isEmpty()) {
-            findNavController().navigate(R.id.action_main_to_sign_in)
+        setupConditionalNavigationGraph()
+    }
+
+    private fun setupConditionalNavigationGraph() {
+        val (userId, authenticationToken) = credential
+        if (userId.isEmpty() || authenticationToken.isEmpty()) {
+            findNavController().navigate(R.id.action_global_sign_in)
+        } else if (account == null) {
+            findNavController().navigate(R.id.action_main_to_selectAccount)
         } else if (showSplash) {
             findNavController().navigate(R.id.action_main_to_splash)
             showSplash = false

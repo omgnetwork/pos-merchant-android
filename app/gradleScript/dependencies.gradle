@@ -8,14 +8,14 @@ allprojects {
 
 ext {
     /* Version */
-    omisego = '1.0.1-alpha9'
+    omisego = '1.0.1-alpha10'
     supportLibrary = '27.1.1'
     kotlin = '1.2.51'
     retrofit = '2.4.0'
     rxandroid = '2.0.1'
     glide = '4.5.0'
     okhttp3 = '3.9.1'
-    nav = '1.0.0-alpha04'
+    nav = '1.0.0-alpha05'
     arch = "1.1.0"
 
     omisego = [

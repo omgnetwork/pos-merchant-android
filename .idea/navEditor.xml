@@ -8,7 +8,12 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="action_nav_graph_self">
+                  <entry key="action_global_sign_in">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_sign_in_pop">
                     <value>
                       <LayoutPositions />
                     </value>
@@ -18,12 +23,17 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="355" />
+                            <option name="x" value="-149" />
+                            <option name="y" value="71" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_main_to_selectAccount">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_main_to_sign_in">
                               <value>
                                 <LayoutPositions />
@@ -44,25 +54,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="518" />
-                            <option name="y" value="376" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="sign_in">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="265" />
-                            <option name="y" value="419" />
+                            <option name="x" value="247" />
+                            <option name="y" value="-289" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_sign_in_to_select_account">
+                            <entry key="action_selectAccount_pop">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -72,13 +70,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="sign_in">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="247" />
+                            <option name="y" value="447" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="splash">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="265" />
-                            <option name="y" value="63" />
+                            <option name="x" value="244" />
+                            <option name="y" value="77" />
                           </Point>
                         </option>
                       </LayoutPositions>
