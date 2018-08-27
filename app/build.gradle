@@ -53,9 +53,7 @@ repositories {
 
 dependencies {
     /* OmiseGO */
-    //    implementation omisego.sdk
-    implementation project(':omisego-core')
-    implementation project(':omisego-admin')
+    implementation omisego.sdk
 
     /* Kotlin */
     implementation kotlinDependencies.stdlib
