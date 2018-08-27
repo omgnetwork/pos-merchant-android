@@ -1,9 +1,7 @@
 package network.omisego.omgmerchant.calculator
 
-import android.support.annotation.VisibleForTesting
 import network.omisego.omgmerchant.calculator.CalculatorButton.Companion.isOperation
 import network.omisego.omgmerchant.calculator.CalculatorButton.NUM_0
-import network.omisego.omgmerchant.calculator.CalculatorButton.OP_EQUAL
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_PERCENT
 
 /*
@@ -14,7 +12,7 @@ import network.omisego.omgmerchant.calculator.CalculatorButton.OP_PERCENT
  */
 
 class CalculatorCondition(
-    @VisibleForTesting val state: CalculatorState
+    val state: CalculatorState
 ) {
     inline fun shouldClearBeforeAppend(lambda: () -> Unit) {
         if (state.clearBeforeAppend) {
@@ -28,8 +26,8 @@ class CalculatorCondition(
         lambda(button.sign)
     }
 
-    inline fun evaluateEqual(evaluate: (CalculatorButton) -> Boolean) {
-        if (evaluate(OP_EQUAL)) {
+    inline fun evaluateEqual(evaluate: () -> Boolean) {
+        if (evaluate()) {
             state.clearBeforeAppend = true
         }
     }
