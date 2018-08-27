@@ -24,7 +24,7 @@ import network.omisego.omgmerchant.pages.scan.SCAN_TOPUP
 class MainViewModel(
     private val tokenRepository: TokenRepository,
     private val walletRepository: WalletRepository,
-    private val mainRepository: MainRepository
+    internal val mainRepository: MainRepository
 ) : ViewModel(), LoadTokenViewModel {
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
