@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_receive"
+        android:icon="@drawable/ic_tab_wallet"
+        android:title="@string/receive_title" />
+    <item
+        android:id="@+id/action_topup"
+        android:icon="@drawable/ic_tab_topup"
+        android:title="@string/topup_title" />
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_tab_more"
+        android:title="@string/more_title" />
+</menu>

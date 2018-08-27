@@ -3,8 +3,6 @@ package network.omisego.omgmerchant.pages.main
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -15,14 +13,16 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.replaceFragment
+import network.omisego.omgmerchant.pages.main.more.MoreFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.receive.ReceiveFragment
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
+import network.omisego.omgmerchant.pages.main.topup.TopupFragment
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
-import network.omisego.omgmerchant.utils.MinimalPageChangeListener
 
 class MainFragment : Fragment() {
 
@@ -33,13 +33,9 @@ class MainFragment : Fragment() {
     private lateinit var settingViewModel: SettingViewModel
     private lateinit var toolbarViewModel: ToolbarViewModel
 
-    /* Adapter */
-    private lateinit var pagerAdapter: MainPagerAdapter
-
     /* Local */
     private var showSplash = true
     private var menuNext: MenuItem? = null
-    private var currentPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +66,7 @@ class MainFragment : Fragment() {
             R.id.next -> {
                 val action = mainViewModel.createActionForScanPage(
                     receiveViewModel,
-                    topupViewModel,
-                    currentPage
+                    topupViewModel
                 )
                 NavHostFragment.findNavController(this).navigate(action)
                 true
@@ -88,20 +83,8 @@ class MainFragment : Fragment() {
 
     private fun initView() {
         setupToolbar()
-        pagerAdapter = MainPagerAdapter(childFragmentManager)
-        viewpager.adapter = pagerAdapter
-        tabLayout.setupWithViewPager(viewpager)
-        with(tabLayout) {
-            getTabAt(0)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_wallet)
-            getTabAt(1)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_topup)
-            getTabAt(2)?.icon = tabLayout.context.getDrawableCompat(R.drawable.ic_tab_more)
-        }
-        tintTabLayoutIcon()
-        listenPageChanged()
-
-        /* A bit hacky way to select the first tab as a default tab.*/
-        tabLayout[2]?.select()
-        tabLayout[0]?.select()
+        listenBottomNavSelected()
+        subscribePageChanged()
     }
 
     private fun setupConditionalNavigationGraph() {
@@ -127,60 +110,59 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun listenPageChanged() {
-        viewpager.addOnPageChangeListener(MinimalPageChangeListener { position ->
-            currentPage = position
+    private fun subscribePageChanged() {
+        /* Return if already subscribed */
+        if (mainViewModel.livePage.hasObservers()) return
+
+        mainViewModel.livePage.observe(this, Observer {
             menuNext?.isVisible = true
-            val toolbarTitle = when (position) {
+            when (it!!) {
                 PAGE_RECEIVE -> {
-                    settingViewModel.liveMenu.value = null
+                    replaceFragment(fragment = ReceiveFragment())
+                    settingViewModel.setLiveMenu(null)
                     mainViewModel.handleEnableNextButtonByPager(receiveViewModel.liveCalculator, PAGE_RECEIVE)
-                    getString(R.string.receive_title)
+                    toolbarViewModel.setToolbarTitle(getString(R.string.receive_title))
                 }
                 PAGE_TOPUP -> {
-                    settingViewModel.liveMenu.value = null
+                    replaceFragment(fragment = TopupFragment())
+                    settingViewModel.setLiveMenu(null)
                     mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
-                    getString(R.string.topup_title)
+                    toolbarViewModel.setToolbarTitle(getString(R.string.topup_title))
                 }
                 PAGE_MORE -> {
-                    /* liveCalculator isn't necessary in this case */
-                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_MORE)
+                    replaceFragment(fragment = MoreFragment())
+                    toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
                     menuNext?.isVisible = false
-                    getString(R.string.more_title)
                 }
+            }
+        })
+    }
+
+    private fun listenBottomNavSelected() {
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_receive -> mainViewModel.movePage(PAGE_RECEIVE)
+                R.id.action_topup -> mainViewModel.movePage(PAGE_TOPUP)
+                R.id.action_more -> mainViewModel.movePage(PAGE_MORE)
                 else -> throw IllegalStateException("Unsupported operation")
             }
-            toolbarViewModel.liveToolbarText.value = toolbarTitle
-        })
+            true
+        }
     }
 
     private fun setupToolbar() {
         val hostActivity = activity as AppCompatActivity
         hostActivity.setSupportActionBar(toolbar)
-        settingViewModel.liveMenu.observe(this, Observer { it ->
+        settingViewModel.getLiveMenu().observe(this, Observer { it ->
             if (it == null) {
                 toolbar.navigationIcon = null
             } else {
                 toolbar.navigationIcon = context?.getDrawableCompat(R.drawable.ic_arrow_back)
             }
         })
-        toolbarViewModel.liveToolbarText.observe(this, Observer {
+        toolbarViewModel.getLiveToolbarTitle().observe(this, Observer {
             toolbar.title = it
         })
-        toolbarViewModel.liveToolbarText.value = getString(R.string.receive_title)
-        toolbar.setNavigationOnClickListener { settingViewModel.liveMenu.value = null }
-    }
-
-    private fun tintTabLayoutIcon() {
-        for (i in 0 until tabLayout.tabCount) {
-            with(tabLayout[i]?.icon) {
-                this?.let {
-                    DrawableCompat.setTintList(
-                        DrawableCompat.wrap(it),
-                        ContextCompat.getColorStateList(tabLayout.context, R.color.color_gray_blue)
-                    )
-                }
-            }
-        }
+        toolbar.setNavigationOnClickListener { settingViewModel.setLiveMenu(null) }
     }
 }
