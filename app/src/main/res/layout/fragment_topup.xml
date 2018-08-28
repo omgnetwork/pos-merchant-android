@@ -25,17 +25,6 @@
         tools:context="network.omisego.omgmerchant.pages.main.topup.TopupFragment"
         tools:layout_editor_absoluteY="81dp">
 
-        <View
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginTop="24dp"
-            android:background="#d0d6d2"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/etInputNumber"
             android:layout_width="0dp"
@@ -57,7 +46,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/line1"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="0" />
 
