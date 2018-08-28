@@ -38,8 +38,8 @@
     <!-- Feedback -->
     <string name="feedback_payment_title">Payment successful</string>
     <string name="feedback_topup_title">Topup successful</string>
-    <string name="feedback_customer_name">%s</string>
-    <string name="feedback_customer_id">ID: %s</string>
+    <string name="feedback_customer_name">by %s</string>
+    <string name="feedback_customer_id">User ID: %s</string>
     <string name="feedback_amount">%,.2f %s</string>
     <!-- Passing a calendar instance to formatter -->
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>

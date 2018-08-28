@@ -32,6 +32,9 @@ class MainFragment : Fragment() {
     private lateinit var topupViewModel: TopupViewModel
     private lateinit var settingViewModel: SettingViewModel
     private lateinit var toolbarViewModel: ToolbarViewModel
+    private lateinit var receiveFragment: ReceiveFragment
+    private lateinit var topupFragment: TopupFragment
+    private lateinit var moreFragment: MoreFragment
 
     /* Local */
     private var showSplash = true
@@ -44,6 +47,9 @@ class MainFragment : Fragment() {
         topupViewModel = provideActivityViewModel()
         settingViewModel = provideActivityAndroidViewModel()
         toolbarViewModel = provideActivityAndroidViewModel()
+        receiveFragment = ReceiveFragment()
+        topupFragment = TopupFragment()
+        moreFragment = MoreFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -118,19 +124,19 @@ class MainFragment : Fragment() {
             menuNext?.isVisible = true
             when (it!!) {
                 PAGE_RECEIVE -> {
-                    replaceFragment(fragment = ReceiveFragment())
+                    replaceFragment(fragment = receiveFragment)
                     settingViewModel.setLiveMenu(null)
                     mainViewModel.handleEnableNextButtonByPager(receiveViewModel.liveCalculator, PAGE_RECEIVE)
                     toolbarViewModel.setToolbarTitle(getString(R.string.receive_title))
                 }
                 PAGE_TOPUP -> {
-                    replaceFragment(fragment = TopupFragment())
+                    replaceFragment(fragment = topupFragment)
                     settingViewModel.setLiveMenu(null)
                     mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
                     toolbarViewModel.setToolbarTitle(getString(R.string.topup_title))
                 }
                 PAGE_MORE -> {
-                    replaceFragment(fragment = MoreFragment())
+                    replaceFragment(fragment = moreFragment)
                     toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
                     menuNext?.isVisible = false
                 }
