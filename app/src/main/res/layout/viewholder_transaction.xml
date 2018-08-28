@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel" />
+
+        <variable
+            name="transaction"
+            type="co.omisego.omisego.model.transaction.Transaction" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layoutViewHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_select_account"
+        android:onClick="@{() -> viewModel.giveTransactionStatusDescription(transaction)}"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/tvUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{viewModel.formatUsername(transaction)}"
+            android:textColor="@color/colorGrayToolbar"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Somsak H. [7686…987]" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@{viewModel.formatDescription(transaction)}"
+            android:textColor="@color/colorGrayToolbar"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:account="@{viewModel.account}"
+            app:transaction="@{transaction}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUser"
+            tools:text="Hot cappucino" />
+
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{viewModel.formatAmount(transaction)}"
+            android:textColor="@color/colorGreen"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:account="@{viewModel.account}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvUser"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:transaction="@{transaction}"
+            tools:text="000 STK" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{viewModel.formatDate(transaction)}"
+            android:textColor="@color/colorGrayToolbar"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Apr 05, 12:02 PM" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

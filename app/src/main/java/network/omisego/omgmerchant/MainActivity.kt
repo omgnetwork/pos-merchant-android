@@ -25,6 +25,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+//        val fm = supportFragmentManager
+//        for (frag in fm.fragments) {
+//            val f = frag.childFragmentManager.fragments[0].childFragmentManager.fragments[1]
+//            fm.fragments[0].childFragmentManager.fragments[0].childFragmentManager.fragments[1].childFragmentManager.backStackEntryCount
+//            if (f.isVisible) {
+//                val childFm = f.childFragmentManager
+//                if (childFm.backStackEntryCount > 0) {
+//                    childFm.popBackStack()
+//                    return
+//                }
+//            }
+//        }
+        super.onBackPressed()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host).navigateUp()
     }

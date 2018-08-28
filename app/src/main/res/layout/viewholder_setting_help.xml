@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel" />
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_select_account"
+        android:clickable="true"
+        android:gravity="start"
+        android:onClick="@{() -> viewModel.handleClickMenu(title)}"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@{title}"
+        android:textColor="@color/colorGrayToolbar"
+        android:textSize="16sp"
+        tools:text="FAQ" />
+</layout>

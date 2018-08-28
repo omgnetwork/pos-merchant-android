@@ -24,10 +24,11 @@ import network.omisego.omgmerchant.pages.scan.SCAN_TOPUP
 class MainViewModel(
     private val tokenRepository: TokenRepository,
     private val walletRepository: WalletRepository,
-    private val mainRepository: MainRepository
+    internal val mainRepository: MainRepository
 ) : ViewModel(), LoadTokenViewModel {
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
+    val livePage: MutableLiveData<Int> by lazy { mutableLiveDataOf(PAGE_RECEIVE) }
 
     fun getAccount() = mainRepository.getAccount()
 
@@ -57,12 +58,15 @@ class MainViewModel(
         }
     }
 
+    fun movePage(page: Int) {
+        livePage.value = page
+    }
+
     fun createActionForScanPage(
         receiveViewModel: ReceiveViewModel,
-        topupViewModel: TopupViewModel,
-        page: Int
+        topupViewModel: TopupViewModel
     ): MainFragmentDirections.ActionMainToScan {
-        return when (page) {
+        return when (livePage.value) {
             PAGE_RECEIVE -> {
                 MainFragmentDirections.ActionMainToScan(receiveViewModel.liveToken.value!!)
                     .setAmount(receiveViewModel.liveCalculator.value!!)
@@ -74,7 +78,7 @@ class MainViewModel(
                     .setTransactionType(SCAN_TOPUP)
             }
             else -> {
-                throw IllegalStateException("Page $page doesn't currently support.")
+                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
             }
         }
     }

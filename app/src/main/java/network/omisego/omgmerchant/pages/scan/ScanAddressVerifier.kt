@@ -29,8 +29,8 @@ class ScanAddressVerifier(
     }
 
     override fun onDecoded(payload: String) {
-        val handleSuccess: (Transaction) -> Unit = {
-            handleVerification(payload)
+        val handleSuccess: (Transaction) -> Unit = { _ ->
+            handleVerification()
         }
         val handleFail: (APIError) -> Unit = {
             postVerification?.onStopLoading()
@@ -47,9 +47,8 @@ class ScanAddressVerifier(
         }
     }
 
-    private fun handleVerification(payload: String) {
+    private fun handleVerification() {
         postVerification?.onStopLoading()
-        postVerification?.onRemoveCache(payload)
     }
 
     fun register() {

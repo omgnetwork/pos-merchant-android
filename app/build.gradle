@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId "network.omisego.omgmerchant"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode 1
         versionName appVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -53,9 +53,7 @@ repositories {
 
 dependencies {
     /* OmiseGO */
-    //    implementation omisego.sdk
-    implementation project(':omisego-core')
-    implementation project(':omisego-admin')
+    implementation omisego.sdk
 
     /* Kotlin */
     implementation kotlinDependencies.stdlib
@@ -86,9 +84,8 @@ dependencies {
     implementation custom.dexter
     implementation okHttp3.loggingIntercepter
     implementation firebase.crashlytics
-    testImplementation assertJ.core
-    testImplementation junit.junit
-    testImplementation kluent.android
+
+    testImplementation test
 }
 
 kotlin {

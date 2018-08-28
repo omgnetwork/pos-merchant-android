@@ -19,11 +19,6 @@
             app:popUpTo="@+id/main"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_main_to_sign_in"
-            app:destination="@id/sign_in"
-            app:popUpTo="@+id/main"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_main_to_selectAccount"
             app:destination="@id/selectAccount"
             app:popUpTo="@+id/main"
@@ -68,6 +63,11 @@
     <action
         android:id="@+id/action_global_sign_in"
         app:destination="@id/sign_in"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
         app:popUpTo="@id/main"
         app:popUpToInclusive="true" />
 

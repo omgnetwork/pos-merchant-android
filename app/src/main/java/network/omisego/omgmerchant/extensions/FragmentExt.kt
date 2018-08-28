@@ -7,13 +7,27 @@ package network.omisego.omgmerchant.extensions
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
-import android.view.WindowManager
+import network.omisego.omgmerchant.R
 
-fun Fragment.enterFullscreen() {
-    activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+fun Fragment.replaceFragment(
+    @IdRes layoutContainerRes: Int = R.id.pageContainer,
+    fragment: Fragment
+) {
+    childFragmentManager
+        .beginTransaction()
+        .replace(layoutContainerRes, fragment)
+        .commit()
 }
 
-fun Fragment.exitFullscreen() {
-    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+fun Fragment.replaceFragmentBackstack(
+    @IdRes layoutContainerRes: Int = R.id.pageContainer,
+    fragment: Fragment
+) {
+    childFragmentManager
+        .beginTransaction()
+        .addToBackStack(null)
+        .replace(layoutContainerRes, fragment)
+        .commit()
 }

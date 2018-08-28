@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
 import network.omisego.omgmerchant.extensions.logd
@@ -75,8 +77,10 @@ class SignInFragment : Fragment() {
 
     private fun handleSignInSuccess(data: AuthenticationToken) {
         toast(getString(R.string.sign_in_success, data.account.name))
-        viewModel.saveCredential(data)
-        findNavController().navigateUp()
+        launch(UI) {
+            viewModel.saveCredential(data).await()
+            findNavController().navigateUp()
+        }
     }
 
     private fun setupDataBinding() {

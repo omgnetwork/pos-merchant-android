@@ -45,7 +45,7 @@ class ScanViewModel(
         scanRepository.saveFeedback(args.transactionType, transaction)
     }
 
-    private fun provideTransactionCreateParams(payload: String): TransactionCreateParams {
+    fun provideTransactionCreateParams(payload: String): TransactionCreateParams {
         when (args.transactionType) {
             SCAN_RECEIVE -> {
                 return TransactionCreateParams(

@@ -27,13 +27,14 @@ import network.omisego.omgmerchant.calculator.CalculatorButton.OP_MINUS
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_PERCENT
 import network.omisego.omgmerchant.calculator.CalculatorButton.OP_PLUS
 
-class CalculatorHandler(
-    private val state: CalculatorState = CalculatorState(false, false, NUM_0),
-    private val condition: CalculatorCondition = CalculatorCondition(state)
+class CalculatorInteraction(
+    private val condition: CalculatorCondition = CalculatorCondition(
+        CalculatorState(false, false, NUM_0)
+    )
 ) {
     var operation: Operation? = null
 
-        fun handleNumPadPressed(view: View) {
+    fun handleNumPadPressed(view: View) {
         val callback = operation ?: return
         if (view is TextView) {
             val button = CalculatorButton.from(view.text) ?: return

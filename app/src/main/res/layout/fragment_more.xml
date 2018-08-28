@@ -1,13 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFragmentMore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGrayLine"
+    android:paddingTop="16dp"
     tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="More Fragment" />
 
 </FrameLayout>
