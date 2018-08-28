@@ -1,6 +1,7 @@
 package network.omisego.omgmerchant.pages.main.receive
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -19,15 +20,17 @@ class ReceiveFragment : Fragment() {
     private lateinit var binding: FragmentReceiveBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ReceiveViewModel
-    private val calculatorObserver = Observer<String> {
-        mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
+    private val calculatorObserver by lazy {
+        Observer<String> {
+            mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
         viewModel = provideActivityViewModel()
         mainViewModel = provideActivityViewModel()
-        viewModel.liveCalculator.observe(this, calculatorObserver)
+        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,8 +62,8 @@ class ReceiveFragment : Fragment() {
         binding.setLifecycleOwner(this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDetach() {
+        super.onDetach()
         viewModel.liveCalculator.removeObserver(calculatorObserver)
     }
 }
