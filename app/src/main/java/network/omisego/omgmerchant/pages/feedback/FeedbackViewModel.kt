@@ -35,7 +35,7 @@ class FeedbackViewModel(
     val userId: String
         get() = app.getString(R.string.feedback_customer_id, feedback.source.userId)
     val userName: String
-        get() = "${feedback.source.user?.email ?: feedback.source.user?.username}"
+        get() = app.getString(R.string.feedback_customer_name, "${feedback.source.user?.email ?: feedback.source.user?.username}")
     val date: String
         get() = app.getString(R.string.feedback_date_time, feedback.createdAt)
 

@@ -12,8 +12,5 @@
         android:right="4dp"
         android:top="4dp" />
 
-    <stroke
-        android:width="3dp"
-        android:color="@color/colorGreen" />
-
+    <solid android:color="@color/colorBlueWeak" />
 </shape>
