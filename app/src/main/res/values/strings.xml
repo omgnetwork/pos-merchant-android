@@ -13,6 +13,7 @@
 
     <!-- Select Account -->
     <string name="select_account_title">Select account</string>
+    <string name="select_account_sub_title">Accounts</string>
 
     <!-- Welcome -->
     <string name="welcome_title">Welcome!</string>

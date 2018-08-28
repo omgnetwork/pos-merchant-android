@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_select_account"
-        android:onClick="@{() -> viewModel.handleAccountClick(account)}"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:onClick="@{() -> viewModel.handleAccountClick(account)}">
 
         <ImageView
             android:id="@+id/ivAccountLogo"
@@ -29,6 +29,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_round_corner"
+            android:outlineProvider="background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
