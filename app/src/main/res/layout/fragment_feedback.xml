@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="network.omisego.omgmerchant.pages.feedback.FeedbackViewModel" />
@@ -30,7 +32,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvIconCheck"
-            tools:text="@string/feedback_payment_title" />
+            tools:text="@string/feedback_success_payment_title" />
 
         <TextView
             android:id="@+id/tvIconCheck"
@@ -39,8 +41,9 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/shape_circle_solid_blue"
+            android:background="@{viewModel.icon}"
             android:gravity="center"
+            android:text="@{viewModel.iconText}"
             android:textColor="@color/colorWhiteNumPad"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTitle"
@@ -48,7 +51,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:background="@drawable/shape_circle_solid_blue" />
 
         <TextView
             android:id="@+id/tvUsername"
@@ -130,6 +134,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnRetry"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{() -> viewModel.transfer()}"
+            android:text="@string/feedback_retry"
+            android:textColor="@color/colorBlue"
+            app:feedback="@{viewModel.liveFeedback}"
+            app:layout_constraintBottom_toTopOf="@+id/tvDone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:show="@{viewModel.liveLoading}" />
+
+        <ProgressBar
+            android:id="@+id/progressLoading"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/tvDone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:show="@{viewModel.liveLoading}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
