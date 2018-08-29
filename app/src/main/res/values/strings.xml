@@ -36,14 +36,17 @@
     <string name="scan_instruction">Align QR code here</string>
 
     <!-- Feedback -->
-    <string name="feedback_payment_title">Payment successful</string>
-    <string name="feedback_topup_title">Topup successful</string>
+    <string name="feedback_success_payment_title">Payment successful</string>
+    <string name="feedback_success_topup_title">Topup successful</string>
+    <string name="feedback_fail_payment_title">Payment failed</string>
+    <string name="feedback_fail_topup_title">Topup failed</string>
     <string name="feedback_customer_name">by %s</string>
     <string name="feedback_customer_id">User ID: %s</string>
     <string name="feedback_amount">%,.2f %s</string>
     <!-- Passing a calendar instance to formatter -->
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>
+    <string name="feedback_retry">Retry</string>
 
     <!-- More -->
     <string name="more_title">More</string>
