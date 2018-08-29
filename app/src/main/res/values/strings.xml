@@ -51,7 +51,7 @@
     <!-- More -->
     <string name="more_title">More</string>
     <string name="more_account">Account</string>
-    <string name="more_transaction">Transactions</string>
+    <string name="more_transaction">Transaction</string>
     <string name="more_setting_and_help">Settings &amp; Help</string>
     <string name="more_sign_out">Sign out</string>
 
