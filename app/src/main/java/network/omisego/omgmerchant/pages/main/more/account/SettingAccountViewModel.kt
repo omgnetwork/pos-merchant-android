@@ -28,13 +28,22 @@ class SettingAccountViewModel(
     override fun bind(binding: ViewholderSettingAccountBinding, data: Account) {
         binding.account = data
         binding.viewModel = this
+        binding.ivAccountLogo.clipToOutline = true
+    }
+
+    fun saveAccount(): Account {
+        Storage.saveAccount(liveAccountSelect.value!!)
+        return liveAccountSelect.value!!
+    }
+
+    fun loadAccount(): Account {
+        return settingAccountRepository.getCurrentAccount()!!
     }
 
     fun handleAccountClick(account: Account) {
         walletRepository.loadWalletAndSave(
             AccountWalletListParams.create(id = account.id, searchTerm = null)
         )
-        Storage.saveAccount(account)
         liveAccountSelect.value = account
     }
 

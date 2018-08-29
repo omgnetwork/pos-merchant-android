@@ -2,9 +2,11 @@ package network.omisego.omgmerchant.pages.main.more.account
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.BindingAdapter
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.TextView
 import co.omisego.omisego.model.Account
+import network.omisego.omgmerchant.R
 
 /*
  * OmiseGO
@@ -15,12 +17,22 @@ import co.omisego.omisego.model.Account
 
 object AccountSelectBinding {
     @JvmStatic
-    @BindingAdapter("liveAccount", "account")
-    fun setCheckmarkVisible(view: TextView, liveAccount: MutableLiveData<Account>, account: Account) {
+    @BindingAdapter("liveAccount", "account", "savedAccount")
+    fun setCheckmarkVisible(view: TextView, liveAccount: MutableLiveData<Account>, account: Account, savedAccount: Account) {
         liveAccount.observeForever {
-            when(it?.id == account.id){
-                true -> view.visibility = View.VISIBLE
-                false -> view.visibility = View.GONE
+            when (it?.id == account.id) {
+                true -> {
+                    view.visibility = View.VISIBLE
+                    view.setTextColor(ContextCompat.getColor(view.context, R.color.colorBlue))
+                }
+                false -> {
+                    if (savedAccount.id == account.id) {
+                        view.visibility = View.VISIBLE
+                        view.setTextColor(ContextCompat.getColor(view.context, R.color.colorGrayText))
+                    } else {
+                        view.visibility = View.GONE
+                    }
+                }
             }
         }
     }

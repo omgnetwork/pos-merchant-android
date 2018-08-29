@@ -94,8 +94,9 @@
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
 
-    <!-- Main -->
+    <!-- Menu -->
     <string name="main_menu_next">Next</string>
+    <string name="menu_account_save">Save</string>
 
     <!-- Permission -->
     <string name="camera_permission_explain">Camera access is needed to scan the QR code.</string>
