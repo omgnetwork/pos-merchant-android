@@ -1,9 +1,11 @@
 package network.omisego
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.pages.feedback.FeedbackRepository
+import network.omisego.omgmerchant.pages.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
 import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.MoreViewModel
@@ -31,7 +33,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                 SplashViewModel(application, SplashRepository()) as T
             }
             modelClass.isAssignableFrom(FeedbackViewModel::class.java) -> {
-                FeedbackViewModel(application, FeedbackRepository()) as T
+                FeedbackViewModel(application, FeedbackRepository(), FeedbackTransformer()) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(application, ScanRepository()) as T

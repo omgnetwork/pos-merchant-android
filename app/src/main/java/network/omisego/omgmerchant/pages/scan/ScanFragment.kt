@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.transaction.Transaction
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -94,7 +95,16 @@ class ScanFragment : Fragment() {
     }
 
     private fun handleTransferFail(error: APIError) {
+        viewModel.getUserWallet()
         logi(error)
+    }
+
+    private fun handleGetWalletSuccess(wallet: Wallet) {
+        viewModel.saveFeedback(wallet)
+        findNavController().navigateUp()
+    }
+
+    private fun handleGetWalletFailed(error: APIError) {
         toast(error.description)
     }
 
@@ -107,6 +117,12 @@ class ScanFragment : Fragment() {
                 this::handleTransferFail
             )
         })
+        viewModel.liveWallet.observe(this, Observer {
+            it?.handle(
+                this::handleGetWalletSuccess,
+                this::handleGetWalletFailed
+            )
+        })
         handleCameraPermission()
     }
 
@@ -117,7 +133,6 @@ class ScanFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        logi("Destroy")
         viewModel.verifier.unregister()
     }
 }

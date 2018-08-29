@@ -14,7 +14,8 @@ import java.util.Date
 
 @Parcelize
 data class Feedback(
+    val success: Boolean,
     val transactionType: String,
     val createdAt: Date,
     val source: TransactionSource
-) : Parcelable
+    ) : Parcelable

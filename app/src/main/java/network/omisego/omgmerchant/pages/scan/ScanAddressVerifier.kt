@@ -22,6 +22,7 @@ class ScanAddressVerifier(
     override var postVerification: OMGQRScannerContract.Preview.PostVerification? = null
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
     var getTransactionCreateParams: ((payload: String) -> TransactionCreateParams)? = null
+    lateinit var recentAddress: String
 
     override fun getLifecycle() = lifecycleRegistry
     override fun onCanceled() {
@@ -29,6 +30,7 @@ class ScanAddressVerifier(
     }
 
     override fun onDecoded(payload: String) {
+        recentAddress = payload
         val handleSuccess: (Transaction) -> Unit = { _ ->
             handleVerification()
         }
