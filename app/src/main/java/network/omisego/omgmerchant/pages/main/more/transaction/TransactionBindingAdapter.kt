@@ -35,17 +35,17 @@ object TransactionBindingAdapter {
     @JvmStatic
     @BindingAdapter("transaction", "account")
     fun colorizedTransaction(tv: TextView, transaction: Transaction, account: Account) {
-        when (transaction.status) {
-            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
-                if (transaction.to.accountId != null) {
-                    tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGreen))
-                } else {
-                    tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorRed))
-                }
-            }
-            else -> {
-                tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGrayText))
-            }
-        }
+//        when (transaction.status) {
+//            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
+//                if (transaction.to.accountId != null) {
+//                    tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGreen))
+//                } else {
+//                    tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorRed))
+//                }
+//            }
+//            else -> {
+//                tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGrayText))
+//            }
+//        }
     }
 }

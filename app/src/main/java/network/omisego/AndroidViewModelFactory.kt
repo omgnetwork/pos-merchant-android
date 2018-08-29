@@ -1,7 +1,6 @@
 package network.omisego
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.pages.feedback.FeedbackRepository
@@ -12,6 +11,7 @@ import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListRepository
+import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListTransformer
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
 import network.omisego.omgmerchant.pages.scan.ScanViewModel
@@ -45,7 +45,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                 SettingViewModel(application) as T
             }
             modelClass.isAssignableFrom(TransactionListViewModel::class.java) -> {
-                TransactionListViewModel(application, TransactionListRepository()) as T
+                TransactionListViewModel(application, TransactionListRepository(), TransactionListTransformer(application)) as T
             }
             modelClass.isAssignableFrom(ToolbarViewModel::class.java) -> {
                 ToolbarViewModel(application) as T
