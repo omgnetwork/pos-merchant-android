@@ -39,11 +39,14 @@
 
         <ImageView
             android:id="@+id/ivMerchant"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/shape_round_corner"
+            android:cropToPadding="true"
+            android:outlineProvider="background"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintBottom_toTopOf="@+id/tvAccountDescription"
             app:layout_constraintEnd_toEndOf="parent"
