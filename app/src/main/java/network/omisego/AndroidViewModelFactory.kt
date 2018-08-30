@@ -9,12 +9,16 @@ import network.omisego.omgmerchant.pages.feedback.FeedbackViewModel
 import network.omisego.omgmerchant.pages.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
+import network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpRepository
 import network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListRepository
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListTransformer
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
 import network.omisego.omgmerchant.pages.scan.ScanViewModel
+import network.omisego.omgmerchant.pages.signin.BiometricHandler
+import network.omisego.omgmerchant.pages.signin.SignInRepository
+import network.omisego.omgmerchant.pages.signin.SignInViewModel
 import network.omisego.omgmerchant.pages.splash.SplashRepository
 import network.omisego.omgmerchant.pages.splash.SplashViewModel
 
@@ -29,6 +33,9 @@ import network.omisego.omgmerchant.pages.splash.SplashViewModel
 class AndroidViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
+            modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
+                return SignInViewModel(application, SignInRepository(), BiometricHandler()) as T
+            }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
                 SplashViewModel(application, SplashRepository()) as T
             }
@@ -51,7 +58,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                 ToolbarViewModel(application) as T
             }
             modelClass.isAssignableFrom(SettingHelpViewModel::class.java) -> {
-                SettingHelpViewModel(application) as T
+                SettingHelpViewModel(application, SettingHelpRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

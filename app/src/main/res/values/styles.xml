@@ -36,6 +36,11 @@
         <item name="android:textColor">@color/colorWhiteNumPad</item>
     </style>
 
+    <style name="AppTheme.OMGButtonOutline" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/selector_blue_outline_button</item>
+        <item name="android:textColor">@color/color_button_outline</item>
+    </style>
+
     <style name="OMGBoldText">
         <item name="android:fontFamily">Roboto</item>
         <item name="android:textStyle">bold</item>

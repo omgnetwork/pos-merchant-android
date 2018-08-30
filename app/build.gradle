@@ -82,6 +82,7 @@ dependencies {
     implementation custom.stetho
     implementation custom.dropdown
     implementation custom.dexter
+    implementation custom.biometric
     implementation okHttp3.loggingIntercepter
     implementation firebase.crashlytics
 

@@ -10,15 +10,19 @@ package network.omisego.omgmerchant.pages.main.more.settinghelp
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import android.view.View
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.storage.Storage
 
 class SettingHelpViewModel(
-    val app: Application
+    val app: Application,
+    val repository: SettingHelpRepository
 ) : AndroidViewModel(app), StateViewHolderBinding<String, ViewholderSettingHelpBinding> {
     val liveClickMenu: MutableLiveData<String> by lazy { mutableLiveDataOf<String>() }
+    val liveConfirmSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     override fun bind(binding: ViewholderSettingHelpBinding, data: String) {
         binding.title = data
@@ -27,6 +31,23 @@ class SettingHelpViewModel(
 
     fun handleClickMenu(title: String) {
         liveClickMenu.value = app.getString(R.string.setting_help_coming_soon)
+    }
+
+    fun handleFingerprintOption(view: View, checked: Boolean) {
+        repository.saveFingerprintOption(checked)
+        if (checked) {
+            repository.saveFingerprintCredential()
+        } else {
+            repository.deleteFingerprintCredential()
+        }
+    }
+
+    fun loadFingerprintOption() = repository.loadFingerprintOption()
+
+    fun hasFingerprintPassword() = Storage.hasFingerprintCredential()
+
+    fun deleteFingerprintPassword() {
+        Storage.deleteFingerprintCredential()
     }
 
     val menus: List<String> by lazy {

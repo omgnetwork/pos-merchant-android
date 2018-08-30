@@ -45,17 +45,6 @@ object Storage {
         }
     }
 
-    fun clearEverything() {
-        sharePref.edit()
-            .remove(StorageKey.KEY_USER_ID)
-            .remove(StorageKey.KEY_AUTHENTICATION_TOKEN)
-            .remove(StorageKey.KEY_ACCOUNT)
-            .remove(StorageKey.KEY_WALLET)
-            .remove(StorageKey.KEY_USER)
-            .remove(StorageKey.KEY_FEEDBACK)
-            .apply()
-    }
-
     fun hasCredential() =
         sharePref.contains(StorageKey.KEY_AUTHENTICATION_TOKEN) && sharePref.contains(StorageKey.KEY_USER_ID)
 
@@ -69,6 +58,36 @@ object Storage {
             userId decryptWith keyManager,
             authenticationToken decryptWith keyManager
         )
+    }
+
+    fun saveUserEmail(email: String) {
+        sharePref[StorageKey.KEY_USER_EMAIL] = email
+    }
+
+    fun loadUserEmail() = sharePref[StorageKey.KEY_USER_EMAIL]
+
+    fun saveFingerprintCredential(password: String): Deferred<Unit> {
+        return async {
+            sharePref[StorageKey.KEY_FINGERPRINT_USER_PASSWORD] = password encryptWith keyManager
+        }
+    }
+
+    fun loadFingerprintCredential() = sharePref[StorageKey.KEY_FINGERPRINT_USER_PASSWORD] decryptWith keyManager
+
+    fun hasFingerprintCredential() = sharePref.contains(StorageKey.KEY_FINGERPRINT_USER_PASSWORD)
+
+    fun deleteFingerprintCredential() {
+        sharePref.edit()
+            .remove(StorageKey.KEY_FINGERPRINT_USER_PASSWORD)
+            .apply()
+    }
+
+    fun saveFingerprintOption(checked: Boolean) {
+        sharePref.edit().putBoolean(StorageKey.KEY_FINGERPRINT_OPTION, checked).apply()
+    }
+
+    fun loadFingerprintOption(): Boolean {
+        return sharePref.getBoolean(StorageKey.KEY_FINGERPRINT_OPTION, false)
     }
 
     fun saveAccount(account: Account) {
@@ -109,5 +128,16 @@ object Storage {
 
     fun deleteFeedback() {
         sharePref[StorageKey.KEY_FEEDBACK] = ""
+    }
+
+    fun clearEverything() {
+        sharePref.edit()
+            .remove(StorageKey.KEY_USER_ID)
+            .remove(StorageKey.KEY_AUTHENTICATION_TOKEN)
+            .remove(StorageKey.KEY_ACCOUNT)
+            .remove(StorageKey.KEY_WALLET)
+            .remove(StorageKey.KEY_USER)
+            .remove(StorageKey.KEY_FEEDBACK)
+            .apply()
     }
 }

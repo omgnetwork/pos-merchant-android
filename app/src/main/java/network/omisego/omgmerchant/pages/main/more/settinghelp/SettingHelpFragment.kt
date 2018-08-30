@@ -20,6 +20,7 @@ class SettingHelpFragment : Fragment() {
     private lateinit var binding: FragmentSettingHelpBinding
     private lateinit var viewModel: SettingHelpViewModel
     private lateinit var adapter: LoadingRecyclerAdapter<String, ViewholderSettingHelpBinding>
+    private lateinit var confirmFingerprintDialog: ConfirmFingerprintDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,30 @@ class SettingHelpFragment : Fragment() {
         viewModel.liveClickMenu.observe(this, Observer { it ->
             it?.let {
                 toast(it)
+            }
+        })
+
+        switchFingerprint.isChecked = viewModel.loadFingerprintOption()
+
+        switchFingerprint.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked && !viewModel.hasFingerprintPassword()) {
+                confirmFingerprintDialog = ConfirmFingerprintDialog().apply {
+                    setLiveConfirmSuccess(viewModel.liveConfirmSuccess)
+                }
+                confirmFingerprintDialog.show(childFragmentManager, null)
+            } else if (!isChecked) {
+                viewModel.deleteFingerprintPassword()
+            }
+        }
+
+        viewModel.liveConfirmSuccess.observe(this, Observer {
+            if (it == true) {
+                // Successfully sign-in
+                confirmFingerprintDialog.dismiss()
+                switchFingerprint.isChecked = true
+                toast("Enable fingerprint successfully.")
+            } else {
+                switchFingerprint.isChecked = false
             }
         })
     }

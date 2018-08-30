@@ -20,3 +20,16 @@ inline fun runBelowM(lambda: () -> Unit) {
         lambda()
     }
 }
+
+inline fun runOnP(lambda: () -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        lambda()
+    }
+}
+
+inline fun runBelowP(lambda: () -> Unit) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        lambda()
+    }
+}
+

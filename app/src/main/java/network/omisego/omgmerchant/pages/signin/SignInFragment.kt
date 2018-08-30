@@ -20,7 +20,7 @@ import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
 import network.omisego.omgmerchant.extensions.logd
-import network.omisego.omgmerchant.extensions.provideViewModel
+import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.runBelowM
 import network.omisego.omgmerchant.extensions.runOnM
 import network.omisego.omgmerchant.extensions.scrollBottom
@@ -45,7 +45,7 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = provideViewModel()
+        viewModel = provideAndroidViewModel()
 
         runBelowM {
             ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
@@ -60,13 +60,45 @@ class SignInFragment : Fragment() {
             }
         }
         btnSignIn.setOnClickListener { _ ->
-            viewModel.signin()?.let { liveResult ->
-                viewModel.showLoading(getString(R.string.sign_in_button_loading))
-                liveResult.observe(this, Observer {
-                    viewModel.hideLoading(getString(R.string.sign_in_button))
-                    it?.handle(this::handleSignInSuccess, this::handleSignInError)
-                })
+            signIn()
+        }
+
+        viewModel.liveToast.observe(this, Observer { it ->
+            it?.let {
+                toast(it)
             }
+        })
+
+        viewModel.liveAuthenticationSucceeded.observe(this, Observer {
+            if (viewModel.isFingerprintAvailable()) {
+                etEmail.setText(viewModel.loadUserEmail())
+                etPassword.setText(viewModel.loadUserPassword())
+                signIn()
+            } else {
+                toast("Please enable fingerprint option before use.")
+            }
+        })
+
+        viewModel.liveAuthenticationError.observe(this, Observer {
+            toast("Authentication error")
+        })
+
+        viewModel.liveAuthenticationFailed.observe(this, Observer {
+            toast("Authentication failed")
+        })
+
+        viewModel.liveAuthenticationHelp.observe(this, Observer {
+            toast("Authentication helped")
+        })
+    }
+
+    private fun signIn() {
+        viewModel.signin()?.let { liveResult ->
+            viewModel.showLoading(getString(R.string.sign_in_button_loading))
+            liveResult.observe(this, Observer {
+                viewModel.hideLoading(getString(R.string.sign_in_button))
+                it?.handle(this::handleSignInSuccess, this::handleSignInError)
+            })
         }
     }
 
@@ -79,6 +111,7 @@ class SignInFragment : Fragment() {
         toast(getString(R.string.sign_in_success, data.account.name))
         launch(UI) {
             viewModel.saveCredential(data).await()
+            viewModel.saveUserEmail(etEmail.text.toString())
             findNavController().navigateUp()
         }
     }

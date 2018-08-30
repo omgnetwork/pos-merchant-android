@@ -21,18 +21,15 @@ import network.omisego.omgmerchant.pages.main.WalletRepository
 import network.omisego.omgmerchant.pages.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountRepository
 import network.omisego.omgmerchant.pages.main.more.account.SettingAccountViewModel
+import network.omisego.omgmerchant.pages.main.more.settinghelp.ConfirmFingerprintViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
-import network.omisego.omgmerchant.pages.signin.SignInViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
-            modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
-                return SignInViewModel(SignInRepository()) as T
-            }
             modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
                 return SelectAccountViewModel(SelectAccountRepository()) as T
             }
@@ -61,6 +58,9 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(SaveAccountViewModel::class.java) -> {
                 return SaveAccountViewModel(SettingAccountRepository()) as T
+            }
+            modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
+                return ConfirmFingerprintViewModel(SignInRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -19,4 +19,5 @@ class MerchantApp : Application() {
         Contextor.context = applicationContext
         Stetho.initializeWithDefaults(this)
     }
+
 }
