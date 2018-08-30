@@ -10,9 +10,6 @@ import network.omisego.omgmerchant.storage.Storage
  */
 
 class SettingHelpRepository {
-    fun saveFingerprintCredential() {
-//        Storage.saveFingerprintCredential()
-    }
 
     fun deleteFingerprintCredential() {
         Storage.deleteFingerprintCredential()

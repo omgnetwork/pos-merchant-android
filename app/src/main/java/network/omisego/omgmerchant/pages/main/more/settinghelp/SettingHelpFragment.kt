@@ -57,7 +57,8 @@ class SettingHelpFragment : Fragment() {
                 }
                 confirmFingerprintDialog.show(childFragmentManager, null)
             } else if (!isChecked) {
-                viewModel.deleteFingerprintPassword()
+                viewModel.handleFingerprintOption(false)
+                viewModel.deleteFingerprintCredential()
             }
         }
 
@@ -66,6 +67,7 @@ class SettingHelpFragment : Fragment() {
                 // Successfully sign-in
                 confirmFingerprintDialog.dismiss()
                 switchFingerprint.isChecked = true
+                viewModel.handleFingerprintOption(true)
                 toast("Enable fingerprint successfully.")
             } else {
                 switchFingerprint.isChecked = false

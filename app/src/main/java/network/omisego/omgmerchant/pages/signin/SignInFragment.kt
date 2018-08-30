@@ -70,7 +70,7 @@ class SignInFragment : Fragment() {
         })
 
         viewModel.liveAuthenticationSucceeded.observe(this, Observer {
-            if (viewModel.isFingerprintAvailable()) {
+            if (viewModel.isFingerprintAvailable() ) {
                 etEmail.setText(viewModel.loadUserEmail())
                 etPassword.setText(viewModel.loadUserPassword())
                 signIn()
