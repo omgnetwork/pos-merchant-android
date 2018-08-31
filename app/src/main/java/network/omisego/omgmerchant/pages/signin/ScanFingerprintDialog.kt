@@ -22,7 +22,7 @@ import network.omisego.omgmerchant.extensions.toast
 
 class ScanFingerprintDialog : BottomSheetDialogFragment() {
     var liveConfirmSuccess: MutableLiveData<Boolean>? = MutableLiveData()
-    private val goldFinger: Goldfinger by lazy { Goldfinger.Builder(context).build() }
+    val goldFinger: Goldfinger by lazy { Goldfinger.Builder(context).build() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return layoutInflater.inflate(R.layout.bottom_sheet_fingerprint_scan, container)
@@ -48,12 +48,12 @@ class ScanFingerprintDialog : BottomSheetDialogFragment() {
                     } else {
                         // show an error icon
                         ivFingerprint.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_error))
-                        tvDescription.text = "Try again"
+                        tvDescription.text = getString(R.string.dialog_fingerprint_status_error)
                     }
                 }
             })
         } else {
-            toast("The device hasn't support the fingerprint.")
+            toast(getString(R.string.dialog_fingerprint_unsupported))
             dismiss()
         }
     }

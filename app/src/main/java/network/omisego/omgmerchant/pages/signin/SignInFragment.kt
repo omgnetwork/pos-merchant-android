@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Build
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
@@ -19,10 +20,11 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
-import network.omisego.omgmerchant.extensions.logd
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.runBelowM
+import network.omisego.omgmerchant.extensions.runBelowP
 import network.omisego.omgmerchant.extensions.runOnM
+import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
 import network.omisego.omgmerchant.extensions.toast
 
@@ -51,9 +53,8 @@ class SignInFragment : Fragment() {
         runBelowM {
             ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
         }
-        runOnM {
-            startLogoAnimate()
-        }
+        runOnM { startLogoAnimate() }
+
         setupDataBinding()
         ivLogo.setOnClickListener {
             runOnM {
@@ -70,47 +71,12 @@ class SignInFragment : Fragment() {
             }
         })
 
-        viewModel.liveAuthenticationSucceeded.observe(this, Observer {
-            if (viewModel.isFingerprintAvailable()) {
-                etEmail.setText(viewModel.loadUserEmail())
-                etPassword.setText(viewModel.loadUserPassword())
-                signIn()
-            } else {
-                toast("Please enable fingerprint option before use.")
-            }
-        })
-
-        viewModel.liveAuthenticationError.observe(this, Observer {
-            toast("Authentication error")
-        })
-
-        viewModel.liveAuthenticationFailed.observe(this, Observer {
-            toast("Authentication failed")
-        })
-
-        viewModel.liveAuthenticationHelp.observe(this, Observer {
-            toast("Authentication helped")
-        })
-
-        scanFingerprintDialog = ScanFingerprintDialog()
-        scanFingerprintDialog?.liveConfirmSuccess?.observe(this, Observer {
-            if (it == true) {
-                etEmail.setText(viewModel.loadUserEmail())
-                etPassword.setText(viewModel.loadUserPassword())
-                signIn()
-            } else {
-                toast("Please enable fingerprint option before use.")
-            }
-        })
-        viewModel.liveShowPre28FingerprintDialog.observe(this, Observer {
-            if (it == true) {
-                scanFingerprintDialog?.show(childFragmentManager, null)
-            }
-        })
+        runOnP { subscribeSignInWithFingerprintP() }
+        runBelowP { subscribeSignInWithFingerprintBelowP() }
     }
 
     private fun signIn() {
-        viewModel.signin()?.let { liveResult ->
+        viewModel.signIn()?.let { liveResult ->
             viewModel.showLoading(getString(R.string.sign_in_button_loading))
             liveResult.observe(this, Observer {
                 viewModel.hideLoading(getString(R.string.sign_in_button))
@@ -119,18 +85,72 @@ class SignInFragment : Fragment() {
         }
     }
 
-    private fun handleSignInError(error: APIError) {
-        logd(error)
-        toast(error.description)
+    @RequiresApi(P)
+    private fun subscribeSignInWithFingerprintP() {
+        viewModel.liveAuthenticationSucceeded.observe(this, Observer {
+            if (viewModel.isFingerprintAvailable()) {
+                etEmail.setText(viewModel.loadUserEmail())
+                etPassword.setText(viewModel.loadUserPassword())
+                signIn()
+            } else {
+                toast(getString(R.string.dialog_fingerprint_option_not_enabled))
+            }
+        })
+        viewModel.liveAuthenticationError.observe(this, Observer {
+            toast("Authentication error")
+        })
+        viewModel.liveAuthenticationFailed.observe(this, Observer {
+            toast("Authentication failed")
+        })
+        viewModel.liveAuthenticationHelp.observe(this, Observer {
+            toast("Authentication helped")
+        })
     }
 
-    private fun handleSignInSuccess(data: AuthenticationToken) {
-        toast(getString(R.string.sign_in_success, data.account.name))
+    private fun subscribeSignInWithFingerprintBelowP() {
+        runOnM {
+            scanFingerprintDialog = ScanFingerprintDialog()
+            scanFingerprintDialog?.liveConfirmSuccess?.observe(this, Observer {
+                if (!viewModel.isFingerprintAvailable()) {
+                    toast(getString(R.string.dialog_fingerprint_option_not_enabled))
+                } else if (it == true) {
+                    etEmail.setText(viewModel.loadUserEmail())
+                    etPassword.setText(viewModel.loadUserPassword())
+                    signIn()
+                }
+            })
+
+            viewModel.liveShowPre28FingerprintDialog.observe(this, Observer { it ->
+                if (it == true) {
+                    scanFingerprintDialog?.let {
+                        if (!it.goldFinger.hasFingerprintHardware()) {
+                            toast(getString(R.string.dialog_fingerprint_unsupported))
+                        } else if (!it.goldFinger.hasEnrolledFingerprint()) {
+                            toast(getString(R.string.dialog_fingerprint_not_enrolled))
+                        } else {
+                            it.show(childFragmentManager, null)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    private fun proceed(data: AuthenticationToken){
         launch(UI) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserEmail(etEmail.text.toString())
             findNavController().navigateUp()
         }
+    }
+
+    private fun handleSignInSuccess(data: AuthenticationToken) {
+        toast(getString(R.string.sign_in_success, data.account.name))
+        proceed(data)
+    }
+
+    private fun handleSignInError(error: APIError) {
+        toast(error.description)
     }
 
     private fun setupDataBinding() {

@@ -1,5 +1,12 @@
 package network.omisego.omgmerchant.pages.signin
 
+/*
+ * OmiseGO
+ *
+ * Created by Phuchit Sirimongkolsathien on 11/8/2018 AD.
+ * Copyright © 2017-2018 OmiseGO. All rights reserved.
+ */
+
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
@@ -16,19 +23,11 @@ import network.omisego.omgmerchant.extensions.runBelowP
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
-import network.omisego.omgmerchant.storage.Storage
 import network.omisego.omgmerchant.utils.Contextor.context
 import network.omisego.omgmerchant.utils.EmailValidator
 import network.omisego.omgmerchant.utils.PasswordValidator
 import network.omisego.omgmerchant.utils.Validator
 import network.omisego.omgmerchant.utils.mapPropChanged
-
-/*
- * OmiseGO
- *
- * Created by Phuchit Sirimongkolsathien on 11/8/2018 AD.
- * Copyright © 2017-2018 OmiseGO. All rights reserved.
- */
 
 class SignInViewModel(
     private val app: Application,
@@ -70,29 +69,33 @@ class SignInViewModel(
         liveState.state { it.copy(password = text.toString()) }
     }
 
-    fun signin(): LiveData<APIResult>? {
+    fun signIn(): LiveData<APIResult>? {
         val (email, password) = liveState.value ?: return null
         liveByPassValidation.value = false
-        arrayOf(emailValidator, passwordValidator).find { !it.lastResult.pass }?.let { return null }
+        arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return null }
         isSignIn = true
         return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
     }
 
     fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
-        Storage.saveUser(data.user)
-        return Storage.saveCredential(Credential(
-            data.userId,
-            data.authenticationToken
-        ))
+        signInRepository.saveUser(data.user)
+        return signInRepository.saveCredential(
+            Credential(
+                data.userId,
+                data.authenticationToken
+            )
+        )
     }
 
     fun saveUserEmail(email: String) {
-        Storage.saveUserEmail(email)
+        signInRepository.saveUserEmail(email)
     }
 
-    fun loadUserEmail(): String = Storage.loadUserEmail()
+    fun isFingerprintAvailable() = signInRepository.loadFingerprintOption()
 
-    fun loadUserPassword(): String = Storage.loadFingerprintCredential()
+    fun loadUserEmail(): String = signInRepository.loadUserEmail()
+
+    fun loadUserPassword(): String = signInRepository.loadFingerprintCredential()
 
     fun handleFingerprintClick() {
         /*
@@ -109,10 +112,14 @@ class SignInViewModel(
             )
 
             prompt = BiometricPrompt.Builder(app)
-                .setTitle("Sign-in")
-                .setSubtitle("Sign-in to your merchant account")
-                .setDescription("In order to use the Fingerprint sensor we need your authorization first.")
-                .setNegativeButton("Cancel", app.mainExecutor, DialogInterface.OnClickListener { dialog, _ -> dialog?.dismiss() })
+                .setTitle(app.getString(R.string.dialog_fingerprint_title))
+                .setSubtitle(app.getString(R.string.dialog_fingerprint_subtitle))
+                .setDescription(app.getString(R.string.dialog_fingerprint_description))
+                .setNegativeButton(
+                    app.getString(R.string.dialog_fingerprint_btn_cancel),
+                    app.mainExecutor,
+                    DialogInterface.OnClickListener { dialog, _ -> dialog?.dismiss() }
+                )
                 .build()
 
             prompt?.authenticate(
@@ -126,8 +133,6 @@ class SignInViewModel(
             liveShowPre28FingerprintDialog.value = true
         }
     }
-
-    fun isFingerprintAvailable() = signInRepository.loadFingerprintOption()
 
     fun showLoading(text: String) {
         liveState.state { it.copy(loading = true, btnText = text) }
