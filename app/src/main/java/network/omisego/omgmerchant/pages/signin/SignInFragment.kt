@@ -29,6 +29,7 @@ import network.omisego.omgmerchant.extensions.toast
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private lateinit var viewModel: SignInViewModel
+    private var scanFingerprintDialog: ScanFingerprintDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
@@ -70,7 +71,7 @@ class SignInFragment : Fragment() {
         })
 
         viewModel.liveAuthenticationSucceeded.observe(this, Observer {
-            if (viewModel.isFingerprintAvailable() ) {
+            if (viewModel.isFingerprintAvailable()) {
                 etEmail.setText(viewModel.loadUserEmail())
                 etPassword.setText(viewModel.loadUserPassword())
                 signIn()
@@ -89,6 +90,22 @@ class SignInFragment : Fragment() {
 
         viewModel.liveAuthenticationHelp.observe(this, Observer {
             toast("Authentication helped")
+        })
+
+        scanFingerprintDialog = ScanFingerprintDialog()
+        scanFingerprintDialog?.liveConfirmSuccess?.observe(this, Observer {
+            if (it == true) {
+                etEmail.setText(viewModel.loadUserEmail())
+                etPassword.setText(viewModel.loadUserPassword())
+                signIn()
+            } else {
+                toast("Please enable fingerprint option before use.")
+            }
+        })
+        viewModel.liveShowPre28FingerprintDialog.observe(this, Observer {
+            if (it == true) {
+                scanFingerprintDialog?.show(childFragmentManager, null)
+            }
         })
     }
 

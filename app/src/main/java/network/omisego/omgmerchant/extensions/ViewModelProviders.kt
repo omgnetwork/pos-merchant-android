@@ -12,8 +12,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import network.omisego.AndroidViewModelFactory
-import network.omisego.ViewModelFactory
+import network.omisego.omgmerchant.AndroidViewModelFactory
+import network.omisego.omgmerchant.ViewModelFactory
 
 inline fun <reified T : ViewModel> Fragment.provideActivityViewModel(): T {
     return ViewModelProviders.of(activity!!, ViewModelFactory())[T::class.java]

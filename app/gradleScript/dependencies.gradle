@@ -79,6 +79,6 @@ ext {
         shimmer         : 'com.facebook.shimmer:shimmer:0.2.0',
         dropdown        : 'com.jaredrummler:material-spinner:1.2.5',
         dexter          : 'com.karumi:dexter:5.0.0',
-        biometric       : 'moe.feng.support.biometricprompt:library:1.0.1'
+        biometric       : 'co.infinum:goldfinger:1.1.1'
     ]
 }

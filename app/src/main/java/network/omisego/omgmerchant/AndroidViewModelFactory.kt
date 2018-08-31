@@ -1,4 +1,4 @@
-package network.omisego
+package network.omisego.omgmerchant
 
 import android.app.Application
 import android.arch.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package network.omisego
+package network.omisego.omgmerchant
 
 /*
  * OmiseGO

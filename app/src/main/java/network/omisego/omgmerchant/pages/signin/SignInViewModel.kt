@@ -4,13 +4,16 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.content.DialogInterface
+import android.hardware.biometrics.BiometricPrompt
 import co.omisego.omisego.model.AuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
-import moe.feng.support.biometricprompt.BiometricPromptCompat
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.extensions.runBelowP
+import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
@@ -46,20 +49,16 @@ class SignInViewModel(
 
     /* Biometric LiveData */
     val liveAuthenticationError: MutableLiveData<Pair<Int, CharSequence?>> by lazy { MutableLiveData<Pair<Int, CharSequence?>>() }
-    val liveAuthenticationSucceeded: MutableLiveData<BiometricPromptCompat.ICryptoObject> by lazy { MutableLiveData<BiometricPromptCompat.ICryptoObject>() }
+    val liveAuthenticationSucceeded: MutableLiveData<BiometricPrompt.CryptoObject> by lazy { MutableLiveData<BiometricPrompt.CryptoObject>() }
     val liveAuthenticationFailed: MutableLiveData<Unit> by lazy { MutableLiveData<Unit>() }
     val liveAuthenticationHelp: MutableLiveData<Pair<Int, CharSequence?>> by lazy { MutableLiveData<Pair<Int, CharSequence?>>() }
 
-    private val biometricCallback: BiometricCallback by lazy {
-        BiometricCallback(
-            liveAuthenticationError,
-            liveAuthenticationSucceeded,
-            liveAuthenticationFailed,
-            liveAuthenticationHelp
-        )
-    }
+    /* OnClick LiveData */
+    val liveShowPre28FingerprintDialog: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
-    private var prompt: BiometricPromptCompat? = null
+    private lateinit var biometricCallback: BiometricCallback
+
+    private var prompt: BiometricPrompt? = null
 
     private var isSignIn: Boolean = false
 
@@ -101,18 +100,31 @@ class SignInViewModel(
        * BiometricPrompt compatible version will be coming with androidX package next release:
        * https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/biometric/src/main/java/androidx/biometrics/BiometricPrompt.java
        */
-        prompt = BiometricPromptCompat.Builder(app)
-            .setTitle("Sign-in")
-            .setSubtitle("Sign-in to your merchant account")
-            .setDescription("In order to use the Fingerprint sensor we need your authorization first.")
-            .setNegativeButton("Cancel") { dialog, which ->
-                dialog?.dismiss()
-            }
-            .build()
-        prompt?.authenticate(
-            biometricHandler.createCancellationSignal(),
-            biometricCallback
-        )
+        runOnP {
+            biometricCallback = BiometricCallback(
+                liveAuthenticationError,
+                liveAuthenticationSucceeded,
+                liveAuthenticationFailed,
+                liveAuthenticationHelp
+            )
+
+            prompt = BiometricPrompt.Builder(app)
+                .setTitle("Sign-in")
+                .setSubtitle("Sign-in to your merchant account")
+                .setDescription("In order to use the Fingerprint sensor we need your authorization first.")
+                .setNegativeButton("Cancel", app.mainExecutor, DialogInterface.OnClickListener { dialog, _ -> dialog?.dismiss() })
+                .build()
+
+            prompt?.authenticate(
+                biometricHandler.createCancellationSignal(),
+                app.mainExecutor,
+                biometricCallback
+            )
+        }
+
+        runBelowP {
+            liveShowPre28FingerprintDialog.value = true
+        }
     }
 
     fun isFingerprintAvailable() = signInRepository.loadFingerprintOption()

@@ -1,7 +1,9 @@
 package network.omisego.omgmerchant.pages.signin
 
 import android.arch.lifecycle.MutableLiveData
-import moe.feng.support.biometricprompt.BiometricPromptCompat
+import android.hardware.biometrics.BiometricPrompt
+import android.os.Build.VERSION_CODES.P
+import android.support.annotation.RequiresApi
 
 /*
  * OmiseGO
@@ -10,17 +12,18 @@ import moe.feng.support.biometricprompt.BiometricPromptCompat
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+@RequiresApi(P)
 class BiometricCallback(
     private val liveAuthenticationError: MutableLiveData<Pair<Int, CharSequence?>>,
-    private val liveAuthenticationSucceeded: MutableLiveData<BiometricPromptCompat.ICryptoObject>,
+    private val liveAuthenticationSucceeded: MutableLiveData<BiometricPrompt.CryptoObject>,
     private val liveAuthenticationFailed: MutableLiveData<Unit>,
     private val liveAuthenticationHelp: MutableLiveData<Pair<Int, CharSequence?>>
-) : BiometricPromptCompat.IAuthenticationCallback {
+) : BiometricPrompt.AuthenticationCallback() {
     override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
         liveAuthenticationError.value = errorCode to errString
     }
 
-    override fun onAuthenticationSucceeded(result: BiometricPromptCompat.IAuthenticationResult) {
+    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
         liveAuthenticationSucceeded.value = result.cryptoObject
     }
 
