@@ -117,4 +117,15 @@
     <string name="setting_help_coming_soon">Coming soon…</string>
     <string name="setting_help_enter_password">Enter your password to confirm</string>
     <string name="setting_help_confirm">Confirm</string>
+
+    <!-- Fingerprint -->
+    <string name="dialog_fingerprint_title">Sign-in</string>
+    <string name="dialog_fingerprint_subtitle">Sign-in to your merchant account</string>
+    <string name="dialog_fingerprint_description">In order to use the Fingerprint sensor we need your authorization first.</string>
+    <string name="dialog_fingerprint_status_normal">Touch the fingerprint sensor</string>
+    <string name="dialog_fingerprint_status_error">Try again</string>
+    <string name="dialog_fingerprint_btn_cancel">Cancel</string>
+    <string name="dialog_fingerprint_option_not_enabled">Please enable fingerprint option before use.</string>
+    <string name="dialog_fingerprint_unsupported">The device hasn\'t support the fingerprint.</string>
+    <string name="dialog_fingerprint_not_enrolled">You haven\'t enrolled the fingerprint on your device yet.</string>
 </resources>
