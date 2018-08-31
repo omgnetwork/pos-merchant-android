@@ -2,12 +2,12 @@ package network.omisego.omgmerchant.pages.main.more.settinghelp
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
@@ -35,14 +35,17 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
         viewModel = provideViewModel()
     }
 
+    override fun onCancel(dialog: DialogInterface?) {
+        super.onCancel(dialog)
+        liveConfirmSuccess?.value = false
+    }
+
     fun setLiveConfirmSuccess(liveConfirmSuccess: MutableLiveData<Boolean>) {
         this.liveConfirmSuccess = liveConfirmSuccess
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_enter_password, container)
-        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        return view
+        return layoutInflater.inflate(R.layout.bottom_sheet_enter_password, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
