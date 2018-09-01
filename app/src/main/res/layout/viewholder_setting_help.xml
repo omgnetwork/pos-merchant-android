@@ -25,7 +25,7 @@
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
         android:text="@{title}"
-        android:textColor="@color/colorGrayToolbar"
+        android:textColor="@color/colorGray"
         android:textSize="16sp"
         tools:text="FAQ" />
 </layout>

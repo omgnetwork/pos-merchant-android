@@ -74,8 +74,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etInputNumber"
             app:ms_dropdown_max_height="300dp"
-            app:ms_arrow_tint="@color/colorGrayToolbar"
-            app:ms_text_color="@color/colorGrayToolbar"
+            app:ms_arrow_tint="@color/colorGray"
+            app:ms_text_color="@color/colorGray"
             tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
         <android.support.constraint.Guideline

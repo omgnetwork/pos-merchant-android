@@ -7,5 +7,5 @@
         android:width="1dp"
         android:color="@color/colorBlue" />
 
-    <solid android:color="@color/colorWhiteNumPad" />
+    <solid android:color="@color/colorWhite" />
 </shape>

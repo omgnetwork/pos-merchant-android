@@ -13,7 +13,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorGrayLine"
+        android:background="@color/colorWhiteWeak"
         tools:context=".pages.main.more.settinghelp.SettingHelpFragment">
 
 
@@ -35,7 +35,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/setting_help_fingerprint"
-                android:textColor="@color/colorGrayToolbar"
+                android:textColor="@color/colorGray"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
