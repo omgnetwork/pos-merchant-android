@@ -27,6 +27,7 @@ import network.omisego.omgmerchant.extensions.runOnM
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
 import network.omisego.omgmerchant.extensions.toast
+import network.omisego.omgmerchant.utils.FingerprintHelper
 
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
@@ -122,21 +123,19 @@ class SignInFragment : Fragment() {
 
             viewModel.liveShowPre28FingerprintDialog.observe(this, Observer { it ->
                 if (it == true) {
-                    scanFingerprintDialog?.let {
-                        if (!it.goldFinger.hasFingerprintHardware()) {
-                            toast(getString(R.string.dialog_fingerprint_unsupported))
-                        } else if (!it.goldFinger.hasEnrolledFingerprint()) {
-                            toast(getString(R.string.dialog_fingerprint_not_enrolled))
-                        } else {
-                            it.show(childFragmentManager, null)
-                        }
+                    if (!FingerprintHelper.hasFingerprintHardware()) {
+                        toast(getString(R.string.dialog_fingerprint_unsupported))
+                    } else if (!FingerprintHelper.hasEnrolledFingerprint()) {
+                        toast(getString(R.string.dialog_fingerprint_not_enrolled))
+                    } else {
+                        scanFingerprintDialog?.show(childFragmentManager, null)
                     }
                 }
             })
         }
     }
 
-    private fun proceed(data: AuthenticationToken){
+    private fun proceed(data: AuthenticationToken) {
         launch(UI) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserEmail(etEmail.text.toString())

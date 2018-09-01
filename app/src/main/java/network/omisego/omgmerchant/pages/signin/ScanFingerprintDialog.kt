@@ -19,10 +19,10 @@ import co.infinum.goldfinger.Goldfinger
 import kotlinx.android.synthetic.main.bottom_sheet_fingerprint_scan.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.toast
+import network.omisego.omgmerchant.utils.FingerprintHelper
 
 class ScanFingerprintDialog : BottomSheetDialogFragment() {
     var liveConfirmSuccess: MutableLiveData<Boolean>? = MutableLiveData()
-    val goldFinger: Goldfinger by lazy { Goldfinger.Builder(context).build() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return layoutInflater.inflate(R.layout.bottom_sheet_fingerprint_scan, container)
@@ -34,8 +34,8 @@ class ScanFingerprintDialog : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        if (goldFinger.hasEnrolledFingerprint()) {
-            goldFinger.authenticate(object : Goldfinger.Callback() {
+        if (FingerprintHelper.hasEnrolledFingerprint()) {
+            FingerprintHelper.authenticate(object : Goldfinger.Callback() {
                 override fun onSuccess(value: String?) {
                     liveConfirmSuccess?.value = true
                     dismiss()
