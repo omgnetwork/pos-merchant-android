@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_fingerprint_padding_start">84dp</dimen>
+    <dimen name="btn_fingerprint_padding_end">64dp</dimen>
+</resources>
