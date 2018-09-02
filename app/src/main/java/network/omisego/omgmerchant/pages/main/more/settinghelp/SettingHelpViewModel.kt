@@ -10,6 +10,7 @@ package network.omisego.omgmerchant.pages.main.more.settinghelp
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import co.infinum.goldfinger.Goldfinger
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
@@ -42,6 +43,8 @@ class SettingHelpViewModel(
     fun deleteFingerprintCredential() {
         repository.deleteFingerprintCredential()
     }
+
+    fun hasFingerprintSupport() = Goldfinger.Builder(app).build().hasFingerprintHardware()
 
     fun loadFingerprintOption() = repository.loadFingerprintOption()
 

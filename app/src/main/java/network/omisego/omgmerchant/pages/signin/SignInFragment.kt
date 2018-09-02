@@ -23,7 +23,6 @@ import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.runBelowM
 import network.omisego.omgmerchant.extensions.runBelowP
 import network.omisego.omgmerchant.extensions.runOnM
 import network.omisego.omgmerchant.extensions.runOnP
@@ -53,10 +52,7 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = provideAndroidViewModel()
         fingerprintViewModel = provideAndroidViewModel()
-        runBelowM {
-            ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
-        }
-        runOnM { startLogoAnimate() }
+        ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
 
         setupDataBinding()
         ivLogo.setOnClickListener {

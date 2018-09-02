@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel" />
@@ -37,10 +39,26 @@
                 android:text="@string/setting_help_fingerprint"
                 android:textColor="@color/colorGray"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tvFingerprintDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Touch ID" />
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="Fingeprint" />
+
+            <TextView
+                android:id="@+id/tvFingerprintDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/setting_help_fingerprint_not_supported"
+                android:textColor="@color/colorGrayWeak"
+                android:textSize="12sp"
+                android:visibility="@{viewModel.hasFingerprintSupport() ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:text="Your device isn't support fingerprint" />
 
             <Switch
                 android:id="@+id/switchFingerprint"
@@ -48,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:checked="@{viewModel.loadFingerprintOption()}"
                 android:layout_marginBottom="16dp"
                 android:enabled="true"
                 android:textOff=""

@@ -114,8 +114,10 @@
     <string name="setting_help_term_of_use">Term of use</string>
     <string name="setting_help_privacy">Privacy</string>
     <string name="setting_help_fingerprint">Fingerprint</string>
+    <string name="setting_help_fingerprint_not_supported">Your device hasn\'t support fingerprint.</string>
     <string name="setting_help_coming_soon">Coming soon…</string>
     <string name="setting_help_enter_password">Enter your password to confirm</string>
+    <string name="setting_help_enable_finger_print_successfully">Enable fingerprint successfully.</string>
     <string name="setting_help_confirm">Confirm</string>
 
     <!-- Fingerprint -->

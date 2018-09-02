@@ -56,6 +56,4 @@ class FingerprintBottomSheet : BottomSheetDialogFragment() {
 
         viewModel?.authenticate()
     }
-
-    fun getLiveAuthPass() = viewModel?.liveAuthPass
 }
