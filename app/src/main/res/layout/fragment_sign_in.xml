@@ -88,6 +88,7 @@
                 android:enabled="@{!viewmodel.liveLoading}"
                 android:inputType="textPassword"
                 android:maxLines="1"
+                android:imeOptions="actionSend"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.updatePassword(text) }"
                 android:textColorHighlight="@color/colorBlue"
                 android:theme="@style/AppTheme.OMGEditText"

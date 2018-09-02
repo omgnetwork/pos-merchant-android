@@ -22,7 +22,7 @@ class SettingHelpViewModel(
     val repository: SettingHelpRepository
 ) : AndroidViewModel(app), StateViewHolderBinding<String, ViewholderSettingHelpBinding> {
     val liveClickMenu: MutableLiveData<String> by lazy { mutableLiveDataOf<String>() }
-    val liveConfirmSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val liveAuthenticateSuccessful: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     override fun bind(binding: ViewholderSettingHelpBinding, data: String) {
         binding.title = data
@@ -46,9 +46,9 @@ class SettingHelpViewModel(
 
     fun hasFingerprintSupport() = Goldfinger.Builder(app).build().hasFingerprintHardware()
 
-    fun loadFingerprintOption() = repository.loadFingerprintOption()
-
     fun hasFingerprintPassword() = Storage.hasFingerprintCredential()
+
+    fun loadFingerprintOption() = repository.loadFingerprintOption()
 
     val menus: List<String> by lazy {
         listOf(

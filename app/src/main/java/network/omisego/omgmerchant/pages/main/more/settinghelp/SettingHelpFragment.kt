@@ -41,10 +41,10 @@ class SettingHelpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
-        switchFingerprint.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchFingerprint.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked && !viewModel.hasFingerprintPassword()) {
                 confirmFingerprintDialog = ConfirmFingerprintDialog().apply {
-                    setLiveConfirmSuccess(viewModel.liveConfirmSuccess)
+                    setLiveConfirmSuccess(viewModel.liveAuthenticateSuccessful)
                 }
                 confirmFingerprintDialog.show(childFragmentManager, null)
             } else if (!isChecked) {
@@ -55,20 +55,20 @@ class SettingHelpFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+
         viewModel.liveClickMenu.observe(this, Observer { it ->
             it?.let {
                 toast(it)
             }
         })
-        viewModel.liveConfirmSuccess.observe(this, Observer {
+
+        viewModel.liveAuthenticateSuccessful.observe(this, Observer {
             if (it == true) {
                 confirmFingerprintDialog.dismiss()
-                switchFingerprint.isChecked = true
                 viewModel.handleFingerprintOption(true)
                 toast(getString(R.string.setting_help_enable_finger_print_successfully))
-            } else {
-                switchFingerprint.isChecked = false
             }
+            switchFingerprint.isChecked = it!!
         })
     }
 

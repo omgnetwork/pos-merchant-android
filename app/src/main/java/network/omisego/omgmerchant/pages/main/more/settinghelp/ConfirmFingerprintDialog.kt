@@ -8,6 +8,7 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
@@ -15,7 +16,6 @@ import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.extensions.logd
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -28,7 +28,7 @@ import network.omisego.omgmerchant.extensions.toast
 
 class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
     private lateinit var viewModel: ConfirmFingerprintViewModel
-    private var liveConfirmSuccess: MutableLiveData<Boolean>? = null
+    private var liveAuthenticateSuccessful: MutableLiveData<Boolean>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,11 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
 
     override fun onCancel(dialog: DialogInterface?) {
         super.onCancel(dialog)
-        liveConfirmSuccess?.value = false
+        liveAuthenticateSuccessful?.value = false
     }
 
     fun setLiveConfirmSuccess(liveConfirmSuccess: MutableLiveData<Boolean>) {
-        this.liveConfirmSuccess = liveConfirmSuccess
+        this.liveAuthenticateSuccessful = liveConfirmSuccess
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,8 +51,15 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.btnConfirm.setOnClickListener {
-            btnConfirm.isEnabled = false
-            viewModel.signIn(view.etPassword.text.toString())
+            send()
+        }
+
+        view.etPassword.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                send()
+                true
+            }
+            false
         }
 
         viewModel.liveAPIResult.observe(this, Observer {
@@ -60,10 +67,14 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
         })
     }
 
+    private fun send() {
+        btnConfirm.isEnabled = false
+        viewModel.signIn(etPassword.text.toString())
+    }
+
     private fun handleSignInError(error: APIError) {
-        logd(error)
         toast(error.description)
-        liveConfirmSuccess?.value = false
+        liveAuthenticateSuccessful?.value = false
         btnConfirm.isEnabled = true
     }
 
@@ -71,7 +82,7 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
         launch(UI) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserPassword(etPassword.text.toString())
-            liveConfirmSuccess?.value = true
+            liveAuthenticateSuccessful?.value = true
             btnConfirm.isEnabled = true
         }
     }

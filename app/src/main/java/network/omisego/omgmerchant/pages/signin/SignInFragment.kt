@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
@@ -62,6 +63,14 @@ class SignInFragment : Fragment() {
         }
         btnSignIn.setOnClickListener { _ ->
             signIn()
+        }
+
+        etPassword.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                signIn()
+                true
+            }
+            false
         }
 
         viewModel.liveToast.observe(this, Observer { it ->
