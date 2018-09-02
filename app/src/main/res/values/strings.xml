@@ -123,7 +123,11 @@
     <string name="dialog_fingerprint_subtitle">Sign-in to your merchant account</string>
     <string name="dialog_fingerprint_description">In order to use the Fingerprint sensor we need your authorization first.</string>
     <string name="dialog_fingerprint_status_normal">Touch the fingerprint sensor</string>
-    <string name="dialog_fingerprint_status_error">Try again</string>
+    <string name="dialog_fingerprint_error_try_again">Try again</string>
+    <string name="dialog_fingerprint_error_too_many_attempt">Too many attempt</string>
+    <string name="dialog_fingerprint_error_too_fast">Finger moving too fast. Please try again.</string>
+    <string name="dialog_fingerprint_error_too_slow">Finger moving too slow. Please try again.</string>
+    <string name="dialog_fingerprint_error_unable_to_process">Unable to process</string>
     <string name="dialog_fingerprint_btn_cancel">Cancel</string>
     <string name="dialog_fingerprint_option_not_enabled">Please enable fingerprint option before use.</string>
     <string name="dialog_fingerprint_unsupported">The device hasn\'t support the fingerprint.</string>

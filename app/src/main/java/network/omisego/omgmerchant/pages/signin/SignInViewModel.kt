@@ -61,42 +61,6 @@ class SignInViewModel(
 
     private var isSignIn: Boolean = false
 
-    fun updateEmail(text: CharSequence) {
-        liveState.state { it.copy(email = text.toString()) }
-    }
-
-    fun updatePassword(text: CharSequence) {
-        liveState.state { it.copy(password = text.toString()) }
-    }
-
-    fun signIn(): LiveData<APIResult>? {
-        val (email, password) = liveState.value ?: return null
-        liveByPassValidation.value = false
-        arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return null }
-        isSignIn = true
-        return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
-    }
-
-    fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
-        signInRepository.saveUser(data.user)
-        return signInRepository.saveCredential(
-            Credential(
-                data.userId,
-                data.authenticationToken
-            )
-        )
-    }
-
-    fun saveUserEmail(email: String) {
-        signInRepository.saveUserEmail(email)
-    }
-
-    fun isFingerprintAvailable() = signInRepository.loadFingerprintOption()
-
-    fun loadUserEmail(): String = signInRepository.loadUserEmail()
-
-    fun loadUserPassword(): String = signInRepository.loadFingerprintCredential()
-
     fun handleFingerprintClick() {
         /*
        * The BiometricPrompt is now only supported android P or above.
@@ -134,12 +98,48 @@ class SignInViewModel(
         }
     }
 
+    fun isFingerprintAvailable() = signInRepository.loadFingerprintOption()
+
+    fun loadUserEmail(): String = signInRepository.loadUserEmail()
+
+    fun loadUserPassword(): String = signInRepository.loadFingerprintCredential()
+
+    fun signIn(): LiveData<APIResult>? {
+        val (email, password) = liveState.value ?: return null
+        liveByPassValidation.value = false
+        arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return null }
+        isSignIn = true
+        return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
+    }
+
+    fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
+        signInRepository.saveUser(data.user)
+        return signInRepository.saveCredential(
+            Credential(
+                data.userId,
+                data.authenticationToken
+            )
+        )
+    }
+
+    fun saveUserEmail(email: String) {
+        signInRepository.saveUserEmail(email)
+    }
+
     fun showLoading(text: String) {
         liveState.state { it.copy(loading = true, btnText = text) }
     }
 
     fun hideLoading(text: String) {
         liveState.state { it.copy(loading = false, btnText = text) }
+    }
+
+    fun updateEmail(text: CharSequence) {
+        liveState.state { it.copy(email = text.toString()) }
+    }
+
+    fun updatePassword(text: CharSequence) {
+        liveState.state { it.copy(password = text.toString()) }
     }
 
     override fun onCleared() {

@@ -17,6 +17,10 @@ object FingerprintHelper {
         goldFinger = Goldfinger.Builder(context).build()
     }
 
+    fun init() {
+        goldFinger = Goldfinger.Builder(Contextor.context).build()
+    }
+
     fun hasEnrolledFingerprint() = goldFinger.hasEnrolledFingerprint()
 
     fun hasFingerprintHardware() = goldFinger.hasFingerprintHardware()
@@ -24,4 +28,6 @@ object FingerprintHelper {
     fun authenticate(callback: Goldfinger.Callback) {
         goldFinger.authenticate(callback)
     }
+
+    fun cancel() = goldFinger.cancel()
 }

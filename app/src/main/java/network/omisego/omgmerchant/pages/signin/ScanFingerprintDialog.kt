@@ -8,6 +8,7 @@ package network.omisego.omgmerchant.pages.signin
  */
 
 import android.arch.lifecycle.MutableLiveData
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.content.ContextCompat
@@ -28,6 +29,11 @@ class ScanFingerprintDialog : BottomSheetDialogFragment() {
         return layoutInflater.inflate(R.layout.bottom_sheet_fingerprint_scan, container)
     }
 
+    override fun onDismiss(dialog: DialogInterface?) {
+        FingerprintHelper.cancel()
+        super.onDismiss(dialog)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnCancel.setOnClickListener {
@@ -43,13 +49,29 @@ class ScanFingerprintDialog : BottomSheetDialogFragment() {
 
                 override fun onError(error: Error?) {
                     if (error?.isCritical == true) {
+                        when (error) {
+                            Error.LOCKOUT -> {
+                                tvDescription.text = getText(R.string.dialog_fingerprint_error_too_many_attempt)
+                            }
+                            else -> {
+                                tvDescription.text = getText(R.string.dialog_fingerprint_error_unable_to_process)
+                            }
+                        }
                         liveConfirmSuccess?.value = false
-                        dismiss()
                     } else {
-                        // show an error icon
-                        ivFingerprint.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_error))
-                        tvDescription.text = getString(R.string.dialog_fingerprint_status_error)
+                        when (error) {
+                            Error.TOO_FAST -> {
+                                tvDescription.text = getText(R.string.dialog_fingerprint_error_too_fast)
+                            }
+                            Error.TOO_SLOW -> {
+                                tvDescription.text = getText(R.string.dialog_fingerprint_error_too_slow)
+                            }
+                            else -> {
+                                tvDescription.text = getString(R.string.dialog_fingerprint_error_try_again)
+                            }
+                        }
                     }
+                    ivFingerprint.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_error))
                 }
             })
         } else {

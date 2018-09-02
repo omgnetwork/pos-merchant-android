@@ -97,15 +97,6 @@ class SignInFragment : Fragment() {
                 toast(getString(R.string.dialog_fingerprint_option_not_enabled))
             }
         })
-        viewModel.liveAuthenticationError.observe(this, Observer {
-            toast("Authentication error")
-        })
-        viewModel.liveAuthenticationFailed.observe(this, Observer {
-            toast("Authentication failed")
-        })
-        viewModel.liveAuthenticationHelp.observe(this, Observer {
-            toast("Authentication helped")
-        })
     }
 
     private fun subscribeSignInWithFingerprintBelowP() {
