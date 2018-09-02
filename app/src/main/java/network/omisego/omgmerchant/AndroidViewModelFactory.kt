@@ -16,11 +16,12 @@ import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListTr
 import network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel
 import network.omisego.omgmerchant.pages.scan.ScanRepository
 import network.omisego.omgmerchant.pages.scan.ScanViewModel
-import network.omisego.omgmerchant.pages.signin.BiometricHandler
+import network.omisego.omgmerchant.pages.signin.FingerprintBottomSheetViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
 import network.omisego.omgmerchant.pages.signin.SignInViewModel
 import network.omisego.omgmerchant.pages.splash.SplashRepository
 import network.omisego.omgmerchant.pages.splash.SplashViewModel
+import network.omisego.omgmerchant.utils.BiometricHelper
 
 /*
  * OmiseGO
@@ -34,7 +35,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
-                return SignInViewModel(application, SignInRepository(), BiometricHandler()) as T
+                return SignInViewModel(application, SignInRepository(), BiometricHelper()) as T
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
                 SplashViewModel(application, SplashRepository()) as T
@@ -59,6 +60,9 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(SettingHelpViewModel::class.java) -> {
                 SettingHelpViewModel(application, SettingHelpRepository()) as T
+            }
+            modelClass.isAssignableFrom(FingerprintBottomSheetViewModel::class.java) -> {
+                FingerprintBottomSheetViewModel(application) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

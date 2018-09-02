@@ -3,6 +3,8 @@ package network.omisego.omgmerchant.pages.signin
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.hardware.fingerprint.FingerprintManager.FINGERPRINT_ERROR_LOCKOUT
+import android.hardware.fingerprint.FingerprintManager.FINGERPRINT_ERROR_LOCKOUT_PERMANENT
 import android.os.Build
 import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
@@ -27,12 +29,12 @@ import network.omisego.omgmerchant.extensions.runOnM
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
 import network.omisego.omgmerchant.extensions.toast
-import network.omisego.omgmerchant.utils.FingerprintHelper
 
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private lateinit var viewModel: SignInViewModel
-    private var scanFingerprintDialog: ScanFingerprintDialog? = null
+    private lateinit var fingerprintViewModel: FingerprintBottomSheetViewModel
+    private var scanFingerprintDialog: FingerprintBottomSheet? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
@@ -50,7 +52,7 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = provideAndroidViewModel()
-
+        fingerprintViewModel = provideAndroidViewModel()
         runBelowM {
             ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
         }
@@ -97,30 +99,31 @@ class SignInFragment : Fragment() {
                 toast(getString(R.string.dialog_fingerprint_option_not_enabled))
             }
         })
+
+        viewModel.liveAuthenticationError.observe(this, Observer {
+            if (it?.first == FINGERPRINT_ERROR_LOCKOUT || it?.first == FINGERPRINT_ERROR_LOCKOUT_PERMANENT) {
+                toast(getString(R.string.dialog_fingerprint_error_too_many_attempt))
+            }
+        })
     }
 
     private fun subscribeSignInWithFingerprintBelowP() {
         runOnM {
-            scanFingerprintDialog = ScanFingerprintDialog()
-            scanFingerprintDialog?.liveConfirmSuccess?.observe(this, Observer {
-                if (!viewModel.isFingerprintAvailable()) {
-                    toast(getString(R.string.dialog_fingerprint_option_not_enabled))
-                } else if (it == true) {
-                    etEmail.setText(viewModel.loadUserEmail())
-                    etPassword.setText(viewModel.loadUserPassword())
-                    signIn()
+            viewModel.liveShowPre28FingerprintDialog.observe(this, Observer { it ->
+                if (it == true) {
+                    scanFingerprintDialog = FingerprintBottomSheet()
+                    scanFingerprintDialog?.show(childFragmentManager, null)
                 }
             })
 
-            viewModel.liveShowPre28FingerprintDialog.observe(this, Observer { it ->
-                if (it == true) {
-                    if (!FingerprintHelper.hasFingerprintHardware()) {
-                        toast(getString(R.string.dialog_fingerprint_unsupported))
-                    } else if (!FingerprintHelper.hasEnrolledFingerprint()) {
-                        toast(getString(R.string.dialog_fingerprint_not_enrolled))
-                    } else {
-                        scanFingerprintDialog?.show(childFragmentManager, null)
-                    }
+            fingerprintViewModel.liveAuthPass.observe(this, Observer {
+                if (!viewModel.isFingerprintAvailable()) {
+                    toast(getString(R.string.dialog_fingerprint_option_not_enabled))
+                } else if (it == true) {
+                    scanFingerprintDialog?.dismiss()
+                    etEmail.setText(viewModel.loadUserEmail())
+                    etPassword.setText(viewModel.loadUserPassword())
+                    signIn()
                 }
             })
         }

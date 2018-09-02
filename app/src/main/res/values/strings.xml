@@ -124,7 +124,7 @@
     <string name="dialog_fingerprint_description">In order to use the Fingerprint sensor we need your authorization first.</string>
     <string name="dialog_fingerprint_status_normal">Touch the fingerprint sensor</string>
     <string name="dialog_fingerprint_error_try_again">Try again</string>
-    <string name="dialog_fingerprint_error_too_many_attempt">Too many attempt</string>
+    <string name="dialog_fingerprint_error_too_many_attempt">Too many attempt. Try again later.</string>
     <string name="dialog_fingerprint_error_too_fast">Finger moving too fast. Please try again.</string>
     <string name="dialog_fingerprint_error_too_slow">Finger moving too slow. Please try again.</string>
     <string name="dialog_fingerprint_error_unable_to_process">Unable to process</string>

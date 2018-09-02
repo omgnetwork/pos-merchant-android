@@ -2,7 +2,7 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?android:attr/colorAccent">
     <item android:id="@android:id/mask">
-        <color android:color="#421A56F0" />
+        <color android:color="#42ffffff" />
     </item>
     <item android:drawable="@drawable/shape_round_corner_blue" />
 </ripple>

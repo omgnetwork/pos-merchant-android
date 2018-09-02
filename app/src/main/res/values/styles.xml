@@ -7,8 +7,7 @@
         <item name="android:textColorPrimary">@color/colorGray</item>
         <item name="android:textColorSecondary">@color/colorWhiteWeak2</item>
         <item name="colorPrimaryDark">@color/colorGray</item>
-        <item name="colorAccent">@color/colorRedWeak</item>
-
+        <item name="colorAccent">@color/colorGrayWeak</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 

@@ -23,6 +23,7 @@ import network.omisego.omgmerchant.extensions.runBelowP
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
+import network.omisego.omgmerchant.utils.BiometricHelper
 import network.omisego.omgmerchant.utils.Contextor.context
 import network.omisego.omgmerchant.utils.EmailValidator
 import network.omisego.omgmerchant.utils.PasswordValidator
@@ -32,7 +33,7 @@ import network.omisego.omgmerchant.utils.mapPropChanged
 class SignInViewModel(
     private val app: Application,
     private val signInRepository: SignInRepository,
-    private val biometricHandler: BiometricHandler
+    private val biometricHelper: BiometricHelper
 ) : AndroidViewModel(app) {
     private val liveState: LiveState<SignInState> by lazy {
         LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
@@ -87,7 +88,7 @@ class SignInViewModel(
                 .build()
 
             prompt?.authenticate(
-                biometricHandler.createCancellationSignal(),
+                biometricHelper.createCancellationSignal(),
                 app.mainExecutor,
                 biometricCallback
             )
