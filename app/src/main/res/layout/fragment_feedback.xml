@@ -40,6 +40,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="@{viewModel.icon}"
             android:gravity="center"
@@ -114,7 +115,7 @@
             android:text="@{viewModel.date}"
             android:textColor="@color/colorGrayToolbar"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvDone"
+            app:layout_constraintBottom_toTopOf="@+id/tvErrorCode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,35 +136,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnRetry"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+
+        <TextView
+            android:id="@+id/tvErrorCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="48dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="@{() -> viewModel.transfer()}"
-            android:text="@string/feedback_retry"
-            android:textColor="@color/colorBlue"
+            android:text="@{viewModel.errorCode}"
+            android:textColor="@color/colorRedWeak"
+            android:textSize="16sp"
+            app:feedback="@{viewModel.liveFeedback}"
+            app:layout_constraintBottom_toTopOf="@+id/tvErrorDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:show="@{viewModel.liveLoading}"
+            tools:text="Error code: SDK_UNEXPECTED_ERROR" />
+
+        <TextView
+            android:id="@+id/tvErrorDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@{viewModel.errorDescription}"
+            android:textColor="@color/colorGrayToolbar"
+            android:textSize="16sp"
             app:feedback="@{viewModel.liveFeedback}"
             app:layout_constraintBottom_toTopOf="@+id/tvDone"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate"
-            app:show="@{viewModel.liveLoading}" />
+            app:layout_constraintTop_toBottomOf="@+id/tvErrorCode"
+            app:show="@{viewModel.liveLoading}"
+            tools:text="dasdasdasdksodkaopdkapodskpoakdspokdopaskdoakspodkaspdkspdkapdskpsakdpaosdkopsakdoapskdaokdposada;sld,als;,fl;amfl;sdmgl;samfdsl;aml;dasmfkldsamfkldasmfkfld;s,f;lmfl;dsamf;dsamf;lasdmfl;dasmf;dasmfl;sdamfl;dsmf;lsamfs;ladmf;safm;dlsamf;lsadmfsd'f,'ds;lfsd'alf';daslf;'dlf;'dslf'd;slf';daslf;'sdl;flas" />
 
-        <ProgressBar
-            android:id="@+id/progressLoading"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/tvDone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate"
-            app:show="@{viewModel.liveLoading}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

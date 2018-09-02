@@ -12,6 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.drawable.Drawable
+import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
@@ -37,6 +38,8 @@ class FeedbackViewModel(
     val userId: LiveData<String> = liveFeedback.map { transformer.transformUserId(app, it) }
     val userName: LiveData<String> = liveFeedback.map { transformer.transformUserName(app, it) }
     val date: LiveData<String> = liveFeedback.map { transformer.transformDate(app, it) }
+    val errorCode: LiveData<String> = liveFeedback.map { transformer.transformErrorCode(app, it) }
+    val errorDescription: LiveData<String> = liveFeedback.map { transformer.transformErrorDescription(app, it) }
 
     fun transfer() {
         val feedback = liveFeedback.value!!
@@ -64,18 +67,18 @@ class FeedbackViewModel(
 
     fun setFeedback(transactionType: String, transaction: Transaction) {
         liveFeedback.value = if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
+            true,
+            transactionType,
+            transaction.createdAt,
+            transaction.from
+        ) else {
+            Feedback(
                 true,
                 transactionType,
                 transaction.createdAt,
-                transaction.from
-            ) else {
-                Feedback(
-                    true,
-                    transactionType,
-                    transaction.createdAt,
-                    transaction.to
-                )
-            }
+                transaction.to
+            )
+        }
     }
 
     fun deletePersistenceFeedback() {

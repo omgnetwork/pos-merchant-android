@@ -12,7 +12,6 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.transaction.Transaction
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentFeedbackBinding
-import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -58,7 +57,6 @@ class FeedbackFragment : Fragment() {
     }
 
     private fun handleTransferFail(error: APIError) {
-        logi(error)
         toast(error.description)
     }
 }

@@ -1,6 +1,7 @@
 package network.omisego.omgmerchant.pages.scan
 
 import android.arch.lifecycle.MutableLiveData
+import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.TransactionSource
@@ -46,19 +47,21 @@ class ScanRepository {
         Storage.saveFeedback(feedback)
     }
 
-    fun saveFeedback(transactionType: String, source: TransactionSource) {
+    fun saveFeedback(transactionType: String, source: TransactionSource, error: APIError? = null) {
         val feedback =
             if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
                 false,
                 transactionType,
                 Date(),
-                source
+                source,
+                error
             ) else {
                 Feedback(
                     false,
                     transactionType,
                     Date(),
-                    source
+                    source,
+                    error
                 )
             }
         Storage.saveFeedback(feedback)

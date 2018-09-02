@@ -96,6 +96,7 @@ class ScanFragment : Fragment() {
 
     private fun handleTransferFail(error: APIError) {
         viewModel.getUserWallet()
+        viewModel.error = error
         logi(error)
     }
 

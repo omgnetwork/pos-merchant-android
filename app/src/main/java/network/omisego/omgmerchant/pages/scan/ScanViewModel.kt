@@ -10,6 +10,7 @@ package network.omisego.omgmerchant.pages.scan
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.transaction.Transaction
@@ -25,6 +26,7 @@ class ScanViewModel(
     lateinit var args: ScanFragmentArgs
     val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveWallet: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    var error: APIError? = null
     val verifier: ScanAddressVerifier by lazy {
         ScanAddressVerifier(this).apply {
             this.getTransactionCreateParams = this@ScanViewModel::provideTransactionCreateParams
@@ -54,16 +56,19 @@ class ScanViewModel(
     }
 
     fun saveFeedback(wallet: Wallet) {
-        scanRepository.saveFeedback(args.transactionType, TransactionSource(
-            wallet.address,
-            args.amount.toBigDecimal().multiply(args.token.subunitToUnit),
-            args.token.id,
-            args.token,
-            wallet.userId,
-            wallet.user,
-            null,
-            null
-        ))
+        scanRepository.saveFeedback(
+            args.transactionType,
+            TransactionSource(
+                wallet.address,
+                args.amount.toBigDecimal().multiply(args.token.subunitToUnit),
+                args.token.id,
+                args.token,
+                wallet.userId,
+                wallet.user,
+                null,
+                null
+            ),
+            error)
     }
 
     fun provideTransactionCreateParams(payload: String): TransactionCreateParams {

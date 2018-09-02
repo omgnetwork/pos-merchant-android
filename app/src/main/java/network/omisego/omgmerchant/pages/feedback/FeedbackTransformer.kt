@@ -59,4 +59,12 @@ class FeedbackTransformer {
     fun transformDate(context: Context, feedback: Feedback): String {
         return context.getString(R.string.feedback_date_time, feedback.createdAt)
     }
+
+    fun transformErrorCode(context: Context, feedback: Feedback): String {
+        return "Error code: ${feedback.error?.code?.name?.toUpperCase() ?: "Unknown"}"
+    }
+
+    fun transformErrorDescription(context: Context, feedback: Feedback): String {
+        return feedback.error?.description ?: "Unknown"
+    }
 }
