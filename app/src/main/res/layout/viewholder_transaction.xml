@@ -35,29 +35,27 @@
             android:text="@{transformer.transformUsername(transaction)}"
             android:textColor="@color/colorBlackWeak"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvDescription"
-            app:layout_constraintStart_toEndOf="@+id/tvTransactionType"
+            app:layout_constraintBottom_toTopOf="@+id/tvDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Somsak H. [7686…987]" />
+            tools:text="Somsak H." />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:text="@{transformer.transformDescription(transaction)}"
+            android:text="@{transformer.transformDate(transaction)}"
             android:textColor="@color/colorGrayText"
             android:textSize="12sp"
             android:textStyle="normal"
-            app:account="@{viewModel.account}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvTransactionType"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvUser"
-            app:transaction="@{transaction}"
-            tools:text="Hot cappucino" />
+            tools:text="Apr 05, 8:30 AM" />
 
         <TextView
             android:id="@+id/tvAmount"
@@ -74,33 +72,18 @@
             tools:text="000 STK" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="@{transformer.transformDate(transaction)}"
+            android:text="@{transformer.transformDescription(transaction)}"
             android:textColor="@color/colorGrayText"
             android:textSize="12sp"
             android:textStyle="normal"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvDescription"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvDate"
             app:layout_constraintEnd_toStartOf="@+id/tvStatusIcon"
-            tools:text="Apr 05, 12:02 PM : Success" />
+            tools:text="Success" />
 
-        <TextView
-            android:id="@+id/tvTransactionType"
-            style="@style/OMGIcon.ArrowLongUp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_round_corner"
-            android:gravity="center"
-            android:text="@{transformer.transformTransactionType(transaction)}"
-            android:textColor="@color/colorBlackWeak"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvStatusIcon"
@@ -110,7 +93,7 @@
             android:textSize="8sp"
             app:fontFamily="@font/icomoon"
             android:text="@{transformer.transformStatusIcon(transaction)}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvDate"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvStatus"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="" />
     </android.support.constraint.ConstraintLayout>

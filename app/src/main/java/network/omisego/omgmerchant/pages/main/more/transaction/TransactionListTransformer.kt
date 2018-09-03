@@ -44,17 +44,10 @@ class TransactionListTransformer(
     }
 
     fun transformDescription(transaction: Transaction): String {
-        return when (transaction.status) {
-            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
-                if (transaction.to.accountId != null) {
-                    context.getString(R.string.receive_title)
-                } else {
-                    context.getString(R.string.topup_title)
-                }
-            }
-            else -> {
-                transaction.status.value.capitalize()
-            }
+        return if (transaction.error == null) {
+            context.getString(R.string.transaction_list_info_success)
+        } else {
+            context.getString(R.string.transaction_list_info_failure)
         }
     }
 
@@ -64,19 +57,18 @@ class TransactionListTransformer(
             transaction.from.amount.divide(transaction.from.token.subunitToUnit),
             transaction.from.token.symbol
         )
-        return amountText
-//        return when (transaction.status) {
-//            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
-//                if (transaction.to.accountId != null) {
-//                    "+ $amountText"
-//                } else {
-//                    "- $amountText"
-//                }
-//            }
-//            else -> {
-//                amountText
-//            }
-//        }
+        return when (transaction.status) {
+            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
+                if (transaction.to.accountId != null) {
+                    "+ $amountText"
+                } else {
+                    "- $amountText"
+                }
+            }
+            else -> {
+                amountText
+            }
+        }
     }
 
     fun transformStatusIcon(transaction: Transaction): String {
@@ -88,11 +80,7 @@ class TransactionListTransformer(
     }
 
     fun transformDate(transaction: Transaction): String {
-        return if (transaction.error == null) {
-            context.getString(R.string.transaction_list_info_date_time_success, transaction.createdAt)
-        } else {
-            context.getString(R.string.transaction_list_info_date_time_failed, transaction.createdAt)
-        }
+        return context.getString(R.string.transaction_list_info_date_time, transaction.createdAt)
     }
 }
 
