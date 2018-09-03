@@ -19,7 +19,8 @@ import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
-import network.omisego.omgmerchant.extensions.runBelowP
+import network.omisego.omgmerchant.extensions.runBelowM
+import network.omisego.omgmerchant.extensions.runOnMToP
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
@@ -94,8 +95,12 @@ class SignInViewModel(
             )
         }
 
-        runBelowP {
+        runOnMToP {
             liveShowPre28FingerprintDialog.value = true
+        }
+
+        runBelowM {
+            liveToast.value = app.getString(R.string.dialog_fingerprint_unsupported)
         }
     }
 

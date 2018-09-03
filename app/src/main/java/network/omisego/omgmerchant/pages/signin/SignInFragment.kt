@@ -24,7 +24,7 @@ import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.runBelowP
+import network.omisego.omgmerchant.extensions.runOnMToP
 import network.omisego.omgmerchant.extensions.runOnM
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
@@ -80,7 +80,7 @@ class SignInFragment : Fragment() {
         })
 
         runOnP { subscribeSignInWithFingerprintP() }
-        runBelowP { subscribeSignInWithFingerprintBelowP() }
+        runOnMToP { subscribeSignInWithFingerprintBelowP() }
     }
 
     private fun signIn() {
