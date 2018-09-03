@@ -23,6 +23,7 @@ class SelectAccountViewModel(
     override fun bind(binding: ViewholderAccountBinding, data: Account) {
         binding.account = data
         binding.viewModel = this
+        binding.ivAccountLogo.clipToOutline = true
     }
 
     fun handleAccountClick(account: Account) {

@@ -37,21 +37,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d6d2"
-            app:layout_constraintBottom_toTopOf="@+id/guide_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guide_divider" />
 
         <TextView
             android:id="@+id/etInputNumber"
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-black"
             android:gravity="end|center_vertical"
             android:maxLines="1"
@@ -78,12 +70,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
-            app:ms_dropdown_max_height="300dp"
-            app:layout_constraintBottom_toTopOf="@+id/line2"
+            app:layout_constraintBottom_toTopOf="@+id/guide_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etInputNumber"
-            app:ms_arrow_tint="@color/colorGrayText"
-            app:ms_text_color="@color/colorGrayText"
+            app:ms_dropdown_max_height="300dp"
+            app:ms_arrow_tint="@color/colorGrayToolbar"
+            app:ms_text_color="@color/colorGrayToolbar"
             tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
         <android.support.constraint.Guideline
@@ -142,7 +134,7 @@
             layout="@layout/view_numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:backgroundDrawable="@{R.drawable.numpad_background_gray}"
+            app:backgroundDrawable="@{R.drawable.numpad_background_white}"
             app:handler="@{handler}"
             app:layout_constraintBottom_toTopOf="@+id/tvNumPlus"
             app:layout_constraintEnd_toEndOf="parent"
@@ -198,7 +190,7 @@
             layout="@layout/view_numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:backgroundDrawable="@{R.drawable.numpad_background_gray}"
+            app:backgroundDrawable="@{R.drawable.numpad_background_white}"
             app:handler="@{handler}"
             app:layout_constraintBottom_toTopOf="@+id/tvNumMinus"
             app:layout_constraintEnd_toEndOf="parent"
@@ -256,7 +248,7 @@
             layout="@layout/view_numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:backgroundDrawable="@{R.drawable.numpad_background_gray}"
+            app:backgroundDrawable="@{R.drawable.numpad_background_white}"
             app:handler="@{handler}"
             app:layout_constraintBottom_toTopOf="@+id/tvNumPadEqual"
             app:layout_constraintEnd_toEndOf="parent"
@@ -267,7 +259,7 @@
 
         <include
             android:id="@+id/tvNumAC"
-            layout="@layout/view_numpad"
+            layout="@layout/view_numpad_small"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:backgroundDrawable="@{R.drawable.numpad_background_white}"
@@ -312,7 +304,7 @@
             layout="@layout/view_numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:backgroundDrawable="@{R.drawable.numpad_background_gray}"
+            app:backgroundDrawable="@{R.drawable.numpad_background_white}"
             app:handler="@{handler}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

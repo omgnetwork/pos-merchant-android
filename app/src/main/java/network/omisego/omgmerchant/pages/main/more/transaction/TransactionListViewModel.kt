@@ -13,9 +13,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.pagination.Paginable
 import co.omisego.omisego.model.transaction.Transaction
-import co.omisego.omisego.model.transaction.TransactionSource
 import co.omisego.omisego.model.transaction.list.TransactionListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
@@ -25,77 +23,25 @@ import network.omisego.omgmerchant.model.APIResult
 
 class TransactionListViewModel(
     private val app: Application,
-    private val repository: TransactionListRepository
+    private val repository: TransactionListRepository,
+    private val transformer: TransactionListTransformer
 ) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
     val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+
+    /* get data from repository */
     val account: Account
         get() = repository.getAccount()!!
     val wallet: Wallet
         get() = repository.getWallet()!!
-    val TransactionSource.username: String
-        get() = "${this.user?.email ?: this.user?.username}"
+
+    /* helper function */
     val Transaction.isTopup: Boolean
         get() = this.from.accountId != null
 
     override fun bind(binding: ViewholderTransactionBinding, data: Transaction) {
         binding.transaction = data
         binding.viewModel = this
-    }
-
-    fun formatUsername(transaction: Transaction): String {
-        return if (transaction.isTopup) {
-            app.getString(
-                R.string.transaction_list_info_name_id,
-                transaction.to.username,
-                "${transaction.to.userId?.take(8)}...${transaction.to.userId?.takeLast(3)}"
-            )
-        } else {
-            app.getString(
-                R.string.transaction_list_info_name_id,
-                transaction.from.username,
-                "${transaction.from.userId?.take(8)}...${transaction.from.userId?.takeLast(3)}"
-            )
-        }
-    }
-
-    fun formatDescription(transaction: Transaction): String {
-        return when (transaction.status) {
-            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
-                if (transaction.to.accountId != null) {
-                    app.getString(R.string.receive_title)
-                } else {
-                    app.getString(R.string.topup_title)
-                }
-            }
-            else -> {
-                transaction.status.value.capitalize()
-            }
-        }
-    }
-
-    fun formatAmount(transaction: Transaction): String {
-        val amountText = app.getString(
-            R.string.transaction_list_info_amount,
-            transaction.from.amount.divide(transaction.from.token.subunitToUnit),
-            transaction.from.token.symbol
-        )
-
-        return when (transaction.status) {
-            Paginable.Transaction.TransactionStatus.CONFIRMED -> {
-                if (transaction.to.accountId != null) {
-                    "+ $amountText"
-                } else {
-                    "- $amountText"
-                }
-            }
-            else -> {
-                amountText
-            }
-        }
-    }
-
-    fun formatDate(transaction: Transaction): String {
-        return app.getString(R.string.transaction_list_info_date_time, transaction.createdAt)
+        binding.transformer = transformer
     }
 
     fun giveTransactionStatusDescription(transaction: Transaction) {

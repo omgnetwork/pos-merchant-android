@@ -41,7 +41,7 @@ class SettingFragment : Fragment() {
         adapter = SettingAdapter(viewModel, viewModel.menus)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val margin = Rect(context?.dpToPx(16f)!!, 0, 0, 0)
+        val margin = Rect(context?.dpToPx(72f)!!, 0, 0, 0)
         recyclerView.addItemDecoration(MarginDividerDecorator(context!!, margin))
 
     }

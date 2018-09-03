@@ -8,6 +8,7 @@ package network.omisego.omgmerchant.pages.main.more.account
  */
 
 import android.arch.lifecycle.LiveData
+import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.params.AccountListParams
 import network.omisego.omgmerchant.extensions.subscribe
 import network.omisego.omgmerchant.model.APIResult
@@ -21,6 +22,7 @@ class SettingAccountRepository {
             .subscribe()
     }
 
-    fun getCurrentAccount() = Storage.loadAccount()
+    fun saveAccount(account: Account) = Storage.saveAccount(account)
 
+    fun getCurrentAccount() = Storage.loadAccount()
 }

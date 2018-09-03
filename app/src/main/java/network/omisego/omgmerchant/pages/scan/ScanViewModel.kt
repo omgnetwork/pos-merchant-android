@@ -10,7 +10,11 @@ package network.omisego.omgmerchant.pages.scan
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Wallet
+import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.transaction.Transaction
+import co.omisego.omisego.model.transaction.TransactionSource
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.model.APIResult
@@ -21,6 +25,8 @@ class ScanViewModel(
 ) : AndroidViewModel(app) {
     lateinit var args: ScanFragmentArgs
     val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveWallet: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    var error: APIError? = null
     val verifier: ScanAddressVerifier by lazy {
         ScanAddressVerifier(this).apply {
             this.getTransactionCreateParams = this@ScanViewModel::provideTransactionCreateParams
@@ -41,8 +47,28 @@ class ScanViewModel(
 
     fun transfer(params: TransactionCreateParams) = scanRepository.transfer(params, liveTransaction)
 
+    fun getUserWallet() {
+        scanRepository.getUserWallet(WalletParams(verifier.recentAddress), liveWallet)
+    }
+
     fun saveFeedback(transaction: Transaction) {
         scanRepository.saveFeedback(args.transactionType, transaction)
+    }
+
+    fun saveFeedback(wallet: Wallet) {
+        scanRepository.saveFeedback(
+            args.transactionType,
+            TransactionSource(
+                wallet.address,
+                args.amount.toBigDecimal().multiply(args.token.subunitToUnit),
+                args.token.id,
+                args.token,
+                wallet.userId,
+                wallet.user,
+                null,
+                null
+            ),
+            error)
     }
 
     fun provideTransactionCreateParams(payload: String): TransactionCreateParams {

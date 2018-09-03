@@ -25,31 +25,12 @@
         tools:context="network.omisego.omgmerchant.pages.main.topup.TopupFragment"
         tools:layout_editor_absoluteY="81dp">
 
-        <View
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d6d2"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d6d2"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
         <TextView
             android:id="@+id/etInputNumber"
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-black"
             android:gravity="end|center_vertical"
             android:maxLines="1"
@@ -65,7 +46,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/line1"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="0" />
 
@@ -76,12 +57,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/line2"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etInputNumber"
-            app:ms_arrow_tint="@color/colorGrayText"
             app:ms_dropdown_max_height="300dp"
-            app:ms_text_color="@color/colorGrayText"
+            app:ms_arrow_tint="@color/colorGrayToolbar"
+            app:ms_text_color="@color/colorGrayToolbar"
             tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
         <android.support.constraint.Guideline

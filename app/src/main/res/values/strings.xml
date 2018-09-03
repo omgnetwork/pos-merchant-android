@@ -13,6 +13,7 @@
 
     <!-- Select Account -->
     <string name="select_account_title">Select account</string>
+    <string name="select_account_sub_title">Accounts</string>
 
     <!-- Welcome -->
     <string name="welcome_title">Welcome!</string>
@@ -35,19 +36,22 @@
     <string name="scan_instruction">Align QR code here</string>
 
     <!-- Feedback -->
-    <string name="feedback_payment_title">Payment successful</string>
-    <string name="feedback_topup_title">Topup successful</string>
-    <string name="feedback_customer_name">%s</string>
-    <string name="feedback_customer_id">ID: %s</string>
+    <string name="feedback_success_payment_title">Payment successful</string>
+    <string name="feedback_success_topup_title">Topup successful</string>
+    <string name="feedback_fail_payment_title">Payment failed</string>
+    <string name="feedback_fail_topup_title">Topup failed</string>
+    <string name="feedback_customer_name">by %s</string>
+    <string name="feedback_customer_id">User ID: %s</string>
     <string name="feedback_amount">%,.2f %s</string>
     <!-- Passing a calendar instance to formatter -->
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>
+    <string name="feedback_retry">Retry</string>
 
     <!-- More -->
     <string name="more_title">More</string>
     <string name="more_account">Account</string>
-    <string name="more_transaction">Transactions</string>
+    <string name="more_transaction">Transaction</string>
     <string name="more_setting_and_help">Settings &amp; Help</string>
     <string name="more_sign_out">Sign out</string>
 
@@ -57,9 +61,11 @@
     <!-- Transaction List -->
     <string name="transaction_list_title">Transaction</string>
     <!-- e.g. Jenny K. [3856...092] -->
-    <string name="transaction_list_info_name_id">%s [%s]</string>
+    <string name="transaction_list_info_name_id">%s</string>
     <string name="transaction_list_info_amount">%,.2f %s</string>
     <string name="transaction_list_info_date_time">%1$tb %1$te, %1$tI:%1$tM %1$Tp</string>
+    <string name="transaction_list_info_success">Success</string>
+    <string name="transaction_list_info_failure">Failure</string>
     <string name="transaction_list_topup_info">Top-up %,.2f %s to %s</string>
     <string name="transaction_list_receive_info">Receive %,.2f %s from %s</string>
     <string name="transaction_list_empty_transaction">EMPTY TRANSACTION</string>
@@ -90,8 +96,9 @@
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
 
-    <!-- Main -->
+    <!-- Menu -->
     <string name="main_menu_next">Next</string>
+    <string name="menu_account_save">Save</string>
 
     <!-- Permission -->
     <string name="camera_permission_explain">Camera access is needed to scan the QR code.</string>

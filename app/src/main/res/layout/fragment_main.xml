@@ -33,7 +33,7 @@
         android:layout_gravity="start"
         android:background="@drawable/numpad_background_white"
         app:itemIconTint="@color/color_gray_blue"
-        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@color/color_gray_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

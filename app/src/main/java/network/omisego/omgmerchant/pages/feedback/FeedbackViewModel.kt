@@ -9,37 +9,79 @@ package network.omisego.omgmerchant.pages.feedback
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import network.omisego.omgmerchant.R
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.graphics.drawable.Drawable
+import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.transaction.Transaction
+import co.omisego.omisego.model.transaction.send.TransactionCreateParams
+import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.utils.map
 
 class FeedbackViewModel(
     val app: Application,
-    private val repository: FeedbackRepository
+    private val repository: FeedbackRepository,
+    private val transformer: FeedbackTransformer
 ) : AndroidViewModel(app) {
-    lateinit var feedback: Feedback
-    val title: String
-        get() {
-            return if (feedback.transactionType.equals(SCAN_RECEIVE, true)) {
-                app.getString(R.string.feedback_payment_title)
-            } else {
-                app.getString(R.string.feedback_topup_title)
+    val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveLoading: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
+    val liveFeedback: MutableLiveData<Feedback> = MutableLiveData()
+
+    /* binding data */
+    val icon: LiveData<Drawable> = liveFeedback.map { transformer.transformIcon(app, it) }
+    val iconText: LiveData<String> = liveFeedback.map(transformer::transformIconText)
+    val title: LiveData<String> = liveFeedback.map { transformer.transformTitle(app, it) }
+    val amount: LiveData<String> = liveFeedback.map { transformer.transformAmount(app, it) }
+    val userId: LiveData<String> = liveFeedback.map { transformer.transformUserId(app, it) }
+    val userName: LiveData<String> = liveFeedback.map { transformer.transformUserName(app, it) }
+    val date: LiveData<String> = liveFeedback.map { transformer.transformDate(app, it) }
+    val errorCode: LiveData<String> = liveFeedback.map { transformer.transformErrorCode(app, it) }
+    val errorDescription: LiveData<String> = liveFeedback.map { transformer.transformErrorDescription(app, it) }
+
+    fun transfer() {
+        val feedback = liveFeedback.value!!
+        val params = when (feedback.transactionType) {
+            SCAN_RECEIVE -> {
+                TransactionCreateParams(
+                    fromAddress = feedback.source.address,
+                    toAddress = repository.loadWallet()!!.address,
+                    amount = feedback.source.amount.setScale(0),
+                    tokenId = feedback.source.token.id
+                )
+            }
+            else -> {
+                TransactionCreateParams(
+                    fromAddress = repository.loadWallet()!!.address,
+                    toAddress = feedback.source.address,
+                    amount = feedback.source.amount.setScale(0),
+                    tokenId = feedback.source.token.id
+                )
             }
         }
-    val amount: String
-        get() = app.getString(
-            R.string.feedback_amount,
-            feedback.source.amount.divide(feedback.source.token.subunitToUnit),
-            feedback.source.token.symbol
-        )
-    val userId: String
-        get() = app.getString(R.string.feedback_customer_id, feedback.source.userId)
-    val userName: String
-        get() = "${feedback.source.user?.email ?: feedback.source.user?.username}"
-    val date: String
-        get() = app.getString(R.string.feedback_date_time, feedback.createdAt)
+        repository.transfer(params, liveTransaction)
+        liveLoading.value = true
+    }
 
-    fun deleteFeedback() {
+    fun setFeedback(transactionType: String, transaction: Transaction) {
+        liveFeedback.value = if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
+            true,
+            transactionType,
+            transaction.createdAt,
+            transaction.from
+        ) else {
+            Feedback(
+                true,
+                transactionType,
+                transaction.createdAt,
+                transaction.to
+            )
+        }
+    }
+
+    fun deletePersistenceFeedback() {
         repository.deleteFeedback()
     }
 }
