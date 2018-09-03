@@ -166,7 +166,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@{viewModel.errorDescription}"
-            android:textColor="@color/colorGrayToolbar"
+            android:textColor="@color/colorGrayWeak"
             android:textSize="16sp"
             app:feedback="@{viewModel.liveFeedback}"
             app:layout_constraintBottom_toTopOf="@+id/tvDone"
