@@ -44,7 +44,7 @@ object TransactionBindingAdapter {
                 }
             }
             else -> {
-                tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGrayText))
+                tv.setTextColor(ContextCompat.getColor(tv.context, R.color.colorGray))
             }
         }
     }
