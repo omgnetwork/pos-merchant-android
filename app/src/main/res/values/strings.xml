@@ -114,7 +114,7 @@
     <string name="setting_help_term_of_use">Term of use</string>
     <string name="setting_help_privacy">Privacy</string>
     <string name="setting_help_fingerprint">Fingerprint</string>
-    <string name="setting_help_fingerprint_not_supported">Your device does not support the fingerprint authentication.</string>
+    <string name="setting_help_fingerprint_not_supported">Your device does not support fingerprint authentication.</string>
     <string name="setting_help_coming_soon">Coming soon…</string>
     <string name="setting_help_enter_password">Enter your password to confirm</string>
     <string name="setting_help_enable_finger_print_successfully">Enable fingerprint successfully.</string>
@@ -132,6 +132,6 @@
     <string name="dialog_fingerprint_error_unable_to_process">Unable to process</string>
     <string name="dialog_fingerprint_btn_cancel">Cancel</string>
     <string name="dialog_fingerprint_option_not_enabled">Please enable fingerprint option before use.</string>
-    <string name="dialog_fingerprint_unsupported">Your device does not support the fingerprint authentication.</string>
+    <string name="dialog_fingerprint_unsupported">Your device does not support fingerprint authentication.</string>
     <string name="dialog_fingerprint_not_enrolled">You haven\'t enrolled the fingerprint on your device yet.</string>
 </resources>
