@@ -11,9 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.transaction.Transaction
+import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
+import co.omisego.omisego.qrcode.scanner.SimpleVerifier
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -23,17 +22,21 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentScanBinding
-import network.omisego.omgmerchant.extensions.logi
+import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.toast
 
 class ScanFragment : Fragment() {
     private lateinit var binding: FragmentScanBinding
     private lateinit var viewModel: ScanViewModel
+    private lateinit var addressViewModel: AddressViewModel
+    private val verifier: OMGQRScannerContract.Preview.Verifier by lazy {
+        SimpleVerifier(binding.scanner, addressViewModel)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideAndroidViewModel()
+        addressViewModel = provideActivityViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,6 +61,11 @@ class ScanFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        addressViewModel.liveAddress.observe(this, Observer {
+            if (it != null)
+                findNavController().navigateUp()
+        })
     }
 
     private fun handleCameraPermission() {
@@ -74,7 +82,7 @@ class ScanFragment : Fragment() {
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    binding.scanner.startCameraWithVerifier(viewModel.verifier)
+                    binding.scanner.startCameraWithVerifier(verifier)
                 }
 
                 override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
@@ -88,52 +96,13 @@ class ScanFragment : Fragment() {
             .check()
     }
 
-    private fun handleTransferSuccess(transaction: Transaction) {
-        logi(transaction)
-        viewModel.saveFeedback(transaction)
-        findNavController().navigateUp()
-    }
-
-    private fun handleTransferFail(error: APIError) {
-        viewModel.getUserWallet()
-        viewModel.error = error
-        logi(error)
-    }
-
-    private fun handleGetWalletSuccess(wallet: Wallet) {
-        viewModel.saveFeedback(wallet)
-        findNavController().navigateUp()
-    }
-
-    private fun handleGetWalletFailed(error: APIError) {
-        toast(error.description)
-    }
-
     override fun onStart() {
         super.onStart()
-        viewModel.verifier.register()
-        viewModel.liveTransaction.observe(this, Observer {
-            it?.handle(
-                this::handleTransferSuccess,
-                this::handleTransferFail
-            )
-        })
-        viewModel.liveWallet.observe(this, Observer {
-            it?.handle(
-                this::handleGetWalletSuccess,
-                this::handleGetWalletFailed
-            )
-        })
         handleCameraPermission()
     }
 
     override fun onStop() {
         super.onStop()
         binding.scanner.stopCamera()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.verifier.unregister()
     }
 }
