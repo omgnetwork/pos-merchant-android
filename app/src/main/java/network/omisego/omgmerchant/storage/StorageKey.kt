@@ -13,5 +13,8 @@ object StorageKey {
     const val KEY_ACCOUNT = "account"
     const val KEY_WALLET = "wallet"
     const val KEY_FEEDBACK = "feedback"
+    const val KEY_FINGERPRINT_OPTION = "fingerprint_option"
     const val KEY_AUTHENTICATION_TOKEN = "authentication_token"
+    const val KEY_USER_EMAIL = "user_email"
+    const val KEY_FINGERPRINT_USER_PASSWORD = "fingerprint_user_password"
 }

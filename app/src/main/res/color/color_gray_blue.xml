@@ -5,5 +5,5 @@
     <item android:color="@color/colorBlue" android:state_active="true" />
     <item android:color="@color/colorBlue" android:state_activated="true" />
     <item android:color="@color/colorBlue" android:state_checked="true" />
-    <item android:color="@color/colorGrayText" />
+    <item android:color="@color/colorGrayWeak" />
 </selector>

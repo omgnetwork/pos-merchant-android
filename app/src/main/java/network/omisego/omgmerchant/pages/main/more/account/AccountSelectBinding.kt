@@ -28,7 +28,7 @@ object AccountSelectBinding {
                 false -> {
                     if (savedAccount.id == account.id) {
                         view.visibility = View.VISIBLE
-                        view.setTextColor(ContextCompat.getColor(view.context, R.color.colorGrayText))
+                        view.setTextColor(ContextCompat.getColor(view.context, R.color.colorGrayWeak))
                     } else {
                         view.visibility = View.GONE
                     }

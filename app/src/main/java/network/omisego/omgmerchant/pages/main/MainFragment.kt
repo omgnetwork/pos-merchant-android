@@ -17,6 +17,7 @@ import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.replaceFragment
+import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.pages.main.more.MoreFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveFragment

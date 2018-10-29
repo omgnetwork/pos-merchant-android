@@ -40,8 +40,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginStart="@dimen/fragment_sign_in_padding_horizontal"
+            android:layout_marginEnd="@dimen/fragment_sign_in_padding_horizontal"
             android:hint="@string/sign_in_hint_email"
             android:textColorHint="@color/color_gray_blue"
             app:hintTextAppearance="@style/OMGHintText"
@@ -60,7 +60,7 @@
                 android:maxLines="1"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.updateEmail(text) }"
                 android:theme="@style/AppTheme.OMGEditText"
-                app:backgroundTint="@color/colorGrayLine" />
+                app:backgroundTint="@color/colorWhiteWeak" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -69,9 +69,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="@dimen/fragment_sign_in_padding_horizontal"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="@dimen/fragment_sign_in_padding_horizontal"
             android:hint="@string/sign_in_hint_password"
             android:textColorHint="@color/color_gray_blue"
             app:hintTextAppearance="@style/OMGHintText"
@@ -88,10 +88,11 @@
                 android:enabled="@{!viewmodel.liveLoading}"
                 android:inputType="textPassword"
                 android:maxLines="1"
+                android:imeOptions="actionSend"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.updatePassword(text) }"
                 android:textColorHighlight="@color/colorBlue"
                 android:theme="@style/AppTheme.OMGEditText"
-                app:backgroundTint="@color/colorGrayLine" />
+                app:backgroundTint="@color/colorWhiteWeak" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -99,9 +100,7 @@
             android:id="@+id/tvForgetPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:text="@string/sign_in_forget_password"
             android:textColor="@color/colorBlue"
             app:layout_constraintBottom_toTopOf="@+id/tvSignUp"
@@ -128,15 +127,35 @@
             style="@style/AppTheme.OMGButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/fragment_sign_in_padding_horizontal"
+            android:layout_marginEnd="@dimen/fragment_sign_in_padding_horizontal"
+            android:layout_marginBottom="@dimen/fragment_sign_in_margin_vertical"
             android:enabled="@{!viewmodel.liveLoading}"
             android:text="@{viewmodel.liveBtnText}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnFingerprint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/sign_in_button" />
+
+        <Button
+            android:id="@+id/btnFingerprint"
+            style="@style/AppTheme.OMGButtonOutline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fragment_sign_in_padding_horizontal"
+            android:layout_marginEnd="@dimen/fragment_sign_in_padding_horizontal"
+            android:layout_marginBottom="@dimen/fragment_sign_in_margin_vertical"
+            android:drawableEnd="@drawable/ic_fingerprint"
+            android:drawableTint="@color/color_button_outline"
+            android:enabled="@{!viewmodel.liveLoading}"
+            android:gravity="center"
+            android:onClick="@{() -> viewmodel.handleFingerprintClick()}"
+            android:paddingStart="@dimen/btn_fingerprint_padding_start"
+            android:paddingEnd="@dimen/btn_fingerprint_padding_end"
+            android:text="@string/sign_in_fingerprint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

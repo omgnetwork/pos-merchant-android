@@ -6,5 +6,5 @@
             <solid android:color="?android:colorAccent" />
         </shape>
     </item>
-    <item android:drawable="@color/colorWhiteNumPad" />
+    <item android:drawable="@color/colorWhite" />
 </ripple>

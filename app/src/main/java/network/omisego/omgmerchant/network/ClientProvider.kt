@@ -35,6 +35,10 @@ object ClientProvider {
         async { client = deferredClient.await() }
     }
 
+    init {
+        init()
+    }
+
     private fun create(): OMGAPIAdmin {
         return OMGAPIAdmin(
             EWalletAdmin.Builder {

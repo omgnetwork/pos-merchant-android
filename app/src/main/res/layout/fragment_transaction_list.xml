@@ -41,7 +41,7 @@
             android:layout_marginEnd="8dp"
             android:gravity="center"
             android:text="@string/transaction_list_empty_transaction"
-            android:textColor="@color/colorGrayLine"
+            android:textColor="@color/colorWhiteWeak"
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="gone"

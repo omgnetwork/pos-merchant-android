@@ -20,3 +20,16 @@ inline fun runBelowM(lambda: () -> Unit) {
         lambda()
     }
 }
+
+inline fun runOnP(lambda: () -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        lambda()
+    }
+}
+
+inline fun runOnMToP(lambda: () -> Unit) {
+    if (Build.VERSION.SDK_INT in Build.VERSION_CODES.M until Build.VERSION_CODES.P) {
+        lambda()
+    }
+}
+

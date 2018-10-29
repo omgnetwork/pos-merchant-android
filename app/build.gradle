@@ -26,7 +26,7 @@ android {
     sourceSets {
         test.java.srcDirs += 'src/test/kotlin'
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -77,11 +77,13 @@ dependencies {
     implementation rxJava2.rxandroid
     /* Load image */
     implementation glide.glide
+
     implementation custom.constraintLayout
     implementation custom.shimmer
     implementation custom.stetho
     implementation custom.dropdown
     implementation custom.dexter
+    implementation custom.biometric
     implementation okHttp3.loggingIntercepter
     implementation firebase.crashlytics
 

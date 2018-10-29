@@ -20,7 +20,7 @@ sealed class Validator(
 ) : LifecycleOwner {
     private val lifecycleOwnerRegistry: LifecycleRegistry by lazy { LifecycleRegistry(this) }
     var recentText: String = ""
-    var lastResult: ValidateResult = ValidateResult(true)
+    var validation: ValidateResult = ValidateResult(true)
     var updateUI: ((ValidateResult) -> Unit)? = null
 
     abstract fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult
@@ -44,12 +44,12 @@ class EmailValidator(override var byPass: LiveData<Boolean>) : Validator(byPass)
     override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
         this.updateUI = updateUI
         this.recentText = text
-        lastResult = when {
+        validation = when {
             byPass.value == false && isInvalidEmailFormat(text) -> ValidateResult(false, "Email Address is invalid format")
             else -> ValidateResult(true)
         }
-        updateUI?.invoke(lastResult)
-        return lastResult
+        updateUI?.invoke(validation)
+        return validation
     }
 
     init {
@@ -65,12 +65,12 @@ class PasswordValidator(override var byPass: LiveData<Boolean>) : Validator(byPa
     override fun check(text: String, updateUI: ((ValidateResult) -> Unit)?): ValidateResult {
         this.updateUI = updateUI
         this.recentText = text
-        lastResult = when {
+        validation = when {
             byPass.value == false && isPasswordLessThanEight(text) -> ValidateResult(false, "Password must contain at least 8 characters")
             else -> ValidateResult(true)
         }
-        updateUI?.invoke(lastResult)
-        return lastResult
+        updateUI?.invoke(validation)
+        return validation
     }
 
     init {
