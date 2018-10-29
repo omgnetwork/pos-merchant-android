@@ -13,7 +13,7 @@
     </style>
     <style name="OMGIcon.ArrowLongUp">
         <item name="android:text"></item>
-    </style>
+</style>
     <style name="OMGIcon.ArrowLongLeft">
         <item name="android:text"></item>
     </style>

@@ -24,7 +24,7 @@ object ClientProvider {
     lateinit var client: OMGAPIAdmin
     val deferredClient = async {
         adminConfiguration = AdminConfiguration(
-            "https://ewallet.demo.omisego.io/api/admin/",
+            "https://coffeego.omisego.io/api/admin/",
             credential.userId,
             credential.authenticationToken
         )

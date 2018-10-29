@@ -120,6 +120,16 @@
     <string name="setting_help_enable_finger_print_successfully">Enable fingerprint successfully.</string>
     <string name="setting_help_confirm">Confirm</string>
 
+    <!-- Confirmation -->
+    <string name="confirm_title">Confirm a transaction</string>
+    <string name="confirm_transaction_type_receive">Receive</string>
+    <string name="confirm_transaction_direction_from">From</string>
+    <string name="confirm_transaction_type_top_up">Topup</string>
+    <string name="confirm_transaction_direction_to">To</string>
+    <string name="confirm_transaction_amount">%,.2f %s</string>
+    <string name="confirm_transaction_yes">Yes</string>
+    <string name="confirm_transaction_no">No</string>
+
     <!-- Fingerprint -->
     <string name="dialog_fingerprint_title">Sign-in</string>
     <string name="dialog_fingerprint_subtitle">Sign-in to your merchant account</string>

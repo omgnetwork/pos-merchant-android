@@ -24,6 +24,7 @@ import network.omisego.omgmerchant.pages.main.more.account.SettingAccountViewMod
 import network.omisego.omgmerchant.pages.main.more.settinghelp.ConfirmFingerprintViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
+import network.omisego.omgmerchant.pages.scan.AddressViewModel
 import network.omisego.omgmerchant.pages.signin.SignInRepository
 
 @Suppress("UNCHECKED_CAST")
@@ -61,6 +62,9 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
                 return ConfirmFingerprintViewModel(SignInRepository()) as T
+            }
+            modelClass.isAssignableFrom(AddressViewModel::class.java) -> {
+                return AddressViewModel() as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

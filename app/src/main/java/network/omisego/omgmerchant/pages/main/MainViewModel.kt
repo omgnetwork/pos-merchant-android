@@ -83,6 +83,27 @@ class MainViewModel(
         }
     }
 
+    fun createActionForConfirmPage(
+        receiveViewModel: ReceiveViewModel,
+        topupViewModel: TopupViewModel
+    ): MainFragmentDirections.ActionMainToConfirm {
+        return when (livePage.value) {
+            PAGE_RECEIVE -> {
+                MainFragmentDirections.ActionMainToConfirm(receiveViewModel.liveToken.value!!)
+                    .setAmount(receiveViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_RECEIVE)
+            }
+            PAGE_TOPUP -> {
+                MainFragmentDirections.ActionMainToConfirm(topupViewModel.liveToken.value!!)
+                    .setAmount(topupViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_TOPUP)
+            }
+            else -> {
+                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
+            }
+        }
+    }
+
     fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
         return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
     }

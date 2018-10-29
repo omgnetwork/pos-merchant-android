@@ -17,13 +17,13 @@ import network.omisego.omgmerchant.extensions.getDrawableCompat
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.replaceFragment
-import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.pages.main.more.MoreFragment
 import network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.main.receive.ReceiveFragment
 import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.main.topup.TopupFragment
 import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
+import network.omisego.omgmerchant.pages.scan.AddressViewModel
 
 class MainFragment : Fragment() {
 
@@ -31,6 +31,7 @@ class MainFragment : Fragment() {
     private lateinit var receiveViewModel: ReceiveViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
+    private lateinit var addressViewModel: AddressViewModel
     private lateinit var settingViewModel: SettingViewModel
     private lateinit var toolbarViewModel: ToolbarViewModel
     private lateinit var receiveFragment: ReceiveFragment
@@ -43,6 +44,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        addressViewModel = provideActivityViewModel()
         mainViewModel = provideActivityViewModel()
         receiveViewModel = provideActivityViewModel()
         topupViewModel = provideActivityViewModel()
@@ -99,6 +101,8 @@ class MainFragment : Fragment() {
             NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
         } else if (mainViewModel.getAccount() == null) {
             NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
+        } else if (addressViewModel.liveAddress.value != null) {
+            NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
         } else if (mainViewModel.getFeedback() != null) {
             NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForFeedbackPage())
         } else if (showSplash) {

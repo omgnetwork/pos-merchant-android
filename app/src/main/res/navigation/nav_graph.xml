@@ -28,14 +28,24 @@
             app:destination="@+id/scan"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@+id/main" />
         <action
             android:id="@+id/action_main_to_feedback"
             app:destination="@+id/feedback"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/main" />
+        <action
+            android:id="@+id/action_main_to_confirm"
+            app:destination="@id/confirmFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@+id/main" />
     </fragment>
     <fragment
@@ -98,5 +108,23 @@
         <argument
             android:name="feedback"
             app:argType="network.omisego.omgmerchant.model.Feedback" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmFragment"
+        android:name="network.omisego.omgmerchant.pages.confirm.ConfirmFragment"
+        android:label="ConfirmFragment"
+        tools:layout="@layout/fragment_confirm">
+
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="token"
+            app:argType="co.omisego.omisego.model.Token" />
+        <argument
+            android:name="transaction_type"
+            android:defaultValue="receive"
+            app:argType="string" />
     </fragment>
 </navigation>
