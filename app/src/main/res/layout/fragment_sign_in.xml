@@ -15,7 +15,7 @@
 
         <variable
             name="viewmodel"
-            type="network.omisego.omgmerchant.pages.signin.SignInViewModel" />
+            type="network.omisego.omgmerchant.pages.unauthorized.signin.SignInViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

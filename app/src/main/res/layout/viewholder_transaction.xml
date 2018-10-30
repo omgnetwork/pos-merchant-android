@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListViewModel" />
 
         <variable
             name="transformer"
-            type="network.omisego.omgmerchant.pages.main.more.transaction.TransactionListTransformer" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListTransformer" />
 
         <variable
             name="transaction"

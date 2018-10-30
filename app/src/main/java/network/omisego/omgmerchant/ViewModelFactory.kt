@@ -12,20 +12,20 @@ import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
-import network.omisego.omgmerchant.pages.account.SelectAccountRepository
-import network.omisego.omgmerchant.pages.account.SelectAccountViewModel
-import network.omisego.omgmerchant.pages.main.MainRepository
-import network.omisego.omgmerchant.pages.main.MainViewModel
-import network.omisego.omgmerchant.pages.main.TokenRepository
-import network.omisego.omgmerchant.pages.main.WalletRepository
-import network.omisego.omgmerchant.pages.main.more.account.SaveAccountViewModel
-import network.omisego.omgmerchant.pages.main.more.account.SettingAccountRepository
-import network.omisego.omgmerchant.pages.main.more.account.SettingAccountViewModel
-import network.omisego.omgmerchant.pages.main.more.settinghelp.ConfirmFingerprintViewModel
-import network.omisego.omgmerchant.pages.main.receive.ReceiveViewModel
-import network.omisego.omgmerchant.pages.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.scan.AddressViewModel
-import network.omisego.omgmerchant.pages.signin.SignInRepository
+import network.omisego.omgmerchant.pages.authorized.account.SelectAccountRepository
+import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
+import network.omisego.omgmerchant.pages.authorized.main.MainRepository
+import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
+import network.omisego.omgmerchant.pages.authorized.main.TokenRepository
+import network.omisego.omgmerchant.pages.authorized.main.WalletRepository
+import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
+import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountRepository
+import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
+import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
+import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
+import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
+import network.omisego.omgmerchant.pages.unauthorized.signin.SignInRepository
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {

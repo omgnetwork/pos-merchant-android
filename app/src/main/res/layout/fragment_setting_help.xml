@@ -9,14 +9,14 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhiteWeak"
-        tools:context=".pages.main.more.settinghelp.SettingHelpFragment">
+        tools:context="network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpFragment">
 
 
         <android.support.constraint.ConstraintLayout

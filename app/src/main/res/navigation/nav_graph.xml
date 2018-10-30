@@ -6,7 +6,7 @@
     app:startDestination="@id/main">
     <fragment
         android:id="@+id/main"
-        android:name="network.omisego.omgmerchant.pages.main.MainFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -50,19 +50,19 @@
     </fragment>
     <fragment
         android:id="@+id/splash"
-        android:name="network.omisego.omgmerchant.pages.splash.SplashFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" />
     <fragment
         android:id="@+id/sign_in"
-        android:name="network.omisego.omgmerchant.pages.signin.SignInFragment"
+        android:name="network.omisego.omgmerchant.pages.unauthorized.signin.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
 
     </fragment>
     <fragment
         android:id="@+id/selectAccount"
-        android:name="network.omisego.omgmerchant.pages.account.SelectAccountFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.account.SelectAccountFragment"
         android:label="fragment_select"
         tools:layout="@layout/fragment_select">
         <action
@@ -87,7 +87,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/scan"
-        android:name="network.omisego.omgmerchant.pages.scan.ScanFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.scan.ScanFragment"
         android:label="ScanFragment">
         <argument
             android:name="amount"
@@ -103,7 +103,7 @@
     </fragment>
     <fragment
         android:id="@+id/feedback"
-        android:name="network.omisego.omgmerchant.pages.feedback.FeedbackFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.feedback.FeedbackFragment"
         android:label="FeedbackFragment">
         <argument
             android:name="feedback"
@@ -111,7 +111,7 @@
     </fragment>
     <fragment
         android:id="@+id/confirmFragment"
-        android:name="network.omisego.omgmerchant.pages.confirm.ConfirmFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragment"
         android:label="ConfirmFragment"
         tools:layout="@layout/fragment_confirm">
 

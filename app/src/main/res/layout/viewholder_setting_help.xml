@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.main.more.settinghelp.SettingHelpViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpViewModel" />
     </data>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"

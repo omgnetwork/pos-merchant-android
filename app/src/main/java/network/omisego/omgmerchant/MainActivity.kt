@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import androidx.navigation.findNavController
 import network.omisego.omgmerchant.extensions.provideViewModel
-import network.omisego.omgmerchant.pages.main.MainViewModel
+import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

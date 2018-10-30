@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.scan.ScanViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".pages.scan.ScanFragment">
+        tools:context=".pages.authorized.scan.ScanFragment">
 
         <co.omisego.omisego.qrcode.scanner.OMGQRScannerView
             android:id="@+id/scanner"

@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/numpad_background_white"
-        tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment"
+        tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment"
         tools:layout_editor_absoluteY="81dp">
 
         <View

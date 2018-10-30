@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.splash.SplashViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.splash.SplashViewModel" />
 
         <variable
             name="account"
@@ -16,7 +16,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="network.omisego.omgmerchant.pages.splash.SplashFragment">
+        tools:context=".pages.authorized.splash.SplashFragment">
 
         <TextView
             android:id="@+id/tvSplash"
