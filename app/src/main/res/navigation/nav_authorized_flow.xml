@@ -123,5 +123,8 @@
         android:id="@+id/selectAccountFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.account.SelectAccountFragment"
         android:label="SelectAccountFragment"
-        tools:layout="@layout/fragment_select" /><action android:id="@+id/action_global_selectAccountFragment" app:destination="@id/selectAccountFragment"/>
+        tools:layout="@layout/fragment_select" />
+    <action
+        android:id="@+id/action_global_selectAccountFragment"
+        app:destination="@id/selectAccountFragment" />
 </navigation>

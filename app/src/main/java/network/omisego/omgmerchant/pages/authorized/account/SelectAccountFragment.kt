@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.pagination.PaginationList
@@ -21,6 +20,7 @@ import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentSelectBinding
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding
 import network.omisego.omgmerchant.extensions.dpToPx
+import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -74,7 +74,8 @@ class SelectAccountFragment : Fragment() {
         })
         viewModel.liveAccountSelect.observe(this, Observer { account ->
             account?.let {
-                findNavController().navigateUp()
+                findChildController().popBackStack()
+                findChildController().navigate(R.id.action_global_splashFragment)
             }
         })
     }

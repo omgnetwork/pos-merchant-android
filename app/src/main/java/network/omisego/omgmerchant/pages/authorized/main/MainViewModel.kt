@@ -61,6 +61,7 @@ class MainViewModel(
     fun switchViewIfNeeded() {
         if (getAccount() == null) {
             liveView.value = Event(R.id.action_global_selectAccountFragment)
+            showSplash = false
         } else if (showSplash) {
             liveView.value = Event(R.id.action_global_splashFragment)
             showSplash = false

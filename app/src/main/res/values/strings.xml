@@ -9,7 +9,7 @@
     <string name="sign_in_sign_up">Sign up</string>
     <string name="sign_in_button">Sign In</string>
     <string name="sign_in_button_loading">Loading…</string>
-    <string name="sign_in_success">Sign in as %s successfully.</string>
+    <string name="sign_in_success">Sign in successfully.</string>
     <string name="sign_in_fingerprint">Fingerprint</string>
 
     <!-- Select Account -->

@@ -149,7 +149,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun handleSignInSuccess(data: AuthenticationToken) {
-        toast(getString(R.string.sign_in_success, data.account.name))
+        toast(getString(R.string.sign_in_success))
         proceed(data)
     }
 

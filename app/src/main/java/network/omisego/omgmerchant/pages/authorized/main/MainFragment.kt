@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -65,12 +64,12 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_main, menu)
-        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
-        mainViewModel.liveEnableNext.observe(this, Observer {
-            menuNext?.isEnabled = it ?: false
-        })
-        super.onCreateOptionsMenu(menu, inflater)
+//        inflater?.inflate(R.menu.menu_main, menu)
+//        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
+//        mainViewModel.liveEnableNext.observe(this, Observer {
+//            menuNext?.isEnabled = it ?: false
+//        })
+//        super.onCreateOptionsMenu(menu, inflater)
     }
 
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
