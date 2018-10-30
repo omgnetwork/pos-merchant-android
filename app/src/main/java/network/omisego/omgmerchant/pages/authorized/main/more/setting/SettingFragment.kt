@@ -14,6 +14,7 @@ import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentSettingBinding
 import network.omisego.omgmerchant.extensions.dpToPx
 import network.omisego.omgmerchant.extensions.findChildController
+import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.livedata.EventObserver
 
@@ -38,6 +39,7 @@ class SettingFragment : Fragment() {
         binding.viewmodel = viewModel
         setupRecyclerView()
         subscribeMenuHasChanged()
+        subscribeSignOutClicked()
     }
 
     private fun setupRecyclerView() {
@@ -58,6 +60,13 @@ class SettingFragment : Fragment() {
             }
 
             findChildController().navigate(destinationId)
+        })
+    }
+
+    private fun subscribeSignOutClicked() {
+        viewModel.liveSignOut.observe(this, EventObserver {
+            findRootController().popBackStack()
+            findRootController().navigate(R.id.action_global_sign_in)
         })
     }
 }

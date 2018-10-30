@@ -31,7 +31,7 @@
         app:launchSingleTop="true"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out"
-        app:popUpTo="@id/main"
+        app:popUpTo="@+id/sign_in"
         app:popUpToInclusive="true" />
 
     <action

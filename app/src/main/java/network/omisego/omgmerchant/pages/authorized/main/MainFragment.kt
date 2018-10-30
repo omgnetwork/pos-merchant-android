@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
     private fun init() {
         setupNavigationUI()
         showFullscreen(false)
-        findChildController().addOnNavigatedListener { controller, destination ->
+        findChildController().addOnNavigatedListener { _, destination ->
             if (destination.id in arrayOf(R.id.splashFragment, R.id.selectAccountFragment)) {
                 showFullscreen(true)
             } else {

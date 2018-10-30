@@ -24,12 +24,12 @@ class SettingViewModel(
         SettingMenu("\uE921", app.getString(R.string.more_transaction)),
         SettingMenu("\uE91F", app.getString(R.string.more_setting_and_help))
     )
-    val liveSignOut: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val liveSignOut: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
     private val liveMenu: MutableLiveData<Event<SettingMenu>> by lazy { MutableLiveData<Event<SettingMenu>>() }
 
     fun signOut() {
         Storage.clearEverything()
-        liveSignOut.value = true
+        liveSignOut.value = Event(true)
     }
 
     fun getLiveMenu(): LiveData<Event<SettingMenu>> = liveMenu
