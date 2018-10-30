@@ -15,6 +15,7 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.livedata.EventObserver
 import network.omisego.omgmerchant.pages.authorized.main.more.MoreFragment
 import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment
@@ -37,7 +38,6 @@ class MainFragment : Fragment() {
     private lateinit var moreFragment: MoreFragment
 
     /* Local */
-    private var showSplash = true
     private var menuNext: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,21 +89,33 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        init()
+        mainViewModel.switchViewIfNeeded()
     }
 
-    private fun initView() {
+    private fun init() {
         setupNavigationUI()
-        if (mainViewModel.getAccount() == null) {
-            findChildController().navigate(R.id.action_global_selectAccountFragment)
-        } else if (showSplash) {
-            findChildController().navigate(R.id.action_global_splashFragment)
-            showSplash = false
-            mainViewModel.loadWalletAndSave()
+        showFullscreen(false)
+        findChildController().addOnNavigatedListener { controller, destination ->
+            if (destination.id in arrayOf(R.id.splashFragment, R.id.selectAccountFragment)) {
+                showFullscreen(true)
+            } else {
+                showFullscreen(false)
+            }
         }
-//        setupToolbar()
-//        listenBottomNavSelected()
-//        subscribePageChanged()
+        mainViewModel.liveView.observe(this, EventObserver { destinationId ->
+            findChildController().navigate(destinationId)
+        })
+    }
+
+    private fun showFullscreen(show: Boolean) {
+        if (show) {
+            bottomNavigation.visibility = View.GONE
+            toolbar.visibility = View.GONE
+        } else {
+            bottomNavigation.visibility = View.VISIBLE
+            toolbar.visibility = View.VISIBLE
+        }
     }
 
 //    private fun setupConditionalNavigationGraph() {
