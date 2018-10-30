@@ -17,13 +17,24 @@
         tools:layout="@layout/fragment_receive" />
     <fragment
         android:id="@+id/more"
-        android:name="network.omisego.omgmerchant.pages.authorized.main.more.MoreFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingFragment"
         android:label="@string/more_title"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_more_to_settingAccountFragment"
+            app:destination="@id/settingAccountFragment" />
+        <action
+            android:id="@+id/action_more_to_settingHelpFragment"
+            app:destination="@id/settingHelpFragment" />
+        <action
+            android:id="@+id/action_more_to_transactionListFragment"
+            app:destination="@id/transactionListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/confirmFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragment"
-        android:label="ConfirmFragment">
+        android:label="ConfirmFragment"
+        tools:layout="@layout/fragment_confirm">
 
         <argument
             android:name="amount"
@@ -41,7 +52,8 @@
     <fragment
         android:id="@+id/scan"
         android:name="network.omisego.omgmerchant.pages.authorized.scan.ScanFragment"
-        android:label="ScanFragment">
+        android:label="ScanFragment"
+        tools:layout="@layout/fragment_scan">
         <action
             android:id="@+id/action_scanFragment_to_confirmFragment"
             app:destination="@id/confirmFragment" />
@@ -75,7 +87,8 @@
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.feedback.FeedbackFragment"
-        android:label="FeedbackFragment">
+        android:label="FeedbackFragment"
+        tools:layout="@layout/fragment_feedback">
         <argument
             android:name="feedback"
             app:argType="network.omisego.omgmerchant.model.Feedback" />
@@ -83,4 +96,32 @@
     <action
         android:id="@+id/action_global_feedbackFragment"
         app:destination="@id/feedbackFragment" />
+    <fragment
+        android:id="@+id/settingAccountFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountFragment"
+        android:label="SettingAccountFragment"
+        tools:layout="@layout/fragment_setting_account" />
+    <fragment
+        android:id="@+id/settingHelpFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpFragment"
+        android:label="SettingHelpFragment"
+        tools:layout="@layout/fragment_setting_help" />
+    <fragment
+        android:id="@+id/transactionListFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListFragment"
+        android:label="TransactionListFragment"
+        tools:layout="@layout/fragment_transaction_list" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.splash.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash" />
+    <action
+        android:id="@+id/action_global_splashFragment"
+        app:destination="@id/splashFragment" />
+    <fragment
+        android:id="@+id/selectAccountFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.account.SelectAccountFragment"
+        android:label="SelectAccountFragment"
+        tools:layout="@layout/fragment_select" /><action android:id="@+id/action_global_selectAccountFragment" app:destination="@id/selectAccountFragment"/>
 </navigation>

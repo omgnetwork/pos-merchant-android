@@ -12,7 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.SettingMenu
 import network.omisego.omgmerchant.storage.Storage
 
@@ -24,17 +24,17 @@ class SettingViewModel(
         SettingMenu("\uE921", app.getString(R.string.more_transaction)),
         SettingMenu("\uE91F", app.getString(R.string.more_setting_and_help))
     )
-    val liveSignOut: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
-    private val liveMenu: MutableLiveData<SettingMenu> by lazy { mutableLiveDataOf<SettingMenu>() }
+    val liveSignOut: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    private val liveMenu: MutableLiveData<Event<SettingMenu>> by lazy { MutableLiveData<Event<SettingMenu>>() }
 
     fun signOut() {
         Storage.clearEverything()
         liveSignOut.value = true
     }
 
-    fun getLiveMenu(): LiveData<SettingMenu> = liveMenu
+    fun getLiveMenu(): LiveData<Event<SettingMenu>> = liveMenu
 
     fun setLiveMenu(menu: SettingMenu?) {
-        liveMenu.value = menu
+        liveMenu.value = Event(menu!!)
     }
 }

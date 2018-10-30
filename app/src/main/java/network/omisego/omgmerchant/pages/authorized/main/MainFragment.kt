@@ -94,6 +94,13 @@ class MainFragment : Fragment() {
 
     private fun initView() {
         setupNavigationUI()
+        if (mainViewModel.getAccount() == null) {
+            findChildController().navigate(R.id.action_global_selectAccountFragment)
+        } else if (showSplash) {
+            findChildController().navigate(R.id.action_global_splashFragment)
+            showSplash = false
+            mainViewModel.loadWalletAndSave()
+        }
 //        setupToolbar()
 //        listenBottomNavSelected()
 //        subscribePageChanged()

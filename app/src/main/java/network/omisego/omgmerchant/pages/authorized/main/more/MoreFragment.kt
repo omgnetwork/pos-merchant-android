@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.more
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -40,12 +39,12 @@ class MoreFragment : Fragment() {
         menuSave = menu?.findItem(R.id.save)
         super.onCreateOptionsMenu(menu, inflater)
 
-        viewModel.getLiveMenu().observe(this, Observer {
-            menuSave?.isVisible = when (it) {
-                viewModel.menus[0] -> true
-                else -> false
-            }
-        })
+//        viewModel.getLiveMenu().observe(this, Observer {
+//            menuSave?.isVisible = when (it) {
+//                viewModel.menus[0] -> true
+//                else -> false
+//            }
+//        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

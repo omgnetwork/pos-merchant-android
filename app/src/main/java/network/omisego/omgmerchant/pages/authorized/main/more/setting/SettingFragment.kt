@@ -13,7 +13,9 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentSettingBinding
 import network.omisego.omgmerchant.extensions.dpToPx
-import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
+import network.omisego.omgmerchant.extensions.findChildController
+import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.livedata.EventObserver
 
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
@@ -32,9 +34,10 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = provideActivityAndroidViewModel()
+        viewModel = provideAndroidViewModel()
         binding.viewmodel = viewModel
         setupRecyclerView()
+        subscribeMenuHasChanged()
     }
 
     private fun setupRecyclerView() {
@@ -43,7 +46,18 @@ class SettingFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         val margin = Rect(context?.dpToPx(72f)!!, 0, 0, 0)
         recyclerView.addItemDecoration(MarginDividerDecorator(context!!, margin))
-
     }
 
+    private fun subscribeMenuHasChanged() {
+        viewModel.getLiveMenu().observe(this, EventObserver {
+            val destinationId = when (it.title) {
+                getString(R.string.more_account) -> R.id.action_more_to_settingAccountFragment
+                getString(R.string.more_transaction) -> R.id.action_more_to_transactionListFragment
+                getString(R.string.more_setting_and_help) -> R.id.action_more_to_settingHelpFragment
+                else -> throw IllegalStateException("Invalid destination $it")
+            }
+
+            findChildController().navigate(destinationId)
+        })
+    }
 }
