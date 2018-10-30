@@ -1,5 +1,4 @@
 ext {
-    appVersion = "1.0.0"
     omisego = '1.1.0'
     supportLibrary = '28.0.0-beta01'
     retrofit = '2.4.0'

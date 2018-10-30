@@ -7,4 +7,12 @@ ext {
     ktlintVersion = '4.1.0'
     monitorCrash = true
     navigationVersion = "1.0.0-alpha06"
+
+    buildToolsVersion = '28.0.3'
+    compileSdkVersion = 28
+    applicationId = "network.omisego.omgmerchant"
+    minSdkVersion = 21
+    targetSdkVersion = 27
+    versionCode = 1
+    versionName = "1.0.0"
 }
