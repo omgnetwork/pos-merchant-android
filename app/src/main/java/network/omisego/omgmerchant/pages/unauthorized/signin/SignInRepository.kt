@@ -26,6 +26,8 @@ class SignInRepository {
 
     fun loadUserEmail() = Storage.loadUserEmail()
 
+    fun hasCredential() = Storage.hasCredential()
+
     fun loadFingerprintCredential() = Storage.loadFingerprintCredential()
 
     fun saveUser(user: User) = Storage.saveUser(user)

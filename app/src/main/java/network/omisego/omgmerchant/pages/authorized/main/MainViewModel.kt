@@ -15,11 +15,7 @@ import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.LiveCalculator
-import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
-import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 
 class MainViewModel(
     private val tokenRepository: TokenRepository,
@@ -62,49 +58,49 @@ class MainViewModel(
         livePage.value = page
     }
 
-    fun createActionForScanPage(
-        receiveViewModel: ReceiveViewModel,
-        topupViewModel: TopupViewModel
-    ): MainFragmentDirections.ActionMainToScan {
-        return when (livePage.value) {
-            PAGE_RECEIVE -> {
-                MainFragmentDirections.ActionMainToScan(receiveViewModel.liveToken.value!!)
-                    .setAmount(receiveViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_RECEIVE)
-            }
-            PAGE_TOPUP -> {
-                MainFragmentDirections.ActionMainToScan(topupViewModel.liveToken.value!!)
-                    .setAmount(topupViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_TOPUP)
-            }
-            else -> {
-                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
-            }
-        }
-    }
-
-    fun createActionForConfirmPage(
-        receiveViewModel: ReceiveViewModel,
-        topupViewModel: TopupViewModel
-    ): MainFragmentDirections.ActionMainToConfirm {
-        return when (livePage.value) {
-            PAGE_RECEIVE -> {
-                MainFragmentDirections.ActionMainToConfirm(receiveViewModel.liveToken.value!!)
-                    .setAmount(receiveViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_RECEIVE)
-            }
-            PAGE_TOPUP -> {
-                MainFragmentDirections.ActionMainToConfirm(topupViewModel.liveToken.value!!)
-                    .setAmount(topupViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_TOPUP)
-            }
-            else -> {
-                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
-            }
-        }
-    }
-
-    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
-        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
-    }
+//    fun createActionForScanPage(
+//        receiveViewModel: ReceiveViewModel,
+//        topupViewModel: TopupViewModel
+//    ): MainFragmentDirections.ActionMainToScan {
+//        return when (livePage.value) {
+//            PAGE_RECEIVE -> {
+//                MainFragmentDirections.ActionMainToScan(receiveViewModel.liveToken.value!!)
+//                    .setAmount(receiveViewModel.liveCalculator.value!!)
+//                    .setTransactionType(SCAN_RECEIVE)
+//            }
+//            PAGE_TOPUP -> {
+//                MainFragmentDirections.ActionMainToScan(topupViewModel.liveToken.value!!)
+//                    .setAmount(topupViewModel.liveCalculator.value!!)
+//                    .setTransactionType(SCAN_TOPUP)
+//            }
+//            else -> {
+//                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
+//            }
+//        }
+//    }
+//
+//    fun createActionForConfirmPage(
+//        receiveViewModel: ReceiveViewModel,
+//        topupViewModel: TopupViewModel
+//    ): MainFragmentDirections.ActionMainToConfirm {
+//        return when (livePage.value) {
+//            PAGE_RECEIVE -> {
+//                MainFragmentDirections.ActionMainToConfirm(receiveViewModel.liveToken.value!!)
+//                    .setAmount(receiveViewModel.liveCalculator.value!!)
+//                    .setTransactionType(SCAN_RECEIVE)
+//            }
+//            PAGE_TOPUP -> {
+//                MainFragmentDirections.ActionMainToConfirm(topupViewModel.liveToken.value!!)
+//                    .setAmount(topupViewModel.liveCalculator.value!!)
+//                    .setTransactionType(SCAN_TOPUP)
+//            }
+//            else -> {
+//                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
+//            }
+//        }
+//    }
+//
+//    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
+//        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
+//    }
 }

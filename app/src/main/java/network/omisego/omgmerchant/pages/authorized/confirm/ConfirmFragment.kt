@@ -48,7 +48,7 @@ class ConfirmFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.args = ConfirmFragmentArgs.fromBundle(arguments)
+//        viewModel.args = ConfirmFragmentArgs.fromBundle(arguments)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }

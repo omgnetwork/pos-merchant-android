@@ -118,6 +118,8 @@ class SignInViewModel(
         return signInRepository.signIn(LoginParams(email, password), liveAPIResult)
     }
 
+    fun hasCredential(): Boolean = signInRepository.hasCredential()
+
     fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
         signInRepository.saveUser(data.user)
         return signInRepository.saveCredential(

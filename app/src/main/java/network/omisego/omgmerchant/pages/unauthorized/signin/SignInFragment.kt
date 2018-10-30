@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
@@ -23,9 +22,10 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
+import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.runOnMToP
 import network.omisego.omgmerchant.extensions.runOnM
+import network.omisego.omgmerchant.extensions.runOnMToP
 import network.omisego.omgmerchant.extensions.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
 import network.omisego.omgmerchant.extensions.toast
@@ -43,6 +43,7 @@ class SignInFragment : Fragment() {
             container,
             false
         )
+
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             scrollBottom()
         }
@@ -53,6 +54,11 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = provideAndroidViewModel()
         fingerprintViewModel = provideAndroidViewModel()
+
+        if (viewModel.hasCredential()) {
+            findRootController().navigate(R.id.action_sign_in_to_main)
+        }
+
         ivLogo.setImageDrawable(ContextCompat.getDrawable(ivLogo.context, R.drawable.omisego_logo_no_animated))
 
         setupDataBinding()
@@ -138,7 +144,7 @@ class SignInFragment : Fragment() {
         launch(UI) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserEmail(etEmail.text.toString())
-            findNavController().navigateUp()
+            findRootController().navigate(R.id.action_sign_in_to_main)
         }
     }
 

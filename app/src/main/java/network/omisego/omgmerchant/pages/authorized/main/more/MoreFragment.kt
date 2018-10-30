@@ -12,15 +12,9 @@ import android.view.ViewGroup
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
-import network.omisego.omgmerchant.extensions.replaceFragment
-import network.omisego.omgmerchant.extensions.replaceFragmentBackstack
 import network.omisego.omgmerchant.pages.authorized.main.ToolbarViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
-import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountFragment
-import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingFragment
 import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel
-import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpFragment
-import network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListFragment
 
 class MoreFragment : Fragment() {
     private lateinit var viewModel: SettingViewModel
@@ -56,31 +50,31 @@ class MoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        replaceFragment(R.id.rootFragmentMore, SettingFragment())
-
-        saveAccountViewModel.liveSaveAccount.observe(this, Observer {
-            viewModel.setLiveMenu(null)
-        })
-
-        viewModel.getLiveMenu().observe(this, Observer {
-            when (it) {
-                viewModel.menus[0] -> {
-                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingAccountFragment())
-                    toolbarViewModel.setToolbarTitle(getString(R.string.account_title))
-                }
-                viewModel.menus[1] -> {
-                    replaceFragmentBackstack(R.id.rootFragmentMore, TransactionListFragment())
-                    toolbarViewModel.setToolbarTitle(getString(R.string.transaction_list_title))
-                }
-                viewModel.menus[2] -> {
-                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingHelpFragment())
-                    toolbarViewModel.setToolbarTitle(getString(R.string.setting_help_title))
-                }
-                null -> {
-                    replaceFragment(R.id.rootFragmentMore, SettingFragment())
-                    toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
-                }
-            }
-        })
+//        replaceFragment(R.id.rootFragmentMore, SettingFragment())
+//
+//        saveAccountViewModel.liveSaveAccount.observe(this, Observer {
+//            viewModel.setLiveMenu(null)
+//        })
+//
+//        viewModel.getLiveMenu().observe(this, Observer {
+//            when (it) {
+//                viewModel.menus[0] -> {
+//                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingAccountFragment())
+//                    toolbarViewModel.setToolbarTitle(getString(R.string.account_title))
+//                }
+//                viewModel.menus[1] -> {
+//                    replaceFragmentBackstack(R.id.rootFragmentMore, TransactionListFragment())
+//                    toolbarViewModel.setToolbarTitle(getString(R.string.transaction_list_title))
+//                }
+//                viewModel.menus[2] -> {
+//                    replaceFragmentBackstack(R.id.rootFragmentMore, SettingHelpFragment())
+//                    toolbarViewModel.setToolbarTitle(getString(R.string.setting_help_title))
+//                }
+//                null -> {
+//                    replaceFragment(R.id.rootFragmentMore, SettingFragment())
+//                    toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
+//                }
+//            }
+//        })
     }
 }

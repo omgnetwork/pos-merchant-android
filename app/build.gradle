@@ -86,10 +86,4 @@ dependencies {
     testImplementation test
 }
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
-
 apply plugin: 'com.google.gms.google-services'
