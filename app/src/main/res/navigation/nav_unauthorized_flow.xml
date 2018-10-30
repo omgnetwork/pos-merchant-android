@@ -19,7 +19,9 @@
 
         <action
             android:id="@+id/action_sign_in_to_main"
-            app:destination="@id/main" />
+            app:destination="@id/main"
+            app:popUpTo="@+id/sign_in"
+            app:popUpToInclusive="true" />
     </fragment>
     <action
         android:id="@+id/action_global_sign_in"
