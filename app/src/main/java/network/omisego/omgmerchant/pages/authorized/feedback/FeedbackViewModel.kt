@@ -14,6 +14,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.graphics.drawable.Drawable
 import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
@@ -22,7 +24,8 @@ import network.omisego.omgmerchant.utils.map
 
 class FeedbackViewModel(
     val app: Application,
-    private val repository: FeedbackRepository,
+    private val localRepository: LocalRepository,
+    private val remoteRepository: RemoteRepository,
     private val transformer: FeedbackTransformer
 ) : AndroidViewModel(app) {
     val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
@@ -46,21 +49,21 @@ class FeedbackViewModel(
             SCAN_RECEIVE -> {
                 TransactionCreateParams(
                     fromAddress = feedback.source.address,
-                    toAddress = repository.loadWallet()!!.address,
+                    toAddress = localRepository.loadWallet()!!.address,
                     amount = feedback.source.amount.setScale(0),
                     tokenId = feedback.source.token.id
                 )
             }
             else -> {
                 TransactionCreateParams(
-                    fromAddress = repository.loadWallet()!!.address,
+                    fromAddress = localRepository.loadWallet()!!.address,
                     toAddress = feedback.source.address,
                     amount = feedback.source.amount.setScale(0),
                     tokenId = feedback.source.token.id
                 )
             }
         }
-        repository.transfer(params, liveTransaction)
+        remoteRepository.transfer(params, liveTransaction)
         liveLoading.value = true
     }
 
@@ -81,6 +84,6 @@ class FeedbackViewModel(
     }
 
     fun deletePersistenceFeedback() {
-        repository.deleteFeedback()
+        localRepository.deleteFeedback()
     }
 }

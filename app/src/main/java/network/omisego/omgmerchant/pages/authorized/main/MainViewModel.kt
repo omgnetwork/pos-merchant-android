@@ -9,9 +9,10 @@ package network.omisego.omgmerchant.pages.authorized.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
@@ -20,9 +21,8 @@ import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
 
 class MainViewModel(
-    private val tokenRepository: TokenRepository,
-    private val walletRepository: WalletRepository,
-    internal val mainRepository: MainRepository
+    internal val localRepository: LocalRepository,
+    val remoteRepository: RemoteRepository
 ) : ViewModel(), LoadTokenViewModel {
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     private var showSplash = true
@@ -30,22 +30,18 @@ class MainViewModel(
     val livePage: MutableLiveData<Int> by lazy { mutableLiveDataOf(PAGE_RECEIVE) }
     val liveView: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
 
-    fun getAccount() = mainRepository.getAccount()
+    fun getAccount() = localRepository.getAccount()
 
-    fun getCredential() = mainRepository.getCredential()
+    fun getCredential() = localRepository.loadCredential()
 
-    fun getFeedback() = mainRepository.getFeedback()
+    fun getFeedback() = localRepository.loadFeedback()
 
     fun getTokens() = liveTokenAPIResult.fetchedThenCache {
-        tokenRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
+        remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
         liveTokenAPIResult
     }
 
-    fun hasCredential() = mainRepository.hasCredential()
-
-    fun loadWalletAndSave() {
-        walletRepository.loadWalletAndSave(AccountWalletListParams.create(id = mainRepository.getAccount()!!.id, searchTerm = null))
-    }
+    fun hasCredential() = localRepository.hasCredential()
 
     fun handleEnableNextButtonByPager(liveCalculator: LiveCalculator, page: Int) {
         when (page) {
@@ -65,7 +61,6 @@ class MainViewModel(
         } else if (showSplash) {
             liveView.value = Event(R.id.action_global_splashFragment)
             showSplash = false
-            loadWalletAndSave()
         }
     }
 

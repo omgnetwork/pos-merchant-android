@@ -12,17 +12,18 @@ import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.params.AccountWalletListParams
 import network.omisego.omgmerchant.base.StateViewHolderBinding
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
-import network.omisego.omgmerchant.pages.authorized.main.WalletRepository
 import network.omisego.omgmerchant.storage.Storage
 
 class SettingAccountViewModel(
-    private val settingAccountRepository: SettingAccountRepository,
-    private val walletRepository: WalletRepository
+    private val localRepository: LocalRepository,
+    private val remoteRepository: RemoteRepository
 ) : ViewModel(), StateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
     val liveAccountSelect: MutableLiveData<Account> by lazy {
-        mutableLiveDataOf(settingAccountRepository.getCurrentAccount())
+        mutableLiveDataOf(localRepository.getAccount()!!)
     }
 
     override fun bind(binding: ViewholderSettingAccountBinding, data: Account) {
@@ -37,15 +38,15 @@ class SettingAccountViewModel(
     }
 
     fun loadAccount(): Account {
-        return settingAccountRepository.getCurrentAccount()!!
+        return localRepository.getAccount()!!
     }
 
     fun handleAccountClick(account: Account) {
-        walletRepository.loadWalletAndSave(
+        remoteRepository.loadWalletAndSave(
             AccountWalletListParams.create(id = account.id, searchTerm = null)
         )
         liveAccountSelect.value = account
     }
 
-    fun loadAccounts() = settingAccountRepository.loadAccounts()
+    fun loadAccounts() = remoteRepository.loadAccounts()
 }

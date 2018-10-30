@@ -31,6 +31,7 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = provideAndroidViewModel()
         val account = viewModel.loadAccount()
+        viewModel.loadWalletAndSave()
         binding.account = account
         binding.viewModel = viewModel
     }

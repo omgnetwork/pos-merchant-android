@@ -13,13 +13,14 @@ import android.arch.lifecycle.MutableLiveData
 import co.infinum.goldfinger.Goldfinger
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
+import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.storage.Storage
 
 class SettingHelpViewModel(
     val app: Application,
-    val repository: SettingHelpRepository
+    val repository: LocalRepository
 ) : AndroidViewModel(app), StateViewHolderBinding<String, ViewholderSettingHelpBinding> {
     val liveClickMenu: MutableLiveData<String> by lazy { mutableLiveDataOf<String>() }
     val liveAuthenticateSuccessful: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }

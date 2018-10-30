@@ -11,8 +11,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
 
-class SaveAccountViewModel(
-    private val repository: SettingAccountRepository
-) : ViewModel() {
+class SaveAccountViewModel : ViewModel() {
     val liveSaveAccount: MutableLiveData<Account> = MutableLiveData()
 }

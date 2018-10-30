@@ -17,22 +17,25 @@ import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.list.TransactionListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.model.APIResult
 
 class TransactionListViewModel(
     private val app: Application,
-    private val repository: TransactionListRepository,
+    private val localRepository: LocalRepository,
+    private val remoteRepository: RemoteRepository,
     private val transformer: TransactionListTransformer
 ) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
     val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
 
     /* get data from repository */
     val account: Account
-        get() = repository.getAccount()!!
+        get() = localRepository.getAccount()!!
     val wallet: Wallet
-        get() = repository.getWallet()!!
+        get() = localRepository.loadWallet()!!
 
     /* helper function */
     val Transaction.isTopup: Boolean
@@ -73,6 +76,6 @@ class TransactionListViewModel(
             perPage = 20,
             searchTerm = wallet.address
         )
-        return repository.getTransactions(params)
+        return remoteRepository.loadTransactions(params)
     }
 }

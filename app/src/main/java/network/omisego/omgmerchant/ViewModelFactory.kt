@@ -11,28 +11,24 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.model.LiveCalculator
-import network.omisego.omgmerchant.pages.authorized.account.SelectAccountRepository
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
-import network.omisego.omgmerchant.pages.authorized.main.MainRepository
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
-import network.omisego.omgmerchant.pages.authorized.main.TokenRepository
-import network.omisego.omgmerchant.pages.authorized.main.WalletRepository
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
-import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountRepository
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
-import network.omisego.omgmerchant.pages.unauthorized.signin.SignInRepository
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
-                return SelectAccountViewModel(SelectAccountRepository()) as T
+                return SelectAccountViewModel(RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(ReceiveViewModel::class.java) -> {
                 return ReceiveViewModel(
@@ -49,19 +45,18 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(
-                    TokenRepository(),
-                    WalletRepository(),
-                    MainRepository()
+                    LocalRepository(),
+                    RemoteRepository()
                 ) as T
             }
             modelClass.isAssignableFrom(SettingAccountViewModel::class.java) -> {
-                return SettingAccountViewModel(SettingAccountRepository(), WalletRepository()) as T
+                return SettingAccountViewModel(LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(SaveAccountViewModel::class.java) -> {
-                return SaveAccountViewModel(SettingAccountRepository()) as T
+                return SaveAccountViewModel() as T
             }
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
-                return ConfirmFingerprintViewModel(SignInRepository()) as T
+                return ConfirmFingerprintViewModel(RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(AddressViewModel::class.java) -> {
                 return AddressViewModel() as T

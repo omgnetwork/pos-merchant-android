@@ -18,13 +18,16 @@ import co.omisego.omisego.model.transaction.Transaction
 import co.omisego.omisego.model.transaction.TransactionSource
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 
 class ConfirmViewModel(
     val app: Application,
-    val repository: ConfirmRepository
+    val localRepository: LocalRepository,
+    val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
     lateinit var args: ConfirmFragmentArgs
     var error: APIError? = null
@@ -55,7 +58,7 @@ class ConfirmViewModel(
         }
 
     fun getUserWallet(address: String) {
-        repository.getUserWallet(WalletParams(address), liveWallet)
+        remoteRepository.loadWallet(WalletParams(address), liveWallet)
     }
 
     fun handleYesClick(view: View) {
@@ -71,14 +74,14 @@ class ConfirmViewModel(
             SCAN_RECEIVE -> {
                 return TransactionCreateParams(
                     fromAddress = payload,
-                    toAddress = repository.loadWallet().address,
+                    toAddress = localRepository.loadWallet()?.address!!,
                     amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
                     tokenId = args.token.id
                 )
             }
             else -> {
                 return TransactionCreateParams(
-                    fromAddress = repository.loadWallet().address,
+                    fromAddress = localRepository.loadWallet()?.address,
                     toAddress = payload,
                     amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
                     tokenId = args.token.id
@@ -88,11 +91,11 @@ class ConfirmViewModel(
     }
 
     fun saveFeedback(transaction: Transaction) {
-        repository.saveFeedback(args.transactionType, transaction)
+        localRepository.saveFeedback(args.transactionType, transaction)
     }
 
     fun saveFeedback(wallet: Wallet) {
-        repository.saveFeedback(
+        localRepository.saveFeedback(
             args.transactionType,
             TransactionSource(
                 wallet.address,
@@ -107,5 +110,5 @@ class ConfirmViewModel(
             error)
     }
 
-    fun transfer(params: TransactionCreateParams) = repository.transfer(params, liveTransaction)
+    fun transfer(params: TransactionCreateParams) = remoteRepository.transfer(params, liveTransaction)
 }
