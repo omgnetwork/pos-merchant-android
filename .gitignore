@@ -25,6 +25,3 @@ projectFilesBackup/
 /.idea/libraries
 /.idea/dictionaries
 /.idea/vcs.xml
-
-# Project
-dependencies.gradle

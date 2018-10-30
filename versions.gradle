@@ -1,0 +1,10 @@
+ext {
+    /* Project-level variables */
+    androidGradleVersion = '3.2.1'
+    fabricVersion = '1.25.4'
+    googleServiceVersion = '4.0.1'
+    kotlinVersion = '1.2.71'
+    ktlintVersion = '4.1.0'
+    monitorCrash = true
+    navigationVersion = "1.0.0-alpha06"
+}

@@ -1,10 +1,14 @@
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 buildscript {
-    ext.androidGradleVersion = '3.2.1'
-    ext.kotlinVersion = '1.2.71'
-    ext.navigationVersion = '1.0.0-alpha06'
-    ext.ktlintVersion = '4.1.0'
-    ext.googleServiceVersion = '4.0.1'
-    ext.monitorCrash = true
+    apply from: "versions.gradle"
 
     repositories {
         google()
@@ -18,26 +22,12 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:${navigationVersion}"
         classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:$ktlintVersion"
         classpath "com.android.tools.build:gradle:$androidGradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.google.gms:google-services:$googleServiceVersion"
-        classpath 'io.fabric.tools:gradle:1.25.4'
-
-        /* Only need for use local android-sdk */
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16"
-        classpath 'com.novoda:bintray-release:0.8.0'
-        classpath 'com.adarshr:gradle-test-logger-plugin:1.3.0'
-
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
+        classpath "io.fabric.tools:gradle:$fabricVersion"
     }
 }
 

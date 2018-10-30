@@ -72,9 +72,6 @@ dependencies {
     /* Networking */
     implementation retrofitDependencies.retrofit
     implementation retrofitDependencies.converterGson
-    implementation retrofitDependencies.adapterRxJava2
-    /* Reactive */
-    implementation rxJava2.rxandroid
     /* Load image */
     implementation glide.glide
 
