@@ -8,6 +8,7 @@ import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.security.OMGKeyManager
 import co.omisego.omisego.utils.GsonProvider
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
@@ -67,7 +68,7 @@ object Storage {
     fun loadUserEmail() = sharePref[StorageKey.KEY_USER_EMAIL]
 
     fun saveFingerprintCredential(password: String): Deferred<Unit> {
-        return async {
+        return async(Dispatchers.IO) {
             sharePref[StorageKey.KEY_FINGERPRINT_USER_PASSWORD] = password encryptWith keyManager
         }
     }

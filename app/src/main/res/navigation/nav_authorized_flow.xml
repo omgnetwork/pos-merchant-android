@@ -99,17 +99,17 @@
     <fragment
         android:id="@+id/settingAccountFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountFragment"
-        android:label="SettingAccountFragment"
+        android:label="@string/select_account_title"
         tools:layout="@layout/fragment_setting_account" />
     <fragment
         android:id="@+id/settingHelpFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpFragment"
-        android:label="SettingHelpFragment"
+        android:label="@string/setting_help_title"
         tools:layout="@layout/fragment_setting_help" />
     <fragment
         android:id="@+id/transactionListFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListFragment"
-        android:label="TransactionListFragment"
+        android:label="@string/transaction_list_title"
         tools:layout="@layout/fragment_transaction_list" />
     <fragment
         android:id="@+id/splashFragment"
@@ -122,7 +122,7 @@
     <fragment
         android:id="@+id/selectAccountFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.account.SelectAccountFragment"
-        android:label="SelectAccountFragment"
+        android:label="@string/select_account_title"
         tools:layout="@layout/fragment_select" />
     <action
         android:id="@+id/action_global_selectAccountFragment"

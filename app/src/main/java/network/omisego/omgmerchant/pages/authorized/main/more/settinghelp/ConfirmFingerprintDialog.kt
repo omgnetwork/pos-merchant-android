@@ -13,7 +13,7 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.provideViewModel
@@ -79,7 +79,7 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
     }
 
     private fun handleSignInSuccess(data: AuthenticationToken) {
-        launch(UI) {
+        launch(Dispatchers.Main) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserPassword(etPassword.text.toString())
             liveAuthenticateSuccessful?.value = true

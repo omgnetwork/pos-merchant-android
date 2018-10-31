@@ -18,7 +18,7 @@ import android.view.inputmethod.EditorInfo
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
@@ -141,7 +141,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun proceed(data: AuthenticationToken) {
-        launch(UI) {
+        launch(Dispatchers.Main) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserEmail(etEmail.text.toString())
             findRootController().navigate(R.id.action_sign_in_to_main)
