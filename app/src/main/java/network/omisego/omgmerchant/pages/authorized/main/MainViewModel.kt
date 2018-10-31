@@ -17,7 +17,6 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.fetchedThenCache
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
@@ -37,8 +36,8 @@ class MainViewModel(
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
 
     /* Control next button ui */
-    val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
-    val liveShowNext: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
+    val liveEnableNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val liveShowNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
     val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
@@ -62,7 +61,7 @@ class MainViewModel(
     val nextButtonNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
             val showNextBtnDestinationIds = arrayOf(R.id.receive, R.id.topup)
-            liveShowNext.value = Event(destination.id in showNextBtnDestinationIds)
+            liveShowNext.value = destination.id in showNextBtnDestinationIds
         }
     }
 

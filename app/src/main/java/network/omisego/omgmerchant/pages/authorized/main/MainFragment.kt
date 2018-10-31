@@ -92,8 +92,8 @@ class MainFragment : Fragment() {
             menuNext?.isEnabled = it ?: false
         })
 
-        mainViewModel.liveShowNext.observe(this, EventObserver {
-            menuNext?.isVisible = it
+        mainViewModel.liveShowNext.observe(this, Observer {
+            menuNext?.isVisible = it ?: false
         })
     }
 
@@ -108,7 +108,7 @@ class MainFragment : Fragment() {
         /* Restore the next button state */
         menuNext = menu?.findItem(R.id.next).apply {
             this?.isEnabled = mainViewModel.liveEnableNext.value!!
-            this?.isVisible = mainViewModel.liveShowNext.value?.peekContent()!!
+            this?.isVisible = mainViewModel.liveShowNext.value!!
         }
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -149,4 +149,12 @@ class MainFragment : Fragment() {
 //        }
 //
 //    }
+
+    // Slide the toolbar from top to bottom
+    // Slide the bottom navigation from bottom to top
+    private fun enterTransition() {
+    }
+
+    private fun exitTransition() {
+    }
 }

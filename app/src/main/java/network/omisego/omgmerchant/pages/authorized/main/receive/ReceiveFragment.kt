@@ -19,17 +19,12 @@ class ReceiveFragment : Fragment() {
     private lateinit var binding: FragmentReceiveBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ReceiveViewModel
-    private val calculatorObserver by lazy {
-        Observer<String> {
-            mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
-        }
-    }
+    private lateinit var calculatorObserver: Observer<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideMainFragmentViewModel()
         mainViewModel = provideActivityViewModel()
-        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,6 +39,7 @@ class ReceiveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeCalculator()
         setupDataBinding()
         viewModel.liveTokenSpinner = LiveTokenSpinner(
             spinner,
@@ -54,15 +50,17 @@ class ReceiveFragment : Fragment() {
         viewModel.startListeningTokenSpinner()
     }
 
+    private fun observeCalculator() {
+        calculatorObserver = Observer {
+            mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
+        }
+        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
+    }
+
     private fun setupDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
         binding.decorator = viewModel.numberDecorator
         binding.setLifecycleOwner(this)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        viewModel.liveCalculator.removeObserver(calculatorObserver)
     }
 }

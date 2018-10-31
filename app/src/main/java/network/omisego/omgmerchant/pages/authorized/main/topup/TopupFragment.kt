@@ -21,15 +21,12 @@ class TopupFragment : Fragment() {
     private lateinit var binding: FragmentTopupBinding
     private lateinit var viewModel: TopupViewModel
     private lateinit var mainViewModel: MainViewModel
-    private val calculatorObserver = Observer<String> {
-        mainViewModel.liveEnableNext.value = it != "0"
-    }
+    private lateinit var calculatorObserver: Observer<String>
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         viewModel = provideMainFragmentViewModel()
         mainViewModel = provideActivityViewModel()
-        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,6 +41,7 @@ class TopupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeCalculator()
         setupDataBinding()
         viewModel.liveTokenSpinner = LiveTokenSpinner(
             spinner,
@@ -54,15 +52,17 @@ class TopupFragment : Fragment() {
         viewModel.startListeningTokenSpinner()
     }
 
+    private fun observeCalculator() {
+        calculatorObserver = Observer {
+            mainViewModel.liveEnableNext.value = it != "0"
+        }
+        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
+    }
+
     private fun setupDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
         binding.decorator = NumberDecorator()
         binding.setLifecycleOwner(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.liveCalculator.removeObserver(calculatorObserver)
     }
 }
