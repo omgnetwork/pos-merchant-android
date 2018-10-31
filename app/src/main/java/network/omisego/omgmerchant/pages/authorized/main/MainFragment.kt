@@ -1,5 +1,6 @@
 package network.omisego.omgmerchant.pages.authorized.main
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
@@ -37,6 +39,7 @@ class MainFragment : Fragment() {
     private lateinit var moreFragment: MoreFragment
 
     /* Local */
+    private lateinit var binding: FragmentMainBinding
     private var menuNext: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +56,41 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_main,
+            container,
+            false
+        )
         setHasOptionsMenu(true)
-        return view
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showFullscreen(false)
+        setupNavigationUI()
+        subscribeToLiveData()
+        mainViewModel.decideDestination()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        findChildController().addOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+    }
+
+    override fun onStop() {
+        findChildController().removeOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+        super.onStop()
+    }
+
+    private fun subscribeToLiveData() {
+        binding.setLifecycleOwner(this)
+        binding.viewModel = mainViewModel
+
+        mainViewModel.liveDestinationId.observe(this, EventObserver { destinationId ->
+            findChildController().navigate(destinationId)
+        })
     }
 
     private fun setupNavigationUI() {
@@ -86,27 +121,6 @@ class MainFragment : Fragment() {
 //        }
 //    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-        mainViewModel.switchViewIfNeeded()
-    }
-
-    private fun init() {
-        setupNavigationUI()
-        showFullscreen(false)
-        findChildController().addOnNavigatedListener { _, destination ->
-            if (destination.id in arrayOf(R.id.splashFragment, R.id.selectAccountFragment)) {
-                showFullscreen(true)
-            } else {
-                showFullscreen(false)
-            }
-        }
-        mainViewModel.liveView.observe(this, EventObserver { destinationId ->
-            findChildController().navigate(destinationId)
-        })
-    }
-
     private fun showFullscreen(show: Boolean) {
         if (show) {
             bottomNavigation.visibility = View.GONE
@@ -132,69 +146,5 @@ class MainFragment : Fragment() {
 //            mainViewModel.loadWalletAndSave()
 //        }
 //
-//        /* Observe sign */
-//        settingViewModel.liveSignOut.observe(this, Observer {
-//            it?.let { isSignOut ->
-//                if (isSignOut) {
-//                    NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
-//                }
-//            }
-//        })
-//    }
-
-//    private fun subscribePageChanged() {
-//        /* Return if already subscribed */
-//        if (mainViewModel.livePage.hasObservers()) return
-//
-//        mainViewModel.livePage.observe(this, Observer {
-//            menuNext?.isVisible = true
-//            when (it!!) {
-//                PAGE_RECEIVE -> {
-//                    replaceFragment(fragment = receiveFragment)
-//                    settingViewModel.setLiveMenu(null)
-//                    mainViewModel.handleEnableNextButtonByPager(receiveViewModel.liveCalculator, PAGE_RECEIVE)
-//                    toolbarViewModel.setToolbarTitle(getString(R.string.receive_title))
-//                }
-//                PAGE_TOPUP -> {
-//                    replaceFragment(fragment = topupFragment)
-//                    settingViewModel.setLiveMenu(null)
-//                    mainViewModel.handleEnableNextButtonByPager(topupViewModel.liveCalculator, PAGE_TOPUP)
-//                    toolbarViewModel.setToolbarTitle(getString(R.string.topup_title))
-//                }
-//                PAGE_MORE -> {
-//                    replaceFragment(fragment = moreFragment)
-//                    toolbarViewModel.setToolbarTitle(getString(R.string.more_title))
-//                    menuNext?.isVisible = false
-//                }
-//            }
-//        })
-//    }
-
-//    private fun listenBottomNavSelected() {
-//        bottomNavigation.setOnNavigationItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.action_receive -> mainViewModel.movePage(PAGE_RECEIVE)
-//                R.id.action_topup -> mainViewModel.movePage(PAGE_TOPUP)
-//                R.id.action_more -> mainViewModel.movePage(PAGE_MORE)
-//                else -> throw IllegalStateException("Unsupported operation")
-//            }
-//            true
-//        }
-//    }
-
-//    private fun setupToolbar() {
-//        val hostActivity = activity as AppCompatActivity
-//        hostActivity.setSupportActionBar(toolbar)
-//        settingViewModel.getLiveMenu().observe(this, Observer { it ->
-//            if (it == null) {
-//                toolbar.navigationIcon = null
-//            } else {
-//                toolbar.navigationIcon = context?.getDrawableCompat(R.drawable.ic_arrow_back)
-//            }
-//        })
-//        toolbarViewModel.getLiveToolbarTitle().observe(this, Observer {
-//            toolbar.title = it
-//        })
-//        toolbar.setNavigationOnClickListener { settingViewModel.setLiveMenu(null) }
 //    }
 }

@@ -9,6 +9,8 @@ package network.omisego.omgmerchant.pages.authorized.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.view.View
+import androidx.navigation.NavController
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.data.LocalRepository
@@ -24,12 +26,28 @@ class MainViewModel(
     internal val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
 ) : ViewModel(), LoadTokenViewModel {
-    override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     private var showSplash = true
+
+    /* LiveData */
+    override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
     val livePage: MutableLiveData<Int> by lazy { mutableLiveDataOf(PAGE_RECEIVE) }
-    val liveView: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
+    val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
+    val liveShowFullScreen: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
+    /* Navigation listener for taking a decision to whether switch a view to full-screen  */
+    val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
+        NavController.OnNavigatedListener { _, destination ->
+            val fullScreenPageIds = arrayOf(R.id.splashFragment, R.id.selectAccountFragment)
+            liveShowFullScreen.value = if (destination.id in fullScreenPageIds) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+        }
+    }
+
+    /* Fetch data from repository */
     fun getAccount() = localRepository.getAccount()
 
     fun getCredential() = localRepository.loadCredential()
@@ -54,16 +72,17 @@ class MainViewModel(
         }
     }
 
-    fun switchViewIfNeeded() {
-        if (getAccount() == null) {
-            liveView.value = Event(R.id.action_global_selectAccountFragment)
-            showSplash = false
-        } else if (showSplash) {
-            liveView.value = Event(R.id.action_global_splashFragment)
-            showSplash = false
+    fun decideDestination() {
+        when {
+            getAccount() == null -> {
+                liveDestinationId.value = Event(R.id.action_global_selectAccountFragment)
+            }
+            showSplash -> {
+                liveDestinationId.value = Event(R.id.action_global_splashFragment)
+                showSplash = false
+            }
         }
     }
-
 //    fun createActionForScanPage(
 //        receiveViewModel: ReceiveViewModel,
 //        topupViewModel: TopupViewModel
@@ -109,4 +128,5 @@ class MainViewModel(
 //    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
 //        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
 //    }
+
 }
