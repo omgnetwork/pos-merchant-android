@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_topup.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentTopupBinding
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
 import network.omisego.omgmerchant.utils.NumberDecorator
@@ -26,7 +27,7 @@ class TopupFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        viewModel = provideActivityViewModel()
+        viewModel = provideMainFragmentViewModel()
         mainViewModel = provideActivityViewModel()
         viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }

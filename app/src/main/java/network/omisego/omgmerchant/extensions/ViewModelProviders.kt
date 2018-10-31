@@ -14,9 +14,30 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import network.omisego.omgmerchant.AndroidViewModelFactory
 import network.omisego.omgmerchant.ViewModelFactory
+import network.omisego.omgmerchant.pages.authorized.main.MainFragment
 
 inline fun <reified T : ViewModel> Fragment.provideActivityViewModel(): T {
     return ViewModelProviders.of(activity!!, ViewModelFactory())[T::class.java]
+}
+
+inline fun <reified T : ViewModel> Fragment.provideMainFragmentViewModel(): T {
+    var parent: Fragment? = parentFragment
+    while (parent != null) {
+        if (parent is MainFragment)
+            return ViewModelProviders.of(parent, ViewModelFactory())[T::class.java]
+        parent = parent.parentFragment
+    }
+    throw IllegalStateException("The specified fragment is not a child of MainFragment.")
+}
+
+inline fun <reified T : AndroidViewModel> Fragment.provideMainFragmentAndroidViewModel(): T {
+    var parent: Fragment? = parentFragment
+    while (parent != null) {
+        if (parent is MainFragment)
+            return ViewModelProviders.of(parent, AndroidViewModelFactory(this.activity!!.application))[T::class.java]
+        parent = parent.parentFragment
+    }
+    throw IllegalStateException("The specified fragment is not a child of MainFragment.")
 }
 
 inline fun <reified T : AndroidViewModel> Fragment.provideActivityAndroidViewModel(): T {

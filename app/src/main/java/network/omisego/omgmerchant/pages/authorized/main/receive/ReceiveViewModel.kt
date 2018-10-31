@@ -8,6 +8,7 @@ import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
+import network.omisego.omgmerchant.utils.NumberDecorator
 
 /*
  * OmiseGO
@@ -23,6 +24,7 @@ class ReceiveViewModel(
 ) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null
+    val numberDecorator: NumberDecorator by lazy { NumberDecorator() }
 
     /* Implement CalculatorInteraction.Operation */
     override fun onAppend(char: CharSequence) {
