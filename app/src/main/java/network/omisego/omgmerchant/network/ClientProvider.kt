@@ -47,7 +47,7 @@ object ClientProvider {
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
+                        level = HttpLoggingInterceptor.Level.BASIC
                     }
                 )
             }.build()

@@ -1,8 +1,10 @@
 package network.omisego.omgmerchant.pages.authorized.main
 
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,14 +16,10 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
-import network.omisego.omgmerchant.extensions.provideActivityAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.livedata.EventObserver
-import network.omisego.omgmerchant.pages.authorized.main.more.MoreFragment
-import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel
-import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
-import network.omisego.omgmerchant.pages.authorized.main.topup.TopupFragment
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
 
@@ -32,11 +30,6 @@ class MainFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
     private lateinit var addressViewModel: AddressViewModel
-    private lateinit var settingViewModel: SettingViewModel
-    private lateinit var toolbarViewModel: ToolbarViewModel
-    private lateinit var receiveFragment: ReceiveFragment
-    private lateinit var topupFragment: TopupFragment
-    private lateinit var moreFragment: MoreFragment
 
     /* Local */
     private lateinit var binding: FragmentMainBinding
@@ -44,15 +37,10 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addressViewModel = provideActivityViewModel()
+        addressViewModel = provideMainFragmentViewModel()
         mainViewModel = provideActivityViewModel()
-        receiveViewModel = provideActivityViewModel()
-        topupViewModel = provideActivityViewModel()
-        settingViewModel = provideActivityAndroidViewModel()
-        toolbarViewModel = provideActivityAndroidViewModel()
-        receiveFragment = ReceiveFragment()
-        topupFragment = TopupFragment()
-        moreFragment = MoreFragment()
+        receiveViewModel = provideMainFragmentViewModel()
+        topupViewModel = provideMainFragmentViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,7 +56,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showFullscreen(false)
+        setupToolbar()
         setupNavigationUI()
         subscribeToLiveData()
         mainViewModel.decideDestination()
@@ -77,10 +65,12 @@ class MainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         findChildController().addOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+        findChildController().addOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
     }
 
     override fun onStop() {
         findChildController().removeOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+        findChildController().removeOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
         super.onStop()
     }
 
@@ -91,6 +81,14 @@ class MainFragment : Fragment() {
         mainViewModel.liveDestinationId.observe(this, EventObserver { destinationId ->
             findChildController().navigate(destinationId)
         })
+
+        mainViewModel.liveEnableNext.observe(this, Observer {
+            menuNext?.isEnabled = it ?: false
+        })
+
+        mainViewModel.liveShowNext.observe(this, EventObserver {
+            menuNext?.isVisible = it
+        })
     }
 
     private fun setupNavigationUI() {
@@ -99,12 +97,14 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-//        inflater?.inflate(R.menu.menu_main, menu)
-//        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
-//        mainViewModel.liveEnableNext.observe(this, Observer {
-//            menuNext?.isEnabled = it ?: false
-//        })
-//        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_main, menu)
+        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun setupToolbar() {
+        val hostActivity = activity as AppCompatActivity
+        hostActivity.setSupportActionBar(toolbar)
     }
 
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -120,16 +120,6 @@ class MainFragment : Fragment() {
 //            else -> return super.onOptionsItemSelected(item)
 //        }
 //    }
-
-    private fun showFullscreen(show: Boolean) {
-        if (show) {
-            bottomNavigation.visibility = View.GONE
-            toolbar.visibility = View.GONE
-        } else {
-            bottomNavigation.visibility = View.VISIBLE
-            toolbar.visibility = View.VISIBLE
-        }
-    }
 
 //    private fun setupConditionalNavigationGraph() {
 //        if (!mainViewModel.hasCredential()) {

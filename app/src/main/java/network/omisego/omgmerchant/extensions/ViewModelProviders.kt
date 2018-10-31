@@ -21,7 +21,7 @@ inline fun <reified T : ViewModel> Fragment.provideActivityViewModel(): T {
 }
 
 inline fun <reified T : ViewModel> Fragment.provideMainFragmentViewModel(): T {
-    var parent: Fragment? = parentFragment
+    var parent: Fragment? = this
     while (parent != null) {
         if (parent is MainFragment)
             return ViewModelProviders.of(parent, ViewModelFactory())[T::class.java]
@@ -31,7 +31,7 @@ inline fun <reified T : ViewModel> Fragment.provideMainFragmentViewModel(): T {
 }
 
 inline fun <reified T : AndroidViewModel> Fragment.provideMainFragmentAndroidViewModel(): T {
-    var parent: Fragment? = parentFragment
+    var parent: Fragment? = this
     while (parent != null) {
         if (parent is MainFragment)
             return ViewModelProviders.of(parent, AndroidViewModelFactory(this.activity!!.application))[T::class.java]

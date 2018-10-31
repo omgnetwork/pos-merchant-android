@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +46,6 @@ class SelectAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
         adapter = LoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_account, viewModel)
         val margin = Rect(context?.dpToPx(96f)!!, 0, 0, 0)
         dividerDecorator = MarginDividerDecorator(context!!, margin)
@@ -56,12 +54,6 @@ class SelectAccountFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(dividerDecorator)
         listen()
-    }
-
-    private fun setupToolbar() {
-        val hostActivity = activity as AppCompatActivity
-        hostActivity.setSupportActionBar(toolbar)
-        hostActivity.supportActionBar?.title = getString(R.string.select_account_title)
     }
 
     private fun listen() {

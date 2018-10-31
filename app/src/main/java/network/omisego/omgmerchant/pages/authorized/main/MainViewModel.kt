@@ -30,9 +30,17 @@ class MainViewModel(
 
     /* LiveData */
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+
+    /* Control next button ui */
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
+    val liveShowNext: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
+
     val livePage: MutableLiveData<Int> by lazy { mutableLiveDataOf(PAGE_RECEIVE) }
+
+    /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
     val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
+
+    /* Control whether should hide toolbar or bottom navigation e.g. the select account page has its own toolbar, so we don't need to show it. */
     val liveShowFullScreen: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
@@ -44,6 +52,14 @@ class MainViewModel(
             } else {
                 View.VISIBLE
             }
+        }
+    }
+
+    /* Navigation listener for taking a decision to whether should show the next button on the toolbar */
+    val nextButtonNavigatedListener: NavController.OnNavigatedListener by lazy {
+        NavController.OnNavigatedListener { _, destination ->
+            val showNextBtnDestinationIds = arrayOf(R.id.receive, R.id.topup)
+            liveShowNext.value = Event(destination.id in showNextBtnDestinationIds)
         }
     }
 
