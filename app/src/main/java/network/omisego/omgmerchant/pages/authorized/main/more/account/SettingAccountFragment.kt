@@ -22,21 +22,19 @@ import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentSettingAccountBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.dpToPx
-import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
 class SettingAccountFragment : Fragment() {
     private lateinit var binding: FragmentSettingAccountBinding
     private lateinit var viewModel: SettingAccountViewModel
-    private lateinit var saveAccountViewModel: SaveAccountViewModel
     private lateinit var adapter: LoadingRecyclerAdapter<Account, ViewholderSettingAccountBinding>
     private var menuSave: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideViewModel()
-        saveAccountViewModel = provideActivityViewModel()
         setHasOptionsMenu(true)
     }
 
@@ -52,10 +50,8 @@ class SettingAccountFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_account, menu)
         menuSave = menu?.findItem(R.id.save)
-        viewModel.liveAccountSelect.observe(this, Observer {
-            menuSave?.isEnabled = viewModel.loadAccount().id != it?.id
-        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -63,7 +59,7 @@ class SettingAccountFragment : Fragment() {
             R.id.save -> {
                 val account = viewModel.saveAccount()
                 toast("Change account to ${account.name}")
-                saveAccountViewModel.liveSaveAccount.value = account
+                findChildController().navigateUp()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -79,16 +75,20 @@ class SettingAccountFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(dividerDecorator)
-        listen()
+        adapter.addLoadingItems(10)
+        observeLiveData()
     }
 
-    private fun listen() {
-        adapter.addLoadingItems(10)
+    private fun observeLiveData() {
         viewModel.loadAccounts().observe(this, Observer {
             it?.handle(
                 this::handleLoadAccount,
                 this::handleLoadAccountFail
             )
+        })
+
+        viewModel.liveAccountSelect.observe(this, Observer {
+            menuSave?.isEnabled = viewModel.loadAccount().id != it?.id
         })
     }
 

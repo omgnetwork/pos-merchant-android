@@ -98,7 +98,13 @@ class MainFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_main, menu)
-        menuNext = menu?.findItem(R.id.next).apply { this?.isEnabled = mainViewModel.liveEnableNext.value!! }
+
+        /* Restore the next button state */
+        menuNext = menu?.findItem(R.id.next).apply {
+            this?.isEnabled = mainViewModel.liveEnableNext.value!!
+            this?.isVisible = mainViewModel.liveShowNext.value?.peekContent()!!
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -107,19 +113,19 @@ class MainFragment : Fragment() {
         hostActivity.setSupportActionBar(toolbar)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.next -> {
-//                val action = mainViewModel.createActionForScanPage(
-//                    receiveViewModel,
-//                    topupViewModel
-//                )
-//                NavHostFragment.findNavController(this).navigate(action)
-//                true
-//            }
-//            else -> return super.onOptionsItemSelected(item)
-//        }
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.next -> {
+                val action = mainViewModel.createActionForScanPage(
+                    receiveViewModel,
+                    topupViewModel
+                )
+                findChildController().navigate(action)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 
 //    private fun setupConditionalNavigationGraph() {
 //        if (!mainViewModel.hasCredential()) {

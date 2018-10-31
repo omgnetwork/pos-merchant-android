@@ -12,6 +12,7 @@ import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
 import co.omisego.omisego.model.params.TokenListParams
+import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
@@ -20,7 +21,11 @@ import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
+import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 
 class MainViewModel(
     internal val localRepository: LocalRepository,
@@ -46,7 +51,7 @@ class MainViewModel(
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
-            val fullScreenPageIds = arrayOf(R.id.splashFragment, R.id.selectAccountFragment)
+            val fullScreenPageIds = arrayOf(R.id.splashFragment, R.id.selectAccountFragment, R.id.scan)
             liveShowFullScreen.value = if (destination.id in fullScreenPageIds) {
                 View.GONE
             } else {
@@ -99,26 +104,27 @@ class MainViewModel(
             }
         }
     }
-//    fun createActionForScanPage(
-//        receiveViewModel: ReceiveViewModel,
-//        topupViewModel: TopupViewModel
-//    ): MainFragmentDirections.ActionMainToScan {
-//        return when (livePage.value) {
-//            PAGE_RECEIVE -> {
-//                MainFragmentDirections.ActionMainToScan(receiveViewModel.liveToken.value!!)
-//                    .setAmount(receiveViewModel.liveCalculator.value!!)
-//                    .setTransactionType(SCAN_RECEIVE)
-//            }
-//            PAGE_TOPUP -> {
-//                MainFragmentDirections.ActionMainToScan(topupViewModel.liveToken.value!!)
-//                    .setAmount(topupViewModel.liveCalculator.value!!)
-//                    .setTransactionType(SCAN_TOPUP)
-//            }
-//            else -> {
-//                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
-//            }
-//        }
-//    }
+
+    fun createActionForScanPage(
+        receiveViewModel: ReceiveViewModel,
+        topupViewModel: TopupViewModel
+    ): NavBottomNavigationDirections.ActionGlobalScanFragment {
+        return when (livePage.value) {
+            PAGE_RECEIVE -> {
+                NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveToken.value!!)
+                    .setAmount(receiveViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_RECEIVE)
+            }
+            PAGE_TOPUP -> {
+                NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveToken.value!!)
+                    .setAmount(topupViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_TOPUP)
+            }
+            else -> {
+                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
+            }
+        }
+    }
 //
 //    fun createActionForConfirmPage(
 //        receiveViewModel: ReceiveViewModel,
