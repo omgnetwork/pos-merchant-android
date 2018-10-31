@@ -4,4 +4,5 @@
     <dimen name="btn_fingerprint_padding_end">64dp</dimen>
     <dimen name="fragment_sign_in_padding_horizontal">40dp</dimen>
     <dimen name="fragment_sign_in_margin_vertical">8dp</dimen>
+    <dimen name="dropdown_token_list_width">128dp</dimen>
 </resources>

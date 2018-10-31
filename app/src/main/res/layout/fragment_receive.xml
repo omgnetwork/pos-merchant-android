@@ -65,7 +65,7 @@
 
         <com.jaredrummler.materialspinner.MaterialSpinner
             android:id="@+id/spinner"
-            android:layout_width="128dp"
+            android:layout_width="@dimen/dropdown_token_list_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"

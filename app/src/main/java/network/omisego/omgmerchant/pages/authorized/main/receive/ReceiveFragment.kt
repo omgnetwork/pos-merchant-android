@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
-import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
@@ -64,7 +63,6 @@ class ReceiveFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        logi("onDetach")
         viewModel.liveCalculator.removeObserver(calculatorObserver)
     }
 }
