@@ -20,7 +20,6 @@ import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
-import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
@@ -32,6 +31,7 @@ class MainViewModel(
     val remoteRepository: RemoteRepository
 ) : ViewModel(), LoadTokenViewModel {
     private var showSplash = true
+    private var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
 
     /* LiveData */
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
@@ -39,8 +39,6 @@ class MainViewModel(
     /* Control next button ui */
     val liveEnableNext: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
     val liveShowNext: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
-
-    val livePage: MutableLiveData<Int> by lazy { mutableLiveDataOf(PAGE_RECEIVE) }
 
     /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
     val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
@@ -68,6 +66,17 @@ class MainViewModel(
         }
     }
 
+    /* Navigation listener for set calculator mode when changing between receive and topup page */
+    val calculatorModeNavigatedListener: NavController.OnNavigatedListener by lazy {
+        NavController.OnNavigatedListener { _, destination ->
+            currentCalculatorMode = when (destination.id) {
+                R.id.receive -> CalculatorMode.RECEIVE
+                R.id.topup -> CalculatorMode.TOPUP
+                else -> currentCalculatorMode
+            }
+        }
+    }
+
     /* Fetch data from repository */
     fun getAccount() = localRepository.getAccount()
 
@@ -81,17 +90,6 @@ class MainViewModel(
     }
 
     fun hasCredential() = localRepository.hasCredential()
-
-    fun handleEnableNextButtonByPager(liveCalculator: LiveCalculator, page: Int) {
-        when (page) {
-            PAGE_RECEIVE -> {
-                liveEnableNext.value = liveCalculator.value != "0" &&
-                    liveCalculator.value?.indexOfAny(charArrayOf('-', '+')) == -1
-            }
-            PAGE_TOPUP -> liveEnableNext.value = liveCalculator.value != "0"
-            PAGE_MORE -> liveEnableNext.value = false
-        }
-    }
 
     fun decideDestination() {
         when {
@@ -109,19 +107,16 @@ class MainViewModel(
         receiveViewModel: ReceiveViewModel,
         topupViewModel: TopupViewModel
     ): NavBottomNavigationDirections.ActionGlobalScanFragment {
-        return when (livePage.value) {
-            PAGE_RECEIVE -> {
+        return when (currentCalculatorMode) {
+            CalculatorMode.RECEIVE -> {
                 NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveToken.value!!)
                     .setAmount(receiveViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_RECEIVE)
             }
-            PAGE_TOPUP -> {
+            CalculatorMode.TOPUP -> {
                 NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveToken.value!!)
                     .setAmount(topupViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_TOPUP)
-            }
-            else -> {
-                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
             }
         }
     }

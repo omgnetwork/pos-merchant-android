@@ -64,13 +64,19 @@ class MainFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        findChildController().addOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
-        findChildController().addOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
+        with(findChildController()) {
+            addOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+            addOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
+            addOnNavigatedListener(mainViewModel.calculatorModeNavigatedListener)
+        }
     }
 
     override fun onStop() {
-        findChildController().removeOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
-        findChildController().removeOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
+        with(findChildController()) {
+            removeOnNavigatedListener(mainViewModel.calculatorModeNavigatedListener)
+            removeOnNavigatedListener(mainViewModel.fullScreenNavigatedListener)
+            removeOnNavigatedListener(mainViewModel.nextButtonNavigatedListener)
+        }
         super.onStop()
     }
 
