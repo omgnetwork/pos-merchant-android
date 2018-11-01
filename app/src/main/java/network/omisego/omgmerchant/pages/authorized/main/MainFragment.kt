@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addressViewModel = provideMainFragmentViewModel()
+        addressViewModel = provideActivityViewModel()
         mainViewModel = provideActivityViewModel()
         receiveViewModel = provideMainFragmentViewModel()
         topupViewModel = provideMainFragmentViewModel()
@@ -99,6 +99,12 @@ class MainFragment : Fragment() {
         mainViewModel.liveShowNext.observe(this, Observer {
             menuNext?.isVisible = it ?: false
         })
+
+        addressViewModel.liveAddress.observe(this, Observer {
+            findChildController().navigateUp()
+            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
+            addressViewModel.removeCache(it)
+        })
     }
 
     private fun setupNavigationUI() {
@@ -158,12 +164,4 @@ class MainFragment : Fragment() {
 //        }
 //
 //    }
-
-    // Slide the toolbar from top to bottom
-    // Slide the bottom navigation from bottom to top
-    private fun enterTransition() {
-    }
-
-    private fun exitTransition() {
-    }
 }

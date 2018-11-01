@@ -2,7 +2,6 @@ package network.omisego.omgmerchant.pages.authorized.scan
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
-import co.omisego.omisego.qrcode.scanner.SimpleVerifier
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -29,9 +26,6 @@ class ScanFragment : Fragment() {
     private lateinit var binding: FragmentScanBinding
     private lateinit var viewModel: ScanViewModel
     private lateinit var addressViewModel: AddressViewModel
-    private val verifier: OMGQRScannerContract.Preview.Verifier by lazy {
-        SimpleVerifier(binding.scanner, addressViewModel)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +55,6 @@ class ScanFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        addressViewModel.liveAddress.observe(this, Observer {
-            if (it != null)
-                findNavController().navigateUp()
-        })
     }
 
     private fun handleCameraPermission() {
@@ -82,7 +71,7 @@ class ScanFragment : Fragment() {
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    binding.scanner.startCameraWithVerifier(verifier)
+                    binding.scanner.startCameraWithVerifier(addressViewModel)
                 }
 
                 override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {

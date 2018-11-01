@@ -38,7 +38,6 @@ class ConfirmFragment : Fragment() {
         viewModel = provideAndroidViewModel()
         addressViewModel = provideActivityViewModel()
         viewModel.address = addressViewModel.liveAddress.value!!
-        addressViewModel.liveAddress.value = null
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,7 +47,7 @@ class ConfirmFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.args = ConfirmFragmentArgs.fromBundle(arguments)
+        viewModel.args = ConfirmFragmentArgs.fromBundle(arguments)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }

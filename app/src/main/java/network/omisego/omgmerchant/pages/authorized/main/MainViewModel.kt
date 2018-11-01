@@ -119,28 +119,25 @@ class MainViewModel(
             }
         }
     }
-//
-//    fun createActionForConfirmPage(
-//        receiveViewModel: ReceiveViewModel,
-//        topupViewModel: TopupViewModel
-//    ): MainFragmentDirections.ActionMainToConfirm {
-//        return when (livePage.value) {
-//            PAGE_RECEIVE -> {
-//                MainFragmentDirections.ActionMainToConfirm(receiveViewModel.liveToken.value!!)
-//                    .setAmount(receiveViewModel.liveCalculator.value!!)
-//                    .setTransactionType(SCAN_RECEIVE)
-//            }
-//            PAGE_TOPUP -> {
-//                MainFragmentDirections.ActionMainToConfirm(topupViewModel.liveToken.value!!)
-//                    .setAmount(topupViewModel.liveCalculator.value!!)
-//                    .setTransactionType(SCAN_TOPUP)
-//            }
-//            else -> {
-//                throw IllegalStateException("Page ${livePage.value} doesn't currently support.")
-//            }
-//        }
-//    }
-//
+
+    fun createActionForConfirmPage(
+        receiveViewModel: ReceiveViewModel,
+        topupViewModel: TopupViewModel
+    ): NavBottomNavigationDirections.ActionGlobalConfirmFragment {
+        return when (currentCalculatorMode) {
+            CalculatorMode.RECEIVE -> {
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(receiveViewModel.liveToken.value!!)
+                    .setAmount(receiveViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_RECEIVE)
+            }
+            CalculatorMode.TOPUP -> {
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(topupViewModel.liveToken.value!!)
+                    .setAmount(topupViewModel.liveCalculator.value!!)
+                    .setTransactionType(SCAN_TOPUP)
+            }
+        }
+    }
+
 //    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
 //        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
 //    }

@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/confirmFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragment"
-        android:label="ConfirmFragment"
+        android:label="@string/confirm_title"
         tools:layout="@layout/fragment_confirm">
 
         <argument
@@ -54,9 +54,6 @@
         android:name="network.omisego.omgmerchant.pages.authorized.scan.ScanFragment"
         android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
-        <action
-            android:id="@+id/action_scanFragment_to_confirmFragment"
-            app:destination="@id/confirmFragment" />
         <argument
             android:name="amount"
             android:defaultValue="0"
@@ -136,5 +133,5 @@
         tools:layout="@layout/fragment_select" />
     <action
         android:id="@+id/action_global_selectAccountFragment"
-        app:destination="@id/selectAccountFragment" />
+        app:destination="@id/selectAccountFragment" /><action android:id="@+id/action_global_confirmFragment" app:destination="@id/confirmFragment"/>
 </navigation>
