@@ -10,6 +10,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,7 +22,6 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:visibility="@{viewModel.liveShowFullScreen}"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -37,10 +37,9 @@
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@drawable/numpad_background_white"
-            android:visibility="@{viewModel.liveShowFullScreen}"
             app:itemIconTint="@color/color_gray_blue"
             app:itemTextColor="@color/color_gray_blue"
             app:menu="@menu/menu_bottom_nav" />

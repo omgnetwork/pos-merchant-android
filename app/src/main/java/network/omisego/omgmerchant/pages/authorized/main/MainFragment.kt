@@ -88,6 +88,10 @@ class MainFragment : Fragment() {
             findChildController().navigate(destinationId)
         })
 
+        mainViewModel.liveShowFullScreen.observe(this, Observer {
+            showFullscreen(it)
+        })
+
         mainViewModel.liveEnableNext.observe(this, Observer {
             menuNext?.isEnabled = it ?: false
         })
@@ -131,6 +135,11 @@ class MainFragment : Fragment() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showFullscreen(show: Int?) {
+        bottomNavigation.visibility = show ?: View.VISIBLE
+        toolbar.visibility = show ?: View.VISIBLE
     }
 
 //    private fun setupConditionalNavigationGraph() {
