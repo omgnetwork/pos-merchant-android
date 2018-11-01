@@ -22,7 +22,9 @@ import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import java.util.Date
 
 class ConfirmViewModel(
     val app: Application,
@@ -90,12 +92,12 @@ class ConfirmViewModel(
         }
     }
 
-    fun saveFeedback(transaction: Transaction) {
-        localRepository.saveFeedback(args.transactionType, transaction)
+    fun createFeedback(transaction: Transaction): Feedback {
+        return createFeedback(args.transactionType, transaction)
     }
 
-    fun saveFeedback(wallet: Wallet) {
-        localRepository.saveFeedback(
+    fun createFeedback(wallet: Wallet): Feedback {
+        return createFeedback(
             args.transactionType,
             TransactionSource(
                 wallet.address,
@@ -108,6 +110,40 @@ class ConfirmViewModel(
                 null
             ),
             error)
+    }
+
+    private fun createFeedback(transactionType: String, source: TransactionSource, error: APIError? = null): Feedback {
+        return if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
+            false,
+            transactionType,
+            Date(),
+            source,
+            error
+        ) else {
+            Feedback(
+                false,
+                transactionType,
+                Date(),
+                source,
+                error
+            )
+        }
+    }
+
+    fun createFeedback(transactionType: String, transaction: Transaction): Feedback {
+        return if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
+            true,
+            transactionType,
+            transaction.createdAt,
+            transaction.from
+        ) else {
+            Feedback(
+                true,
+                transactionType,
+                transaction.createdAt,
+                transaction.to
+            )
+        }
     }
 
     fun transfer(params: TransactionCreateParams) = remoteRepository.transfer(params, liveTransaction)

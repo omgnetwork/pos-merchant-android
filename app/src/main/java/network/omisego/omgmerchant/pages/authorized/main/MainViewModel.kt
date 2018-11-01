@@ -19,6 +19,7 @@ import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
@@ -45,10 +46,19 @@ class MainViewModel(
     /* Control whether should hide toolbar or bottom navigation e.g. the select account page has its own toolbar, so we don't need to show it. */
     val liveShowFullScreen: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
+    /* Control feedback object which is set from the confirmation page */
+    val liveFeedback: MutableLiveData<Feedback> by lazy { MutableLiveData<Feedback>() }
+
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
-            val fullScreenPageIds = arrayOf(R.id.splashFragment, R.id.selectAccountFragment, R.id.scan)
+            val fullScreenPageIds = arrayOf(
+                R.id.splashFragment,
+                R.id.selectAccountFragment,
+                R.id.scan,
+                R.id.confirmFragment,
+                R.id.feedbackFragment
+            )
             liveShowFullScreen.value = if (destination.id in fullScreenPageIds) {
                 View.GONE
             } else {
@@ -138,8 +148,7 @@ class MainViewModel(
         }
     }
 
-//    fun createActionForFeedbackPage(): MainFragmentDirections.ActionMainToFeedback {
-//        return MainFragmentDirections.ActionMainToFeedback(getFeedback()!!)
-//    }
-
+    fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
+        return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
+    }
 }

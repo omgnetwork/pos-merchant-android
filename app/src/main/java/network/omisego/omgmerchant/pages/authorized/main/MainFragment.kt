@@ -11,11 +11,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
+import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.livedata.EventObserver
@@ -100,6 +103,12 @@ class MainFragment : Fragment() {
             menuNext?.isVisible = it ?: false
         })
 
+        mainViewModel.liveFeedback.observe(this, Observer { feedback ->
+            feedback ?: return@Observer
+            findChildController().navigateUp()
+            findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
+        })
+
         addressViewModel.liveAddress.observe(this, Observer {
             findChildController().navigateUp()
             findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
@@ -108,6 +117,11 @@ class MainFragment : Fragment() {
     }
 
     private fun setupNavigationUI() {
+        findChildController().addOnNavigatedListener(object: NavController.OnNavigatedListener {
+            override fun onNavigated(controller: NavController, destination: NavDestination) {
+                logi(destination.label)
+            }
+        })
         bottomNavigation.setupWithNavController(findChildController())
         toolbar.setupWithNavController(findChildController())
     }

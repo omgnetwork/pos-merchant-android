@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Wallet
@@ -26,17 +25,20 @@ import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.livedata.EventObserver
+import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
 
 class ConfirmFragment : Fragment() {
     private lateinit var binding: FragmentConfirmBinding
     private lateinit var viewModel: ConfirmViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var addressViewModel: AddressViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideAndroidViewModel()
         addressViewModel = provideActivityViewModel()
+        mainViewModel = provideActivityViewModel()
         viewModel.address = addressViewModel.liveAddress.value!!
     }
 
@@ -54,8 +56,7 @@ class ConfirmFragment : Fragment() {
 
     private fun handleTransferSuccess(transaction: Transaction) {
         logi(transaction)
-        viewModel.saveFeedback(transaction)
-        NavHostFragment.findNavController(this).navigateUp()
+        mainViewModel.liveFeedback.value = viewModel.createFeedback(transaction)
     }
 
     private fun handleTransferFail(error: APIError) {
@@ -65,8 +66,7 @@ class ConfirmFragment : Fragment() {
     }
 
     private fun handleGetWalletSuccess(wallet: Wallet) {
-        viewModel.saveFeedback(wallet)
-        findNavController().navigateUp()
+        mainViewModel.liveFeedback.value = viewModel.createFeedback(wallet)
     }
 
     private fun handleGetWalletFailed(error: APIError) {
