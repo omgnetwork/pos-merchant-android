@@ -1,11 +1,9 @@
 package network.omisego.omgmerchant.pages.authorized.scan
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +16,21 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentScanBinding
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 
-class ScanFragment : Fragment() {
+class ScanFragment : BaseFragment() {
     private lateinit var binding: FragmentScanBinding
     private lateinit var viewModel: ScanViewModel
     private lateinit var addressViewModel: AddressViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onReceiveArgs() {
+        viewModel.args = ScanFragmentArgs.fromBundle(arguments)
+    }
+
+    override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
         addressViewModel = provideActivityViewModel()
     }
@@ -43,18 +45,23 @@ class ScanFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /* Setup ViewModel */
-        viewModel.args = ScanFragmentArgs.fromBundle(arguments)
-
-        /* Binding */
+    override fun onBindDataBinding() {
         binding.viewModel = viewModel
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    override fun onObserveLiveData() {}
+
+    override fun onStart() {
+        super.onStart()
+        handleCameraPermission()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.scanner.stopCamera()
     }
 
     private fun handleCameraPermission() {
@@ -83,15 +90,5 @@ class ScanFragment : Fragment() {
                 }
             })
             .check()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        handleCameraPermission()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        binding.scanner.stopCamera()
     }
 }

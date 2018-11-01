@@ -2,7 +2,6 @@ package network.omisego.omgmerchant.pages.authorized.main
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,6 +12,7 @@ import android.view.ViewGroup
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.observeEventFor
@@ -23,7 +23,7 @@ import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewMode
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment() {
 
     /* ViewModel */
     private lateinit var receiveViewModel: ReceiveViewModel
@@ -35,8 +35,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private var menuNext: MenuItem? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onProvideViewModel() {
         addressViewModel = provideActivityViewModel()
         mainViewModel = provideMainFragmentViewModel()
         receiveViewModel = provideMainFragmentViewModel()
@@ -58,9 +57,40 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupNavigationUI()
-        subscribeToLiveData()
         mainViewModel.getTokens()
         mainViewModel.decideDestination()
+    }
+
+    override fun onBindDataBinding() {
+        binding.setLifecycleOwner(this)
+        binding.viewModel = mainViewModel
+    }
+
+    override fun onObserveLiveData() {
+        with(mainViewModel) {
+            observeEventFor(liveDestinationId) { destinationId ->
+                findChildController().navigate(destinationId)
+            }
+            observeFor(liveShowFullScreen) {
+                showFullscreen(it)
+            }
+            observeFor(liveEnableNext) {
+                menuNext?.isEnabled = it
+            }
+            observeFor(liveShowNext) {
+                menuNext?.isVisible = it
+            }
+            observeFor(liveFeedback) { feedback ->
+                findChildController().navigateUp()
+                findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
+            }
+        }
+
+        observeFor(addressViewModel.liveAddress) {
+            findChildController().navigateUp()
+            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
+            addressViewModel.removeCache(it)
+        }
     }
 
     override fun onStart() {
@@ -104,36 +134,6 @@ class MainFragment : Fragment() {
                 true
             }
             else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun subscribeToLiveData() {
-        binding.setLifecycleOwner(this)
-        binding.viewModel = mainViewModel
-
-        with(mainViewModel) {
-            observeEventFor(liveDestinationId) { destinationId ->
-                findChildController().navigate(destinationId)
-            }
-            observeFor(liveShowFullScreen) {
-                showFullscreen(it)
-            }
-            observeFor(liveEnableNext) {
-                menuNext?.isEnabled = it
-            }
-            observeFor(liveShowNext) {
-                menuNext?.isVisible = it
-            }
-            observeFor(liveFeedback) { feedback ->
-                findChildController().navigateUp()
-                findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
-            }
-        }
-
-        observeFor(addressViewModel.liveAddress) {
-            findChildController().navigateUp()
-            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-            addressViewModel.removeCache(it)
         }
     }
 

@@ -29,8 +29,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:cropToPadding="true"
             android:background="@drawable/shape_round_corner"
+            android:cropToPadding="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,11 +64,11 @@
             android:textColor="@color/colorBlue"
             android:textSize="18sp"
             app:account="@{account}"
-            app:savedAccount="@{viewModel.loadAccount()}"
-            app:liveAccount="@{viewModel.liveAccountSelect}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:liveAccount="@{viewModel.liveAccountSelect}"
+            app:savedAccount="@{viewModel.loadSelectedAccount()}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

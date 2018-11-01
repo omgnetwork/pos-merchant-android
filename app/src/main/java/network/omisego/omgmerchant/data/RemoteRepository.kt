@@ -7,7 +7,6 @@ package network.omisego.omgmerchant.data
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
@@ -49,10 +48,10 @@ class RemoteRepository() {
         }
     }
 
-    fun loadAccounts(): LiveData<APIResult> {
-        return ClientProvider.client
+    fun loadAccounts(liveAPIResult: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client
             .getAccounts(AccountListParams.create(searchTerm = null))
-            .subscribe()
+            .subscribeEvent(liveAPIResult)
     }
 
     fun loadTransactions(params: TransactionListParams, liveAPIResult: MutableLiveData<Event<APIResult>>) {
@@ -67,8 +66,8 @@ class RemoteRepository() {
             .subscribe(liveAPIResult)
     }
 
-    fun signIn(params: LoginParams, liveAPIResult: MutableLiveData<APIResult>): LiveData<APIResult> {
-        return ClientProvider.client.login(params).subscribe(liveAPIResult)
+    fun signIn(params: LoginParams, liveAPIResult: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.login(params).subscribeEvent(liveAPIResult)
     }
 
     fun transfer(params: TransactionCreateParams, liveTransaction: MutableLiveData<APIResult>) {

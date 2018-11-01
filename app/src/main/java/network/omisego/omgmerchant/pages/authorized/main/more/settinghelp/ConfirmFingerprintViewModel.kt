@@ -6,6 +6,7 @@ import co.omisego.omisego.model.AuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
@@ -20,7 +21,7 @@ import network.omisego.omgmerchant.storage.Storage
 class ConfirmFingerprintViewModel(
     val remoteRepository: RemoteRepository
 ) : ViewModel() {
-    val liveAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     fun signIn(password: String) {
         remoteRepository.signIn(LoginParams(

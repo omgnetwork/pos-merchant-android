@@ -3,7 +3,6 @@ package network.omisego.omgmerchant.pages.authorized.main.more.transaction
 import android.databinding.DataBindingUtil
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import co.omisego.omisego.model.pagination.PaginationList
 import co.omisego.omisego.model.transaction.Transaction
 import kotlinx.android.synthetic.main.fragment_transaction_list.*
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
 import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentTransactionListBinding
@@ -24,7 +24,7 @@ import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
-class TransactionListFragment : Fragment() {
+class TransactionListFragment : BaseFragment() {
     private lateinit var binding: FragmentTransactionListBinding
     private lateinit var viewModel: TransactionListViewModel
     private lateinit var adapter: LoadingRecyclerAdapter<Transaction, ViewholderTransactionBinding>
@@ -44,9 +44,30 @@ class TransactionListFragment : Fragment() {
         const val TOTAL_MOCK_LOADING_ITEM = 1
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
+    }
+
+    override fun onObserveLiveData() {
+        observeEventFor(viewModel.liveTransactionListAPIResult) {
+            it.handle(this::handleLoadTransactionSuccess, this::handleLoadTransactionFail)
+        }
+        observeFor(viewModel.liveTransactionFailedDescription) {
+            if (!it.isEmpty()) {
+                toast(it)
+            }
+        }
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                totalItemCount = linearLayoutManager.itemCount
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
+                if (!loading && totalItemCount <= (lastVisibleItem + TOTAL_MOCK_LOADING_ITEM)) {
+                    onLoadMore()
+                }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,27 +84,12 @@ class TransactionListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         loadTransaction(currentPage)
-        subscribeLoadMore()
-        observeLiveData()
         swipeRefresh.setOnRefreshListener {
             currentPage = 1
             isLastPage = false
             adapter.clearItems()
             loadTransaction(currentPage)
         }
-    }
-
-    private fun subscribeLoadMore() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                totalItemCount = linearLayoutManager.itemCount
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
-                if (!loading && totalItemCount <= (lastVisibleItem + TOTAL_MOCK_LOADING_ITEM)) {
-                    onLoadMore()
-                }
-            }
-        })
     }
 
     private fun onLoadMore() {
@@ -99,17 +105,6 @@ class TransactionListFragment : Fragment() {
         }
         loading = true
         viewModel.loadTransactionOnPage(page)
-    }
-
-    private fun observeLiveData() {
-        observeEventFor(viewModel.liveTransactionListAPIResult) {
-            it.handle(this::handleLoadTransactionSuccess, this::handleLoadTransactionFail)
-        }
-        observeFor(viewModel.liveTransactionFailedDescription) {
-            if (!it.isEmpty()) {
-                toast(it)
-            }
-        }
     }
 
     private fun handleLoadTransactionSuccess(listTransaction: PaginationList<Transaction>) {

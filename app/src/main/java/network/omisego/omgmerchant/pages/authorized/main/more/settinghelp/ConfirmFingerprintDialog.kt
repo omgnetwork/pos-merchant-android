@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.extensions.observeFor
+import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -62,8 +62,8 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
             false
         }
 
-        observeFor(viewModel.liveAPIResult) {
-            it?.handle(this::handleSignInSuccess, this::handleSignInError)
+        observeEventFor(viewModel.liveAPIResult) {
+            it.handle(this::handleSignInSuccess, this::handleSignInError)
         }
     }
 

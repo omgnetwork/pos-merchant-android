@@ -1,9 +1,7 @@
 package network.omisego.omgmerchant.pages.authorized.feedback
 
-import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +9,21 @@ import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.transaction.Transaction
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentFeedbackBinding
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
-class FeedbackFragment : Fragment() {
+class FeedbackFragment : BaseFragment() {
     private lateinit var binding: FragmentFeedbackBinding
     private lateinit var viewModel: FeedbackViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
+    }
+
+    override fun onReceiveArgs() {
         viewModel.liveFeedback.value = FeedbackFragmentArgs.fromBundle(arguments).feedback
     }
 
@@ -35,21 +37,24 @@ class FeedbackFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        viewModel.deletePersistenceFeedback()
+    override fun onBindDataBinding() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         binding.tvDone.setOnClickListener {
             findNavController().navigateUp()
         }
-        viewModel.liveTransaction.observe(this, Observer {
-            viewModel.liveLoading.value = false
-            it?.handle(
-                this::handleTransferSuccess,
-                this::handleTransferFail
-            )
-        })
+    }
+
+    override fun onObserveLiveData() {
+        with(viewModel) {
+            observeFor(liveTransaction) {
+                viewModel.liveLoading.value = false
+                it.handle(
+                    this@FeedbackFragment::handleTransferSuccess,
+                    this@FeedbackFragment::handleTransferFail
+                )
+            }
+        }
     }
 
     private fun handleTransferSuccess(transaction: Transaction) {

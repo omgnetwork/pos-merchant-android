@@ -16,12 +16,15 @@ import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.livedata.Event
+import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.storage.Storage
 
 class SettingAccountViewModel(
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository
 ) : ViewModel(), StateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
+    val liveAccountList: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
     val liveAccountSelect: MutableLiveData<Account> by lazy {
         mutableLiveDataOf(localRepository.loadAccount()!!)
     }
@@ -37,7 +40,7 @@ class SettingAccountViewModel(
         return liveAccountSelect.value!!
     }
 
-    fun loadAccount(): Account {
+    fun loadSelectedAccount(): Account {
         return localRepository.loadAccount()!!
     }
 
@@ -48,5 +51,5 @@ class SettingAccountViewModel(
         liveAccountSelect.value = account
     }
 
-    fun loadAccounts() = remoteRepository.loadAccounts()
+    fun loadAccounts() = remoteRepository.loadAccounts(liveAccountList)
 }

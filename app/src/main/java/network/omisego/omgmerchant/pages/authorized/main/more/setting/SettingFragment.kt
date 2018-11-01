@@ -1,47 +1,36 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.setting
 
 import android.databinding.DataBindingUtil
-import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_setting.*
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.custom.MarginDividerDecorator
 import network.omisego.omgmerchant.databinding.FragmentSettingBinding
-import network.omisego.omgmerchant.extensions.dpToPx
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.utils.provideMarginLeft
 
-class SettingFragment : Fragment() {
+class SettingFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingBinding
     private lateinit var viewModel: SettingViewModel
     private lateinit var adapter: SettingAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_setting,
-            container,
-            false
-        )
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
-        binding.viewmodel = viewModel
-        setupRecyclerView()
-        observeLiveData()
     }
 
-    private fun observeLiveData() {
+    override fun onBindDataBinding() {
+        binding.viewmodel = viewModel
+    }
+
+    override fun onObserveLiveData() {
         with(viewModel) {
             observeEventFor(getLiveMenu()) {
                 val destinationId = when (it.title) {
@@ -60,11 +49,25 @@ class SettingFragment : Fragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_setting,
+            container,
+            false
+        )
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+    }
+
     private fun setupRecyclerView() {
         adapter = SettingAdapter(viewModel, viewModel.menus)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val margin = Rect(context?.dpToPx(72f)!!, 0, 0, 0)
-        recyclerView.addItemDecoration(MarginDividerDecorator(context!!, margin))
+        recyclerView.addItemDecoration(MarginDividerDecorator(context!!, context!!.provideMarginLeft(72)))
     }
 }

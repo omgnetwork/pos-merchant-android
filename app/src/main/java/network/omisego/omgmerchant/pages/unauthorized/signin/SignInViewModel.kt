@@ -24,6 +24,7 @@ import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.extensions.runBelowM
 import network.omisego.omgmerchant.extensions.runOnMToP
 import network.omisego.omgmerchant.extensions.runOnP
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.utils.BiometricHelper
@@ -43,7 +44,8 @@ class SignInViewModel(
         LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
     }
     private val liveByPassValidation: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(true) }
-    private val liveAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveSignInAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
+
     val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
     val liveLoading: LiveData<Boolean> by lazy { liveState.mapPropChanged { it.loading } }
     val liveToast: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -113,12 +115,12 @@ class SignInViewModel(
 
     fun loadUserPassword(): String = localRepository.loadFingerprintCredential()
 
-    fun signIn(): LiveData<APIResult>? {
-        val (email, password) = liveState.value ?: return null
+    fun signIn() {
+        val (email, password) = liveState.value ?: return
+        arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return }
         liveByPassValidation.value = false
-        arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return null }
         isSignIn = true
-        return remoteRepository.signIn(LoginParams(email, password), liveAPIResult)
+        remoteRepository.signIn(LoginParams(email, password), liveSignInAPIResult)
     }
 
     fun hasCredential(): Boolean = localRepository.hasCredential()
