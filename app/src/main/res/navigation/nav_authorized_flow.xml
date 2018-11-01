@@ -71,7 +71,9 @@
     </fragment>
     <action
         android:id="@+id/action_global_scanFragment"
-        app:destination="@id/scan">
+        app:destination="@+id/scan"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left">
         <argument
             android:name="amount"
             android:defaultValue="0"
@@ -95,7 +97,11 @@
     </fragment>
     <action
         android:id="@+id/action_global_feedbackFragment"
-        app:destination="@id/feedbackFragment" />
+        app:destination="@id/feedbackFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
     <fragment
         android:id="@+id/settingAccountFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountFragment"
@@ -118,7 +124,11 @@
         tools:layout="@layout/fragment_splash" />
     <action
         android:id="@+id/action_global_splashFragment"
-        app:destination="@id/splashFragment" />
+        app:destination="@id/splashFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
     <fragment
         android:id="@+id/selectAccountFragment"
         android:name="network.omisego.omgmerchant.pages.authorized.account.SelectAccountFragment"
