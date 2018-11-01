@@ -33,7 +33,7 @@ class TransactionListViewModel(
 
     /* get data from repository */
     val account: Account
-        get() = localRepository.getAccount()!!
+        get() = localRepository.loadAccount()!!
     val wallet: Wallet
         get() = localRepository.loadWallet()!!
 

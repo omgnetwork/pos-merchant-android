@@ -87,7 +87,7 @@ class MainViewModel(
     }
 
     /* Fetch data from repository */
-    fun getAccount() = localRepository.getAccount()
+    fun getAccount() = localRepository.loadAccount()
 
     fun getCredential() = localRepository.loadCredential()
 

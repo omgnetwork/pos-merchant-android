@@ -27,11 +27,11 @@ class SplashViewModel(
         get() = app.getString(R.string.welcome_account_info, liveAccount.value?.name)
 
     fun loadAccount(): Account? {
-        liveAccount.value = localRepository.getAccount()
+        liveAccount.value = localRepository.loadAccount()
         return liveAccount.value
     }
 
     fun loadWalletAndSave() {
-        remoteRepository.loadWalletAndSave(AccountWalletListParams.create(id = localRepository.getAccount()!!.id, searchTerm = null))
+        remoteRepository.loadWalletAndSave(AccountWalletListParams.create(id = localRepository.loadAccount()!!.id, searchTerm = null))
     }
 }

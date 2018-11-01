@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhiteWeak"
+        android:paddingTop="16dp"
         tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment">
 
         <android.support.v7.widget.RecyclerView
@@ -33,8 +34,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/ripple_select_account"
             android:clickable="true"
-            android:onClick="@{() -> viewmodel.signOut()}"
             android:gravity="start"
+            android:onClick="@{() -> viewmodel.signOut()}"
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"

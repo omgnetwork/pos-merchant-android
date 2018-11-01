@@ -23,7 +23,7 @@ class SettingAccountViewModel(
     private val remoteRepository: RemoteRepository
 ) : ViewModel(), StateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
     val liveAccountSelect: MutableLiveData<Account> by lazy {
-        mutableLiveDataOf(localRepository.getAccount()!!)
+        mutableLiveDataOf(localRepository.loadAccount()!!)
     }
 
     override fun bind(binding: ViewholderSettingAccountBinding, data: Account) {
@@ -38,7 +38,7 @@ class SettingAccountViewModel(
     }
 
     fun loadAccount(): Account {
-        return localRepository.getAccount()!!
+        return localRepository.loadAccount()!!
     }
 
     fun handleAccountClick(account: Account) {

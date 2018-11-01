@@ -165,7 +165,7 @@ class MainFragment : Fragment() {
 //    private fun setupConditionalNavigationGraph() {
 //        if (!mainViewModel.hasCredential()) {
 //            NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
-//        } else if (mainViewModel.getAccount() == null) {
+//        } else if (mainViewModel.loadAccount() == null) {
 //            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
 //        } else if (addressViewModel.liveAddress.value != null) {
 //            NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
