@@ -23,6 +23,7 @@ import network.omisego.omgmerchant.databinding.FragmentConfirmBinding
 import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.livedata.EventObserver
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
@@ -38,7 +39,7 @@ class ConfirmFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = provideAndroidViewModel()
         addressViewModel = provideActivityViewModel()
-        mainViewModel = provideActivityViewModel()
+        mainViewModel = provideMainFragmentViewModel()
         viewModel.address = addressViewModel.liveAddress.value!!
     }
 

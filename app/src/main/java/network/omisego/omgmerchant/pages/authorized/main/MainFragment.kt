@@ -41,7 +41,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addressViewModel = provideActivityViewModel()
-        mainViewModel = provideActivityViewModel()
+        mainViewModel = provideMainFragmentViewModel()
         receiveViewModel = provideMainFragmentViewModel()
         topupViewModel = provideMainFragmentViewModel()
     }
@@ -62,6 +62,7 @@ class MainFragment : Fragment() {
         setupToolbar()
         setupNavigationUI()
         subscribeToLiveData()
+        mainViewModel.getTokens()
         mainViewModel.decideDestination()
     }
 
@@ -117,7 +118,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupNavigationUI() {
-        findChildController().addOnNavigatedListener(object: NavController.OnNavigatedListener {
+        findChildController().addOnNavigatedListener(object : NavController.OnNavigatedListener {
             override fun onNavigated(controller: NavController, destination: NavDestination) {
                 logi(destination.label)
             }

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
-import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
@@ -24,7 +23,7 @@ class ReceiveFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = provideMainFragmentViewModel()
-        mainViewModel = provideActivityViewModel()
+        mainViewModel = provideMainFragmentViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
