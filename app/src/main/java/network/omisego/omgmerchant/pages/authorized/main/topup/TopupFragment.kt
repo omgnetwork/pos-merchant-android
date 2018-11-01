@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.topup
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -11,6 +10,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_topup.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentTopupBinding
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
@@ -20,7 +20,6 @@ class TopupFragment : Fragment() {
     private lateinit var binding: FragmentTopupBinding
     private lateinit var viewModel: TopupViewModel
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var calculatorObserver: Observer<String>
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -52,10 +51,9 @@ class TopupFragment : Fragment() {
     }
 
     private fun observeCalculator() {
-        calculatorObserver = Observer {
+        activity?.observeFor(viewModel.liveCalculator) {
             mainViewModel.liveEnableNext.value = it != "0"
         }
-        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }
 
     private fun setupDataBinding() {

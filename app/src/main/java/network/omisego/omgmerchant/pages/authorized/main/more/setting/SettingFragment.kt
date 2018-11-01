@@ -15,8 +15,8 @@ import network.omisego.omgmerchant.databinding.FragmentSettingBinding
 import network.omisego.omgmerchant.extensions.dpToPx
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.findRootController
+import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.livedata.EventObserver
 
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
@@ -38,8 +38,26 @@ class SettingFragment : Fragment() {
         viewModel = provideAndroidViewModel()
         binding.viewmodel = viewModel
         setupRecyclerView()
-        subscribeMenuHasChanged()
-        subscribeSignOutClicked()
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        with(viewModel) {
+            observeEventFor(getLiveMenu()) {
+                val destinationId = when (it.title) {
+                    getString(R.string.more_account) -> R.id.action_more_to_settingAccountFragment
+                    getString(R.string.more_transaction) -> R.id.action_more_to_transactionListFragment
+                    getString(R.string.more_setting_and_help) -> R.id.action_more_to_settingHelpFragment
+                    else -> throw IllegalStateException("Invalid destination $it")
+                }
+
+                findChildController().navigate(destinationId)
+            }
+            observeEventFor(liveSignOut) {
+                findRootController().popBackStack()
+                findRootController().navigate(R.id.action_global_sign_in)
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -48,25 +66,5 @@ class SettingFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         val margin = Rect(context?.dpToPx(72f)!!, 0, 0, 0)
         recyclerView.addItemDecoration(MarginDividerDecorator(context!!, margin))
-    }
-
-    private fun subscribeMenuHasChanged() {
-        viewModel.getLiveMenu().observe(this, EventObserver {
-            val destinationId = when (it.title) {
-                getString(R.string.more_account) -> R.id.action_more_to_settingAccountFragment
-                getString(R.string.more_transaction) -> R.id.action_more_to_transactionListFragment
-                getString(R.string.more_setting_and_help) -> R.id.action_more_to_settingHelpFragment
-                else -> throw IllegalStateException("Invalid destination $it")
-            }
-
-            findChildController().navigate(destinationId)
-        })
-    }
-
-    private fun subscribeSignOutClicked() {
-        viewModel.liveSignOut.observe(this, EventObserver {
-            findRootController().popBackStack()
-            findRootController().navigate(R.id.action_global_sign_in)
-        })
     }
 }

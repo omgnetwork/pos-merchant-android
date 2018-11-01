@@ -11,11 +11,11 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.pagination.PaginationList
 import com.jaredrummler.materialspinner.MaterialSpinner
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.LiveCalculator
 
@@ -48,9 +48,9 @@ class LiveTokenSpinner(
 
     fun start() {
         lifecycleRegistry.markState(Lifecycle.State.STARTED)
-        loadTokenViewModel.liveTokenAPIResult.observe(this, Observer {
+        observeFor(loadTokenViewModel.liveTokenAPIResult) {
             it?.handle(this::setTokens, this::setError)
-        })
+        }
     }
 
     fun stop() {

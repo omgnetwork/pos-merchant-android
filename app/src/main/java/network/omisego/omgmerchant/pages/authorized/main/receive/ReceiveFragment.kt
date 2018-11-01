@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.receive
 
-import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_receive.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
@@ -18,7 +18,6 @@ class ReceiveFragment : Fragment() {
     private lateinit var binding: FragmentReceiveBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ReceiveViewModel
-    private lateinit var calculatorObserver: Observer<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +49,9 @@ class ReceiveFragment : Fragment() {
     }
 
     private fun observeCalculator() {
-        calculatorObserver = Observer {
+        activity?.observeFor(viewModel.liveCalculator) {
             mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
         }
-        viewModel.liveCalculator.observe(activity!!, calculatorObserver)
     }
 
     private fun setupDataBinding() {

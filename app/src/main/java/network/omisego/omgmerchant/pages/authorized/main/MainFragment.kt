@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main
 
-import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,17 +10,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
-import network.omisego.omgmerchant.extensions.logi
+import network.omisego.omgmerchant.extensions.observeEventFor
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
-import network.omisego.omgmerchant.livedata.EventObserver
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
@@ -84,49 +81,6 @@ class MainFragment : Fragment() {
         super.onStop()
     }
 
-    private fun subscribeToLiveData() {
-        binding.setLifecycleOwner(this)
-        binding.viewModel = mainViewModel
-
-        mainViewModel.liveDestinationId.observe(this, EventObserver { destinationId ->
-            findChildController().navigate(destinationId)
-        })
-
-        mainViewModel.liveShowFullScreen.observe(this, Observer {
-            showFullscreen(it)
-        })
-
-        mainViewModel.liveEnableNext.observe(this, Observer {
-            menuNext?.isEnabled = it ?: false
-        })
-
-        mainViewModel.liveShowNext.observe(this, Observer {
-            menuNext?.isVisible = it ?: false
-        })
-
-        mainViewModel.liveFeedback.observe(this, Observer { feedback ->
-            feedback ?: return@Observer
-            findChildController().navigateUp()
-            findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
-        })
-
-        addressViewModel.liveAddress.observe(this, Observer {
-            findChildController().navigateUp()
-            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-            addressViewModel.removeCache(it)
-        })
-    }
-
-    private fun setupNavigationUI() {
-        findChildController().addOnNavigatedListener(object : NavController.OnNavigatedListener {
-            override fun onNavigated(controller: NavController, destination: NavDestination) {
-                logi(destination.label)
-            }
-        })
-        bottomNavigation.setupWithNavController(findChildController())
-        toolbar.setupWithNavController(findChildController())
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_main, menu)
 
@@ -137,11 +91,6 @@ class MainFragment : Fragment() {
         }
 
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    private fun setupToolbar() {
-        val hostActivity = activity as AppCompatActivity
-        hostActivity.setSupportActionBar(toolbar)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -158,25 +107,48 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun subscribeToLiveData() {
+        binding.setLifecycleOwner(this)
+        binding.viewModel = mainViewModel
+
+        with(mainViewModel) {
+            observeEventFor(liveDestinationId) { destinationId ->
+                findChildController().navigate(destinationId)
+            }
+            observeFor(liveShowFullScreen) {
+                showFullscreen(it)
+            }
+            observeFor(liveEnableNext) {
+                menuNext?.isEnabled = it
+            }
+            observeFor(liveShowNext) {
+                menuNext?.isVisible = it
+            }
+            observeFor(liveFeedback) { feedback ->
+                findChildController().navigateUp()
+                findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
+            }
+        }
+
+        observeFor(addressViewModel.liveAddress) {
+            findChildController().navigateUp()
+            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
+            addressViewModel.removeCache(it)
+        }
+    }
+
+    private fun setupNavigationUI() {
+        bottomNavigation.setupWithNavController(findChildController())
+        toolbar.setupWithNavController(findChildController())
+    }
+
+    private fun setupToolbar() {
+        val hostActivity = activity as AppCompatActivity
+        hostActivity.setSupportActionBar(toolbar)
+    }
+
     private fun showFullscreen(show: Int?) {
         bottomNavigation.visibility = show ?: View.VISIBLE
         toolbar.visibility = show ?: View.VISIBLE
     }
-
-//    private fun setupConditionalNavigationGraph() {
-//        if (!mainViewModel.hasCredential()) {
-//            NavHostFragment.findNavController(this).navigate(R.id.action_global_sign_in)
-//        } else if (mainViewModel.loadAccount() == null) {
-//            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_selectAccount)
-//        } else if (addressViewModel.liveAddress.value != null) {
-//            NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-//        } else if (mainViewModel.getFeedback() != null) {
-//            NavHostFragment.findNavController(this).navigate(mainViewModel.createActionForFeedbackPage())
-//        } else if (showSplash) {
-//            NavHostFragment.findNavController(this).navigate(R.id.action_main_to_splash)
-//            showSplash = false
-//            mainViewModel.loadWalletAndSave()
-//        }
-//
-//    }
 }

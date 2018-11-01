@@ -23,6 +23,8 @@ import co.omisego.omisego.model.transaction.list.TransactionListParams
 import co.omisego.omisego.model.transaction.send.TransactionCreateParams
 import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.extensions.subscribe
+import network.omisego.omgmerchant.extensions.subscribeEvent
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.storage.Storage
@@ -53,18 +55,16 @@ class RemoteRepository() {
             .subscribe()
     }
 
-    fun loadTransactions(params: TransactionListParams): LiveData<APIResult> {
-        return ClientProvider.client
+    fun loadTransactions(params: TransactionListParams, liveAPIResult: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client
             .getTransactions(params)
-            .subscribe()
+            .subscribeEvent(liveAPIResult)
     }
 
     fun listTokens(params: TokenListParams, liveAPIResult: MutableLiveData<APIResult>) {
-        async {
-            ClientProvider.deferredClient.await()
-                .getTokens(params)
-                .subscribe(liveAPIResult)
-        }
+        ClientProvider.client
+            .getTokens(params)
+            .subscribe(liveAPIResult)
     }
 
     fun signIn(params: LoginParams, liveAPIResult: MutableLiveData<APIResult>): LiveData<APIResult> {

@@ -1,6 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
 
-import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,6 +12,7 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
 import network.omisego.omgmerchant.databinding.FragmentSettingHelpBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -55,21 +55,24 @@ class SettingHelpFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+        observeLiveData()
+    }
 
-        viewModel.liveClickMenu.observe(this, Observer { it ->
-            it?.let {
+    private fun observeLiveData() {
+        with(viewModel) {
+            observeFor(liveClickMenu) {
                 toast(it)
             }
-        })
 
-        viewModel.liveAuthenticateSuccessful.observe(this, Observer {
-            if (it == true) {
-                confirmFingerprintDialog.dismiss()
-                viewModel.handleFingerprintOption(true)
-                toast(getString(R.string.setting_help_enable_finger_print_successfully))
+            observeFor(liveAuthenticateSuccessful) {
+                if (it == true) {
+                    confirmFingerprintDialog.dismiss()
+                    viewModel.handleFingerprintOption(true)
+                    toast(getString(R.string.setting_help_enable_finger_print_successfully))
+                }
+                switchFingerprint.isChecked = it
             }
-            switchFingerprint.isChecked = it!!
-        })
+        }
     }
 
     private fun setupRecyclerView() {

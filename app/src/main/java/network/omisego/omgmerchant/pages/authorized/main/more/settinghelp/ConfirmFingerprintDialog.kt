@@ -1,7 +1,6 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
 
@@ -62,9 +62,9 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
             false
         }
 
-        viewModel.liveAPIResult.observe(this, Observer {
+        observeFor(viewModel.liveAPIResult) {
             it?.handle(this::handleSignInSuccess, this::handleSignInError)
-        })
+        }
     }
 
     private fun send() {

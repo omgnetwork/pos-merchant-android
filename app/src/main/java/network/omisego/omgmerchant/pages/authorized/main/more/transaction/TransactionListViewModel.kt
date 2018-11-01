@@ -9,7 +9,6 @@ package network.omisego.omgmerchant.pages.authorized.main.more.transaction
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.Wallet
@@ -21,6 +20,7 @@ import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 
 class TransactionListViewModel(
@@ -29,7 +29,10 @@ class TransactionListViewModel(
     private val remoteRepository: RemoteRepository,
     private val transformer: TransactionListTransformer
 ) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
+
+    /* Live data */
     val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+    val liveTransactionListAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     /* get data from repository */
     val account: Account
@@ -70,12 +73,12 @@ class TransactionListViewModel(
         }
     }
 
-    fun getTransaction(page: Int): LiveData<APIResult> {
+    fun loadTransactionOnPage(page: Int) {
         val params = TransactionListParams.create(
             page = page,
             perPage = 20,
             searchTerm = wallet.address
         )
-        return remoteRepository.loadTransactions(params)
+        remoteRepository.loadTransactions(params, liveTransactionListAPIResult)
     }
 }
