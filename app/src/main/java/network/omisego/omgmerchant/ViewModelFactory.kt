@@ -28,7 +28,7 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
-                return SelectAccountViewModel(RemoteRepository()) as T
+                return SelectAccountViewModel(LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(ReceiveViewModel::class.java) -> {
                 return ReceiveViewModel(
@@ -56,7 +56,7 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 return SaveAccountViewModel() as T
             }
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
-                return ConfirmFingerprintViewModel(RemoteRepository()) as T
+                return ConfirmFingerprintViewModel(LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(AddressViewModel::class.java) -> {
                 return AddressViewModel() as T

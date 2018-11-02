@@ -16,7 +16,6 @@ import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
-import network.omisego.omgmerchant.storage.Storage
 
 class SettingHelpViewModel(
     val app: Application,
@@ -42,12 +41,12 @@ class SettingHelpViewModel(
     }
 
     fun deleteFingerprintCredential() {
-        repository.deleteFingerprintCredential()
+        repository.deletePassword()
     }
 
     fun hasFingerprintSupport() = Goldfinger.Builder(app).build().hasFingerprintHardware()
 
-    fun hasFingerprintPassword() = Storage.hasFingerprintCredential()
+    fun hasFingerprintPassword() = repository.hasPassword()
 
     fun loadFingerprintOption() = repository.loadFingerprintOption()
 

@@ -46,7 +46,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                 MoreViewModel(application) as T
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
-                SettingViewModel(application) as T
+                SettingViewModel(application, LocalRepository()) as T
             }
             modelClass.isAssignableFrom(TransactionListViewModel::class.java) -> {
                 TransactionListViewModel(application, LocalRepository(), RemoteRepository(), TransactionListTransformer(application)) as T

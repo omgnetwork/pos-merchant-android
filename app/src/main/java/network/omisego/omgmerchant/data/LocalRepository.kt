@@ -47,6 +47,10 @@ class LocalRepository() {
 
     fun saveUser(user: User) = Storage.saveUser(user)
 
+    /* Clear */
+
+    fun clearSession() = Storage.clearSession()
+
     /* Fingerprint */
 
     fun loadFingerprintOption(): Boolean = Storage.loadFingerprintOption()
@@ -59,9 +63,17 @@ class LocalRepository() {
         Storage.saveFingerprintOption(checked)
     }
 
-    fun saveUserEmail(email: String) = Storage.saveUserEmail(email)
-
-    fun deleteFingerprintCredential() {
-        Storage.deleteFingerprintCredential()
+    fun hasPassword(): Boolean {
+        return Storage.hasPassword()
     }
+
+    fun savePassword(password: String) {
+        Storage.savePassword(password)
+    }
+
+    fun deletePassword() {
+        Storage.deletePassword()
+    }
+
+    fun saveUserEmail(email: String) = Storage.saveUserEmail(email)
 }

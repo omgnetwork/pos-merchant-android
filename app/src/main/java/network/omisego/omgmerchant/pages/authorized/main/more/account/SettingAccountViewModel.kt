@@ -18,7 +18,6 @@ import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
-import network.omisego.omgmerchant.storage.Storage
 
 class SettingAccountViewModel(
     private val localRepository: LocalRepository,
@@ -36,7 +35,7 @@ class SettingAccountViewModel(
     }
 
     fun saveAccount(): Account {
-        Storage.saveAccount(liveAccountSelect.value!!)
+        localRepository.saveAccount(liveAccountSelect.value!!)
         return liveAccountSelect.value!!
     }
 

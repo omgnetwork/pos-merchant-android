@@ -11,14 +11,15 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
 import network.omisego.omgmerchant.base.StateViewHolderBinding
+import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
-import network.omisego.omgmerchant.storage.Storage
 
 class SelectAccountViewModel(
+    private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository
 ) : ViewModel(), StateViewHolderBinding<Account, ViewholderAccountBinding> {
     val liveAccountList: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
@@ -31,7 +32,7 @@ class SelectAccountViewModel(
     }
 
     fun handleAccountClick(account: Account) {
-        Storage.saveAccount(account)
+        localRepository.saveAccount(account)
         liveAccountSelect.value = account
     }
 

@@ -12,12 +12,13 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.SettingMenu
-import network.omisego.omgmerchant.storage.Storage
 
 class SettingViewModel(
-    val app: Application
+    val app: Application,
+    val localRepository: LocalRepository
 ) : AndroidViewModel(app) {
     val menus: List<SettingMenu> = listOf(
         SettingMenu("\uE918", app.getString(R.string.more_account)),
@@ -28,7 +29,7 @@ class SettingViewModel(
     private val liveMenu: MutableLiveData<Event<SettingMenu>> by lazy { MutableLiveData<Event<SettingMenu>>() }
 
     fun signOut() {
-        Storage.clearEverything()
+        localRepository.clearSession()
         liveSignOut.value = Event(true)
     }
 
