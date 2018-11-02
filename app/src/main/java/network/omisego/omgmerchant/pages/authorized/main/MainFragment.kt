@@ -58,7 +58,7 @@ class MainFragment : BaseFragment() {
         setupToolbar()
         setupNavigationUI()
         mainViewModel.getTokens()
-        mainViewModel.decideDestination()
+        mainViewModel.displayOtherDestinationByCondition()
     }
 
     override fun onBindDataBinding() {
@@ -71,7 +71,7 @@ class MainFragment : BaseFragment() {
             observeEventFor(liveDestinationId) { destinationId ->
                 findChildController().navigate(destinationId)
             }
-            observeFor(liveShowFullScreen) {
+            observeFor(liveToolbarBottomNavVisibility) {
                 showFullscreen(it)
             }
             observeFor(liveEnableNext) {

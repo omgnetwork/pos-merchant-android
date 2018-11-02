@@ -30,8 +30,8 @@ class MainViewModel(
     internal val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
 ) : ViewModel(), LoadTokenViewModel {
-    private var showSplash = true
-    private var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
+    internal var showSplash = true
+    internal var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
 
     /* LiveData */
     override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
@@ -44,22 +44,22 @@ class MainViewModel(
     val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
 
     /* Control whether should hide toolbar or bottom navigation e.g. the select account page has its own toolbar, so we don't need to show it. */
-    val liveShowFullScreen: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+    val liveToolbarBottomNavVisibility: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
     /* Control feedback object which is set from the confirmation page */
     val liveFeedback: MutableLiveData<Feedback> by lazy { MutableLiveData<Feedback>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
+    private val fullScreenPageIds = arrayOf(
+        R.id.splashFragment,
+        R.id.selectAccountFragment,
+        R.id.scan,
+        R.id.confirmFragment,
+        R.id.feedbackFragment
+    )
     val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
-            val fullScreenPageIds = arrayOf(
-                R.id.splashFragment,
-                R.id.selectAccountFragment,
-                R.id.scan,
-                R.id.confirmFragment,
-                R.id.feedbackFragment
-            )
-            liveShowFullScreen.value = if (destination.id in fullScreenPageIds) {
+            liveToolbarBottomNavVisibility.value = if (destination.id in fullScreenPageIds) {
                 View.GONE
             } else {
                 View.VISIBLE
@@ -68,9 +68,9 @@ class MainViewModel(
     }
 
     /* Navigation listener for taking a decision to whether should show the next button on the toolbar */
+    val showNextBtnDestinationIds = arrayOf(R.id.receive, R.id.topup)
     val nextButtonNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
-            val showNextBtnDestinationIds = arrayOf(R.id.receive, R.id.topup)
             liveShowNext.value = destination.id in showNextBtnDestinationIds
         }
     }
@@ -87,6 +87,8 @@ class MainViewModel(
     }
 
     /* Fetch data from repository */
+    fun hasCredential() = localRepository.hasCredential()
+
     fun getAccount() = localRepository.loadAccount()
 
     fun getCredential() = localRepository.loadCredential()
@@ -98,16 +100,16 @@ class MainViewModel(
         liveTokenAPIResult
     }
 
-    fun hasCredential() = localRepository.hasCredential()
-
-    fun decideDestination() {
-        when {
-            getAccount() == null -> {
+    fun displayOtherDestinationByCondition() {
+        when (meetDestination()) {
+            DestinationCondition.DEST_SELECT_ACCOUNT -> {
                 liveDestinationId.value = Event(R.id.action_global_selectAccountFragment)
             }
-            showSplash -> {
+            DestinationCondition.DEST_SPLASH -> {
                 liveDestinationId.value = Event(R.id.action_global_splashFragment)
                 showSplash = false
+            }
+            DestinationCondition.DEST_MAIN -> {
             }
         }
     }
@@ -150,5 +152,19 @@ class MainViewModel(
 
     fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
         return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
+    }
+
+    internal fun meetDestination(): DestinationCondition {
+        return when {
+            getAccount() == null -> DestinationCondition.DEST_SELECT_ACCOUNT
+            showSplash -> DestinationCondition.DEST_SPLASH
+            else -> DestinationCondition.DEST_MAIN
+        }
+    }
+
+    enum class DestinationCondition {
+        DEST_SPLASH,
+        DEST_SELECT_ACCOUNT,
+        DEST_MAIN;
     }
 }
