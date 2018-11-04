@@ -23,10 +23,10 @@ class FeedbackTransformer {
         }
     }
 
-    fun transformIconText(feedback: Feedback): String {
+    fun transformIconText(context: Context, feedback: Feedback): String {
         return when (feedback.success) {
-            true -> "\uE906"
-            false -> "\uE90B"
+            true -> context.getString(R.string.feedback_icon_success)
+            false -> context.getString(R.string.feedback_icon_failed)
         }
     }
 
@@ -61,10 +61,11 @@ class FeedbackTransformer {
     }
 
     fun transformErrorCode(context: Context, feedback: Feedback): String {
-        return "Error code: ${feedback.error?.code?.name?.toUpperCase() ?: "Unknown"}"
+        return context.getString(R.string.feedback_error_code, feedback.error?.code?.name?.toUpperCase()
+            ?: context.getString(R.string.feedback_error_code_unknown))
     }
 
     fun transformErrorDescription(context: Context, feedback: Feedback): String {
-        return feedback.error?.description ?: "Unknown"
+        return feedback.error?.description ?: context.getString(R.string.feedback_error_code_unknown)
     }
 }
