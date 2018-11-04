@@ -12,13 +12,14 @@ import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
 import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
 
 class TopupViewModel(
     val handler: CalculatorInteraction,
     override val liveCalculator: LiveCalculator
-) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel {
+) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel, NextButtonBehavior {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null
 
@@ -41,6 +42,10 @@ class TopupViewModel(
 
     // Evaluate isn't available on the topup page.
     override fun onEvaluate(): Boolean = false
+
+    override fun shouldEnableNextButton(): Boolean {
+        return liveCalculator.value != "0"
+    }
 
     override fun startListeningTokenSpinner() {
         liveTokenSpinner?.listen()
