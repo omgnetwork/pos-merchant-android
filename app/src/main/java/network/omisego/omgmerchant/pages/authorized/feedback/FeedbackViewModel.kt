@@ -34,7 +34,7 @@ class FeedbackViewModel(
 
     /* binding data */
     val icon: LiveData<Drawable> = liveFeedback.map { transformer.transformIcon(app, it) }
-    val iconText: LiveData<String> = liveFeedback.map(transformer::transformIconText)
+    val iconText: LiveData<String> = liveFeedback.map { transformer.transformIconText(app, it) }
     val title: LiveData<String> = liveFeedback.map { transformer.transformTitle(app, it) }
     val amount: LiveData<String> = liveFeedback.map { transformer.transformAmount(app, it) }
     val userId: LiveData<String> = liveFeedback.map { transformer.transformUserId(app, it) }
