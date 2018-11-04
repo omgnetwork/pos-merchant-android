@@ -1,15 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.receive
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import co.omisego.omisego.model.Token
-import network.omisego.omgmerchant.calculator.Calculation
-import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.model.LiveCalculator
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
-import network.omisego.omgmerchant.utils.NumberDecorator
-
 /*
  * OmiseGO
  *
@@ -17,11 +7,22 @@ import network.omisego.omgmerchant.utils.NumberDecorator
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import co.omisego.omisego.model.Token
+import network.omisego.omgmerchant.calculator.Calculation
+import network.omisego.omgmerchant.calculator.CalculatorInteraction
+import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
+import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
+import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
+import network.omisego.omgmerchant.utils.NumberDecorator
+
 class ReceiveViewModel(
     val handler: CalculatorInteraction,
     override val liveCalculator: LiveCalculator,
     private val calculation: Calculation
-) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel {
+) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel, NextButtonBehavior {
     override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     var liveTokenSpinner: LiveTokenSpinner? = null
     val numberDecorator: NumberDecorator by lazy { NumberDecorator() }
@@ -46,6 +47,11 @@ class ReceiveViewModel(
         if (evaluated == liveCalculator.value) return false
         liveCalculator.value = evaluated
         return true
+    }
+
+    override fun shouldEnableNextButton(): Boolean {
+        val calculatorValue = liveCalculator.value
+        return calculatorValue != "0" && calculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1
     }
 
     override fun startListeningTokenSpinner() {
