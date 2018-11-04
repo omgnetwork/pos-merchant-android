@@ -39,7 +39,11 @@ android {
     lintOptions {
         disable 'ParcelCreator'
     }
-
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 androidExtensions {
@@ -56,6 +60,8 @@ dependencies {
 
     /* Kotlin */
     implementation kotlinDependencies.stdlib
+    implementation kotlinDependencies.coroutines
+
     /* Navigation Component */
     implementation navigation.navFragment
     implementation navigation.navUI
