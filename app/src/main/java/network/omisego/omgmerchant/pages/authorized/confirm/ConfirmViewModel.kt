@@ -71,11 +71,11 @@ class ConfirmViewModel(
         liveNoClick.value = Event(view)
     }
 
-    fun provideTransactionCreateParams(payload: String): TransactionCreateParams {
+    fun provideTransactionCreateParams(fromAddress: String): TransactionCreateParams {
         when (args.transactionType) {
             SCAN_RECEIVE -> {
                 return TransactionCreateParams(
-                    fromAddress = payload,
+                    fromAddress = fromAddress,
                     toAddress = localRepository.loadWallet()?.address!!,
                     amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
                     tokenId = args.token.id
@@ -84,7 +84,7 @@ class ConfirmViewModel(
             else -> {
                 return TransactionCreateParams(
                     fromAddress = localRepository.loadWallet()?.address,
-                    toAddress = payload,
+                    toAddress = fromAddress,
                     amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
                     tokenId = args.token.id
                 )
