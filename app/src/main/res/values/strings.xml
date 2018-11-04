@@ -48,6 +48,10 @@
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>
     <string name="feedback_retry">Retry</string>
+    <string name="feedback_icon_success" translatable="false"></string>
+    <string name="feedback_icon_failed" translatable="false"></string>
+    <string name="feedback_error_code">Error code: %s</string>
+    <string name="feedback_error_code_unknown">Unknown</string>
 
     <!-- More -->
     <string name="more_title">More</string>
