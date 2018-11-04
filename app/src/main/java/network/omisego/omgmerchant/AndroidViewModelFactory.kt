@@ -8,7 +8,6 @@ import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel
-import network.omisego.omgmerchant.pages.authorized.main.more.MoreViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListTransformer
@@ -41,9 +40,6 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(application) as T
-            }
-            modelClass.isAssignableFrom(MoreViewModel::class.java) -> {
-                MoreViewModel(application) as T
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
                 SettingViewModel(application, LocalRepository()) as T

@@ -34,8 +34,9 @@ class TopupFragment : BaseFragment() {
 
     override fun onObserveLiveData() {
         activity?.observeFor(viewModel.liveCalculator) {
-            mainViewModel.liveEnableNext.value = it != "0"
+            mainViewModel.liveEnableNext.value = viewModel.shouldEnableNextButton()
         }
+
         viewModel.liveTokenSpinner = LiveTokenSpinner(
             spinner,
             viewModel,

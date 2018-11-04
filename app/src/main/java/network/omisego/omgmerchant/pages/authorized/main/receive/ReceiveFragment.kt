@@ -43,7 +43,7 @@ class ReceiveFragment : BaseFragment() {
 
     override fun onObserveLiveData() {
         activity?.observeFor(viewModel.liveCalculator) {
-            mainViewModel.liveEnableNext.value = it != "0" && it?.indexOfAny(charArrayOf('-', '+')) == -1
+            mainViewModel.liveEnableNext.value = viewModel.shouldEnableNextButton()
         }
 
         viewModel.liveTokenSpinner = LiveTokenSpinner(
