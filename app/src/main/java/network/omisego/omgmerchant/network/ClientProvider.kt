@@ -10,6 +10,8 @@ package network.omisego.omgmerchant.network
 import co.omisego.omisego.OMGAPIAdmin
 import co.omisego.omisego.model.AdminConfiguration
 import co.omisego.omisego.network.ewallet.EWalletAdmin
+import co.omisego.omisego.websocket.OMGSocketClient
+import co.omisego.omisego.websocket.SocketClientContract
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.model.Credential
@@ -22,6 +24,7 @@ object ClientProvider {
 
     private lateinit var adminConfiguration: AdminConfiguration
     lateinit var client: OMGAPIAdmin
+    lateinit var socketClient: SocketClientContract.Client
     val deferredClient = async {
         adminConfiguration = AdminConfiguration(
             "https://coffeego.omisego.io/api/admin/",
@@ -32,7 +35,10 @@ object ClientProvider {
     }
 
     fun init() {
-        async { client = deferredClient.await() }
+        async {
+            client = deferredClient.await()
+            createSocketClient()
+        }
     }
 
     init {
@@ -52,5 +58,11 @@ object ClientProvider {
                 )
             }.build()
         )
+    }
+
+    private fun createSocketClient(): SocketClientContract.Client {
+        return OMGSocketClient.Builder {
+            clientConfiguration = adminConfiguration.copy(baseURL = "wss://coffeego.omisego.io/api/admin/socket/")
+        }.build()
     }
 }

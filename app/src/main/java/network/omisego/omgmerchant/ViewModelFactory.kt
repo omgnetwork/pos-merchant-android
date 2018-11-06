@@ -15,13 +15,15 @@ import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.ConsumeTransactionRequestHandlerViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.CreateTransactionHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
@@ -58,8 +60,14 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
                 return ConfirmFingerprintViewModel(LocalRepository(), RemoteRepository()) as T
             }
-            modelClass.isAssignableFrom(AddressViewModel::class.java) -> {
-                return AddressViewModel() as T
+            modelClass.isAssignableFrom(QRPayloadViewModel::class.java) -> {
+                return QRPayloadViewModel() as T
+            }
+            modelClass.isAssignableFrom(CreateTransactionHandlerViewModel::class.java) -> {
+                return CreateTransactionHandlerViewModel(LocalRepository(), RemoteRepository()) as T
+            }
+            modelClass.isAssignableFrom(ConsumeTransactionRequestHandlerViewModel::class.java) -> {
+                return ConsumeTransactionRequestHandlerViewModel(RemoteRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

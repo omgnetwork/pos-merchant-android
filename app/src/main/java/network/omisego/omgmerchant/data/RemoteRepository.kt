@@ -17,9 +17,10 @@ import co.omisego.omisego.model.params.AccountListParams
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
+import co.omisego.omisego.model.params.TransactionListParams
 import co.omisego.omisego.model.params.WalletParams
-import co.omisego.omisego.model.transaction.list.TransactionListParams
-import co.omisego.omisego.model.transaction.send.TransactionCreateParams
+import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
+import co.omisego.omisego.model.params.admin.TransactionCreateParams
 import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.extensions.subscribe
 import network.omisego.omgmerchant.extensions.subscribeEvent
@@ -70,7 +71,11 @@ class RemoteRepository() {
         ClientProvider.client.login(params).subscribeEvent(liveAPIResult)
     }
 
-    fun transfer(params: TransactionCreateParams, liveTransaction: MutableLiveData<APIResult>) {
-        ClientProvider.client.transfer(params).subscribe(liveTransaction)
+    fun transfer(params: TransactionCreateParams, liveTransaction: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.createTransaction(params).subscribeEvent(liveTransaction)
+    }
+
+    fun consumeTransactionRequest(params: TransactionConsumptionParams, liveTransactionConsumption: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.consumeTransactionRequest(params).subscribeEvent(liveTransactionConsumption)
     }
 }

@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import network.omisego.omgmerchant.MainActivity
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.pages.authorized.main.MainFragment
 
 fun Fragment.findChildController(@IdRes id: Int = R.id.navBottomNavigationContainer): NavController {
     return Navigation.findNavController(activity as MainActivity, id)
@@ -20,4 +21,13 @@ fun Fragment.findChildController(@IdRes id: Int = R.id.navBottomNavigationContai
 
 fun Fragment.findRootController(@IdRes id: Int = R.id.nav_host): NavController {
     return Navigation.findNavController(activity as MainActivity, id)
+}
+
+fun Fragment.findMainFragment(): MainFragment {
+    var parent: Fragment? = this
+    while (parent !is MainFragment) {
+        parent = parent?.parentFragment
+        if (parent == null) throw NullPointerException()
+    }
+    return parent
 }
