@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.more.transaction
  */
 
 import android.content.Context
+import co.omisego.omisego.model.Transaction
+import co.omisego.omisego.model.TransactionSource
 import co.omisego.omisego.model.pagination.Paginable
-import co.omisego.omisego.model.transaction.Transaction
-import co.omisego.omisego.model.transaction.TransactionSource
 import network.omisego.omgmerchant.R
 
 class TransactionListTransformer(

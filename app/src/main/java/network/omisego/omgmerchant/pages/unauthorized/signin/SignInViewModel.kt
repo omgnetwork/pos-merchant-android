@@ -13,7 +13,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
-import co.omisego.omisego.model.AuthenticationToken
+import co.omisego.omisego.model.AdminAuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
@@ -125,7 +125,7 @@ class SignInViewModel(
 
     fun hasCredential(): Boolean = localRepository.hasCredential()
 
-    fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
+    fun saveCredential(data: AdminAuthenticationToken): Deferred<Unit> {
         localRepository.saveUser(data.user)
         return localRepository.saveCredential(
             Credential(

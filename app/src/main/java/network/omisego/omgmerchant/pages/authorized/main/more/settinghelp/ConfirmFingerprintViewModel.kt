@@ -9,7 +9,7 @@ package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import co.omisego.omisego.model.AuthenticationToken
+import co.omisego.omisego.model.AdminAuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.data.LocalRepository
@@ -31,7 +31,7 @@ class ConfirmFingerprintViewModel(
         ), liveAPIResult)
     }
 
-    fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
+    fun saveCredential(data: AdminAuthenticationToken): Deferred<Unit> {
         localRepository.saveUser(data.user)
         return localRepository.saveCredential(
             Credential(

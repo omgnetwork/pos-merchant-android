@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.pagination.PaginationList
-import co.omisego.omisego.model.transaction.Transaction
 import kotlinx.android.synthetic.main.fragment_transaction_list.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment

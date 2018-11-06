@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.AuthenticationToken
+import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
 import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
 import kotlinx.coroutines.experimental.Dispatchers
@@ -78,7 +78,7 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
         btnConfirm.isEnabled = true
     }
 
-    private fun handleSignInSuccess(data: AuthenticationToken) {
+    private fun handleSignInSuccess(data: AdminAuthenticationToken) {
         launch(Dispatchers.Main) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserPassword(etPassword.text.toString())

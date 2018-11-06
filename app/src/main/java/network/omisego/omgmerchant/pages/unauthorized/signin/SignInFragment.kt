@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.AuthenticationToken
+import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.launch
@@ -90,7 +90,7 @@ class SignInFragment : BaseFragment() {
         }
     }
 
-    private fun navigateToMain(data: AuthenticationToken) {
+    private fun navigateToMain(data: AdminAuthenticationToken) {
         launch(Dispatchers.Main) {
             viewModel.saveCredential(data).await()
             viewModel.saveUserEmail(etEmail.text.toString())
@@ -146,7 +146,7 @@ class SignInFragment : BaseFragment() {
         }
     }
 
-    private fun handleSignInSuccess(data: AuthenticationToken) {
+    private fun handleSignInSuccess(data: AdminAuthenticationToken) {
         toast(getString(R.string.sign_in_success))
         navigateToMain(data)
     }

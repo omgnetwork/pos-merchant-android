@@ -11,9 +11,9 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
+import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.transaction.Transaction
-import co.omisego.omisego.model.transaction.list.TransactionListParams
+import co.omisego.omisego.model.params.TransactionListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
 import network.omisego.omgmerchant.data.LocalRepository

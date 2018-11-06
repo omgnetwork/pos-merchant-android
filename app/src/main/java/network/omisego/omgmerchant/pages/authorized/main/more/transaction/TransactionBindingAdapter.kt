@@ -11,8 +11,8 @@ import android.databinding.BindingAdapter
 import android.support.v4.content.ContextCompat
 import android.widget.TextView
 import co.omisego.omisego.model.Account
+import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.pagination.Paginable
-import co.omisego.omisego.model.transaction.Transaction
 import network.omisego.omgmerchant.R
 
 object TransactionBindingAdapter {
