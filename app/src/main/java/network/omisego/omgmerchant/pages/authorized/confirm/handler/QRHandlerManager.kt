@@ -22,12 +22,12 @@ import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
+import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 
 class QRHandlerManager(
     private val viewModelProvider: Fragment
 ) {
     lateinit var liveLoading: MutableLiveData<Event<Boolean>>
-    lateinit var liveTransaction: MutableLiveData<Event<Transaction>>
     lateinit var liveAPIError: MutableLiveData<Event<APIError>>
     lateinit var liveFeedback: MutableLiveData<Feedback>
     private val socketClient by lazy {
@@ -38,12 +38,21 @@ class QRHandlerManager(
         const val PREFIX_TX_REQUEST = "txr_"
     }
 
-    fun handleQRPayload(payload: String, args: ConfirmFragmentArgs) {
-        val handler: AbstractQRHandler = if (payload.startsWith(PREFIX_TX_REQUEST)) {
-            // the payload should be the transaction_request_id
+    fun handleQRPayload(rawPayload: String, args: ConfirmFragmentArgs) {
+        val payload: String
+        val handler: AbstractQRHandler = if (rawPayload.startsWith(PREFIX_TX_REQUEST)) {
+            // the rawPayload should be the transaction_request_id
+            // receive, send -> top-up, receive
+            val transactionRequestIds = rawPayload.split("|")
+            payload = if (args.transactionType == SCAN_TOPUP) {
+                transactionRequestIds[0]
+            } else {
+                transactionRequestIds[1]
+            }
             viewModelProvider.provideMainFragmentViewModel<ConsumeTransactionRequestHandlerViewModel>()
         } else {
-            // the payload should be the user_address
+            // the rawPayload should be the user_address
+            payload = rawPayload
             viewModelProvider.provideMainFragmentViewModel<CreateTransactionHandlerViewModel>().apply {
                 this.liveFeedback = this@QRHandlerManager.liveFeedback
             }
@@ -60,22 +69,27 @@ class QRHandlerManager(
             when (result) {
                 is APIResult.Success<*> -> {
                     if (result.data is Transaction) {
-                        val transaction = convertResultToTransaction(result)
+                        val transaction = convertResultToFeedback(result)
                         dispatchSuccessEvent(transaction)
                     } else if (result.data is TransactionConsumption) {
                         result.data.stopListening(socketClient)
-                        result.data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
-                            override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
-                                result.data.stopListening(socketClient)
-                                dispatchErrorEvent(apiError)
-                            }
+                        if (result.data.transactionRequest.requireConfirmation) {
+                            result.data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
+                                override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
+                                    result.data.stopListening(socketClient)
+                                    dispatchErrorEvent(apiError)
+                                }
 
-                            override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
-                                result.data.stopListening(socketClient)
-                                val transaction = convertResultToTransaction(result)
-                                dispatchSuccessEvent(transaction)
-                            }
-                        })
+                                override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
+                                    result.data.stopListening(socketClient)
+                                    val transaction = convertResultToFeedback(result)
+                                    dispatchSuccessEvent(transaction)
+                                }
+                            })
+                        } else {
+                            val transaction = convertResultToFeedback(result)
+                            dispatchSuccessEvent(transaction)
+                        }
                     }
                 }
                 is APIResult.Fail<*> -> {
@@ -86,9 +100,6 @@ class QRHandlerManager(
         }
 
         if (this is CreateTransactionHandlerViewModel) {
-            viewModelProvider.observeEventFor(liveTransaction) { transaction ->
-                handleTransferSuccess(args, transaction)
-            }
             viewModelProvider.observeEventFor(liveAPIError) { error ->
                 handleTransferFail(payload, error)
             }
@@ -103,9 +114,9 @@ class QRHandlerManager(
         }
     }
 
-    internal fun dispatchSuccessEvent(transaction: Transaction) {
+    internal fun dispatchSuccessEvent(feedback: Feedback) {
         liveLoading.value = Event(false)
-        liveTransaction.value = Event(transaction)
+        liveFeedback.value = feedback
     }
 
     internal fun dispatchErrorEvent(error: APIError) {

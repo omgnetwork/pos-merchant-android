@@ -10,6 +10,7 @@ package network.omisego.omgmerchant.model
 import android.os.Parcelable
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Transaction
+import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionSource
 import co.omisego.omisego.model.Wallet
 import kotlinx.android.parcel.Parcelize
@@ -40,6 +41,26 @@ data class Feedback(
                     transaction.to
                 )
             }
+        }
+
+        fun success(transactionType: String, transactionConsumption: TransactionConsumption): Feedback {
+            return Feedback(
+                true,
+                transactionType,
+                transactionConsumption.createdAt!!,
+                TransactionSource(
+                    transactionConsumption.transactionRequest.user?.username
+                        ?: transactionConsumption.transactionRequest.address
+                        ?: transactionConsumption.transactionRequest.user?.email!!,
+                    amount = transactionConsumption.estimatedConsumptionAmount,
+                    tokenId = transactionConsumption.token.id,
+                    token = transactionConsumption.token,
+                    userId = transactionConsumption.user?.id,
+                    user = transactionConsumption.transactionRequest.user,
+                    accountId = null,
+                    account = null
+                )
+            )
         }
 
         fun error(args: ConfirmFragmentArgs, wallet: Wallet, error: APIError?): Feedback {

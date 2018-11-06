@@ -12,7 +12,6 @@ import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
@@ -54,8 +53,6 @@ class MainViewModel(
     /* Control transaction status */
     val liveError: MutableLiveData<Event<APIError>> by lazy { MutableLiveData<Event<APIError>>() }
     val liveLoading: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
-    val liveTransaction: MutableLiveData<Event<Transaction>> by lazy { MutableLiveData<Event<Transaction>>() }
-    val liveTransactionAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     private val fullScreenPageIds = arrayOf(

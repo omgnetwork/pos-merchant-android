@@ -49,7 +49,6 @@ class MainFragment : BaseFragment() {
         qrHandlerManager = QRHandlerManager(this).apply {
             this.liveAPIError = mainViewModel.liveError
             this.liveLoading = mainViewModel.liveLoading
-            this.liveTransaction = mainViewModel.liveTransaction
             this.liveFeedback = mainViewModel.liveFeedback
         }
     }

@@ -1,7 +1,6 @@
 package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import android.arch.lifecycle.MutableLiveData
-import co.omisego.omisego.model.Transaction
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
@@ -39,5 +38,5 @@ interface AbstractQRHandler {
      */
     fun onHandlePayload(payload: String)
 
-    fun <T> convertResultToTransaction(success: APIResult.Success<T>): Transaction
+    fun <T> convertResultToFeedback(success: APIResult.Success<T>): Feedback
 }

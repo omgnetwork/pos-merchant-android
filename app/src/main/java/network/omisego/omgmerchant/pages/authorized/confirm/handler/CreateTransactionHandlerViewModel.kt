@@ -37,8 +37,8 @@ class CreateTransactionHandlerViewModel(
         remoteRepository.transfer(createTransactionCreateParams(payload), liveAPIResult)
     }
 
-    override fun <T> convertResultToTransaction(success: APIResult.Success<T>): Transaction {
-        return success.data as Transaction
+    override fun <T> convertResultToFeedback(success: APIResult.Success<T>): Feedback {
+        return Feedback.success(args.transactionType, success.data as Transaction)
     }
 
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {
@@ -64,10 +64,6 @@ class CreateTransactionHandlerViewModel(
 
     fun getUserWallet(address: String) {
         remoteRepository.loadWallet(WalletParams(address), liveWallet)
-    }
-
-    fun handleTransferSuccess(args: ConfirmFragmentArgs, transaction: Transaction) {
-        liveFeedback?.value = Feedback.success(args.transactionType, transaction)
     }
 
     fun handleTransferFail(qrPayload: String, error: APIError) {

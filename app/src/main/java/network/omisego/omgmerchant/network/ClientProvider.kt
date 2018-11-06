@@ -37,7 +37,7 @@ object ClientProvider {
     fun init() {
         async {
             client = deferredClient.await()
-            createSocketClient()
+            socketClient = createSocketClient()
         }
     }
 
@@ -53,7 +53,7 @@ object ClientProvider {
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BASIC
+                        level = HttpLoggingInterceptor.Level.BODY
                     }
                 )
             }.build()

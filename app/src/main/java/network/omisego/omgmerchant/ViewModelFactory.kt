@@ -67,7 +67,7 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 return CreateTransactionHandlerViewModel(LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(ConsumeTransactionRequestHandlerViewModel::class.java) -> {
-                return ConsumeTransactionRequestHandlerViewModel(RemoteRepository()) as T
+                return ConsumeTransactionRequestHandlerViewModel(LocalRepository(), RemoteRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
