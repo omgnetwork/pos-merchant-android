@@ -12,8 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.drawable.Drawable
-import co.omisego.omisego.model.transaction.Transaction
-import co.omisego.omisego.model.transaction.send.TransactionCreateParams
+import co.omisego.omisego.model.Transaction
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
@@ -42,30 +41,6 @@ class FeedbackViewModel(
     val date: LiveData<String> = liveFeedback.map { transformer.transformDate(app, it) }
     val errorCode: LiveData<String> = liveFeedback.map { transformer.transformErrorCode(app, it) }
     val errorDescription: LiveData<String> = liveFeedback.map { transformer.transformErrorDescription(app, it) }
-
-    fun transfer() {
-        val feedback = liveFeedback.value!!
-        val params = when (feedback.transactionType) {
-            SCAN_RECEIVE -> {
-                TransactionCreateParams(
-                    fromAddress = feedback.source.address,
-                    toAddress = localRepository.loadWallet()!!.address,
-                    amount = feedback.source.amount.setScale(0),
-                    tokenId = feedback.source.token.id
-                )
-            }
-            else -> {
-                TransactionCreateParams(
-                    fromAddress = localRepository.loadWallet()!!.address,
-                    toAddress = feedback.source.address,
-                    amount = feedback.source.amount.setScale(0),
-                    tokenId = feedback.source.token.id
-                )
-            }
-        }
-        remoteRepository.transfer(params, liveTransaction)
-        liveLoading.value = true
-    }
 
     fun setFeedback(transactionType: String, transaction: Transaction) {
         liveFeedback.value = if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(

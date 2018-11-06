@@ -17,29 +17,41 @@ import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
-import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.QRHandlerManager
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
 
 class MainFragment : BaseFragment() {
 
     /* ViewModel */
     private lateinit var receiveViewModel: ReceiveViewModel
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
-    private lateinit var addressViewModel: AddressViewModel
+    private lateinit var confirmViewModel: ConfirmViewModel
+    private lateinit var qrPayloadViewModel: QRPayloadViewModel
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var qrHandlerManager: QRHandlerManager
 
     /* Local */
     private lateinit var binding: FragmentMainBinding
     private var menuNext: MenuItem? = null
 
     override fun onProvideViewModel() {
-        addressViewModel = provideActivityViewModel()
+        qrPayloadViewModel = provideMainFragmentViewModel()
         mainViewModel = provideMainFragmentViewModel()
+        confirmViewModel = provideMainFragmentAndroidViewModel()
         receiveViewModel = provideMainFragmentViewModel()
         topupViewModel = provideMainFragmentViewModel()
+
+        qrHandlerManager = QRHandlerManager(this).apply {
+            this.liveAPIError = mainViewModel.liveError
+            this.liveLoading = mainViewModel.liveLoading
+            this.liveTransaction = mainViewModel.liveTransaction
+            this.liveFeedback = mainViewModel.liveFeedback
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,12 +96,24 @@ class MainFragment : BaseFragment() {
                 findChildController().navigateUp()
                 findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
             }
+            observeEventFor(liveLoading) { loading ->
+                if (loading) {
+                    findChildController().navigate(R.id.action_global_loadingFragment)
+                }
+            }
         }
 
-        observeFor(addressViewModel.liveAddress) {
+        with(confirmViewModel) {
+            observeEventFor(liveYesClick) {
+                findChildController().navigateUp()
+                qrHandlerManager.handleQRPayload(confirmViewModel.qrPayload, args)
+            }
+        }
+
+        observeFor(qrPayloadViewModel.liveQRPayload) {
             findChildController().navigateUp()
             findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-            addressViewModel.removeCache(it)
+            qrPayloadViewModel.removeCache(it)
         }
     }
 

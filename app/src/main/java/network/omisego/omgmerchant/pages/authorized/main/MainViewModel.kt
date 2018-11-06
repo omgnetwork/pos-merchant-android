@@ -11,6 +11,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
+import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
@@ -49,13 +51,20 @@ class MainViewModel(
     /* Control feedback object which is set from the confirmation page */
     val liveFeedback: MutableLiveData<Feedback> by lazy { MutableLiveData<Feedback>() }
 
+    /* Control transaction status */
+    val liveError: MutableLiveData<Event<APIError>> by lazy { MutableLiveData<Event<APIError>>() }
+    val liveLoading: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
+    val liveTransaction: MutableLiveData<Event<Transaction>> by lazy { MutableLiveData<Event<Transaction>>() }
+    val liveTransactionAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
+
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     private val fullScreenPageIds = arrayOf(
         R.id.splashFragment,
         R.id.selectAccountFragment,
         R.id.scan,
         R.id.confirmFragment,
-        R.id.feedbackFragment
+        R.id.feedbackFragment,
+        R.id.loadingFragment
     )
     val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
@@ -82,34 +91,6 @@ class MainViewModel(
                 R.id.receive -> CalculatorMode.RECEIVE
                 R.id.topup -> CalculatorMode.TOPUP
                 else -> currentCalculatorMode
-            }
-        }
-    }
-
-    /* Fetch data from repository */
-    fun hasCredential() = localRepository.hasCredential()
-
-    fun getAccount() = localRepository.loadAccount()
-
-    fun getCredential() = localRepository.loadCredential()
-
-    fun getFeedback() = localRepository.loadFeedback()
-
-    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
-        remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
-        liveTokenAPIResult
-    }
-
-    fun displayOtherDestinationByCondition() {
-        when (meetDestination()) {
-            DestinationCondition.DEST_SELECT_ACCOUNT -> {
-                liveDestinationId.value = Event(R.id.action_global_selectAccountFragment)
-            }
-            DestinationCondition.DEST_SPLASH -> {
-                liveDestinationId.value = Event(R.id.action_global_splashFragment)
-                showSplash = false
-            }
-            DestinationCondition.DEST_MAIN -> {
             }
         }
     }
@@ -152,6 +133,28 @@ class MainViewModel(
 
     fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
         return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
+    }
+
+    fun displayOtherDestinationByCondition() {
+        when (meetDestination()) {
+            DestinationCondition.DEST_SELECT_ACCOUNT -> {
+                liveDestinationId.value = Event(R.id.action_global_selectAccountFragment)
+            }
+            DestinationCondition.DEST_SPLASH -> {
+                liveDestinationId.value = Event(R.id.action_global_splashFragment)
+                showSplash = false
+            }
+            DestinationCondition.DEST_MAIN -> {
+            }
+        }
+    }
+
+    /* Fetch data from repository */
+    fun getAccount() = localRepository.loadAccount()
+
+    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
+        remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
+        liveTokenAPIResult
     }
 
     internal fun meetDestination(): DestinationCondition {

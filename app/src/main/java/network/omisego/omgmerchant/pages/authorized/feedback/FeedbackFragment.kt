@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.transaction.Transaction
+import co.omisego.omisego.model.Transaction
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentFeedbackBinding

@@ -222,6 +222,6 @@ class ConfirmViewModelTest {
     fun `test transfer should call RemoteRepository's transfer`() {
         val mockParams: TransactionCreateParams = mock()
         viewModel.transfer(mockParams)
-        verify(mockRemoteRepository).transfer(mockParams, viewModel.liveTransaction)
+        verify(mockRemoteRepository).transfer(mockParams, viewModel.liveTransactionAPIResult)
     }
 }

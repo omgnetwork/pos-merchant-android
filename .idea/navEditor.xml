@@ -18,6 +18,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_global_loadingFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="action_global_scanFragment">
                     <value>
                       <LayoutPositions />
@@ -50,8 +55,20 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="786" />
-                            <option name="y" value="-74" />
+                            <option name="x" value="1059" />
+                            <option name="y" value="-65" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="loadingFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="519" />
+                            <option name="y" value="292" />
                           </Point>
                         </option>
                       </LayoutPositions>

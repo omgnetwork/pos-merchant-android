@@ -18,13 +18,13 @@ import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentScanBinding
-import network.omisego.omgmerchant.extensions.provideActivityViewModel
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 
 class ScanFragment : BaseFragment() {
     private lateinit var binding: FragmentScanBinding
     private lateinit var viewModel: ScanViewModel
-    private lateinit var addressViewModel: AddressViewModel
+    private lateinit var qrPayloadViewModel: QRPayloadViewModel
 
     override fun onReceiveArgs() {
         viewModel.args = ScanFragmentArgs.fromBundle(arguments)
@@ -32,7 +32,7 @@ class ScanFragment : BaseFragment() {
 
     override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
-        addressViewModel = provideActivityViewModel()
+        qrPayloadViewModel = provideMainFragmentViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -78,7 +78,7 @@ class ScanFragment : BaseFragment() {
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    binding.scanner.startCameraWithVerifier(addressViewModel)
+                    binding.scanner.startCameraWithVerifier(qrPayloadViewModel)
                 }
 
                 override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
