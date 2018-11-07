@@ -54,7 +54,7 @@
     <string name="feedback_retry">Retry</string>
     <string name="feedback_icon_success" translatable="false"></string>
     <string name="feedback_icon_failed" translatable="false"></string>
-    <string name="feedback_error_code">Error code: %s</string>
+    <string name="feedback_error_code">%s</string>
     <string name="feedback_error_code_unknown">Unknown</string>
 
     <!-- More -->
