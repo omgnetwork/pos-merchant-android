@@ -39,7 +39,9 @@ class LiveTokenSpinner(
     fun setTokens(tokens: PaginationList<Token>) {
         tokenList.addAll(tokens.data)
         viewModel.liveToken.value = viewModel.liveToken.value ?: tokenList[0]
+        val lastSelectedTokenIndex = tokenList.indexOfFirst { it.id == (viewModel.liveToken.value ?: tokenList[0]).id }
         spinner?.setItems(tokens.data.map { it.symbol.toUpperCase() })
+        spinner?.selectedIndex = lastSelectedTokenIndex
     }
 
     fun setError(error: APIError) {
