@@ -57,7 +57,7 @@ class ConsumeTransactionRequestHandlerViewModel(
 
     override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
         if (data is TransactionRequest) {
-            liveFeedback?.value = Feedback.error(args, data.address, data.user!!, error)
+            liveFeedback?.value = Feedback.error(args, data.address, data.user, error)
             return
         }
 
@@ -65,7 +65,7 @@ class ConsumeTransactionRequestHandlerViewModel(
     }
 
     override fun handleFailToRetrieveUserInformation(error: APIError) {
-        this.error = error
+        liveFeedback?.value = Feedback.error(args, null, null, error)
     }
 
     internal fun createTransactionConsumptionParams(payload: String): TransactionConsumptionParams {

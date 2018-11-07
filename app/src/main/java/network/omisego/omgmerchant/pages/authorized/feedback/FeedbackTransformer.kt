@@ -48,12 +48,16 @@ class FeedbackTransformer {
     }
 
     fun transformUserId(context: Context, feedback: Feedback): String {
-        return context.getString(R.string.feedback_customer_id, feedback.source.userId)
+        return context.getString(R.string.feedback_customer_id, feedback.source.userId
+            ?: context.getString(R.string.feedback_error_code_unknown))
     }
 
     fun transformUserName(context: Context, feedback: Feedback): String {
-        return context.getString(R.string.feedback_customer_name, "${feedback.source.user?.email
-            ?: feedback.source.user?.username}")
+        return context.getString(
+            R.string.feedback_customer_name,
+            (feedback.source.user?.email ?: feedback.source.user?.username
+            ?: context.getString(R.string.feedback_error_code_unknown))
+        )
     }
 
     fun transformDate(context: Context, feedback: Feedback): String {

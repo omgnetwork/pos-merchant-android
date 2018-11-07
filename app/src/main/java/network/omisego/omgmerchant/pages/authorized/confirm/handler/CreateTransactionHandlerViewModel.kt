@@ -48,7 +48,7 @@ class CreateTransactionHandlerViewModel(
 
     override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
         if (data is Wallet) {
-            liveFeedback?.value = Feedback.error(args, data.address, data.user!!, error)
+            liveFeedback?.value = Feedback.error(args, data.address, data.user, error)
             return
         }
 
@@ -56,7 +56,7 @@ class CreateTransactionHandlerViewModel(
     }
 
     override fun handleFailToRetrieveUserInformation(error: APIError) {
-        this.error = error
+        liveFeedback?.value = Feedback.error(args, null, null, error)
     }
 
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {
