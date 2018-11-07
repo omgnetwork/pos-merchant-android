@@ -49,9 +49,14 @@ fun MaterialSpinner.setError(error: APIError) {
 }
 
 fun MaterialSpinner.defaultAdapter(tokens: PaginationList<Token>): MaterialSpinnerAdapter<Any> = object : MaterialSpinnerAdapter<Any>(this.context, tokens.data) {
-    override fun getItemText(position: Int): String = tokens.data[position].symbol.toUpperCase()
-    override fun get(position: Int): Any = tokens.data[position].symbol.toUpperCase()
-    override fun getItems(): MutableList<Any> {
-        return tokens.data.toMutableList()
+    override fun get(position: Int) = (items[position] as Token).symbol.toUpperCase()
+    override fun getItem(position: Int): Any {
+        return if (isHintEnabled) {
+            (items[position] as Token).symbol.toUpperCase()
+        } else if (position >= selectedIndex && items.size != 1) {
+            (items[position + 1] as Token).symbol.toUpperCase()
+        } else {
+            (items[position] as Token).symbol.toUpperCase()
+        }
     }
 }
