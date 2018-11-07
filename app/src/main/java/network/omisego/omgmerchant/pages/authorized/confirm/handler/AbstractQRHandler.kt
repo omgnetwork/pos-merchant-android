@@ -1,6 +1,7 @@
 package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import android.arch.lifecycle.MutableLiveData
+import co.omisego.omisego.model.APIError
 import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
@@ -15,6 +16,8 @@ import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
  */
 
 /**
+ * **** The comment below was provided to remind myself what is going on here. ****
+ *
  * For simple transfer we need the `user_address`
  * For consume the transaction request we need the `transaction_request_id`.
  *
@@ -27,16 +30,18 @@ import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
  */
 interface AbstractQRHandler {
     var args: ConfirmFragmentArgs
-
     val remoteRepository: RemoteRepository
-
     val liveAPIResult: MutableLiveData<Event<APIResult>>
+    val liveUserInformation: MutableLiveData<Event<APIResult>>
     var liveFeedback: MutableLiveData<Feedback>?
 
-    /**
-     * @param payload the param that need to be used for request to the appropriate APIs such as `createTransaction` or `consumeTransactionRequest`
-     */
     fun onHandlePayload(payload: String)
 
-    fun <T> convertResultToFeedback(success: APIResult.Success<T>): Feedback
+    fun <T> handleSucceedToHandlePayload(success: APIResult.Success<T>): Feedback
+
+    fun handleFailToHandlePayload(payload: String, error: APIError)
+
+    fun <R> handleSucceedToRetrieveUserInformation(data: R)
+
+    fun handleFailToRetrieveUserInformation(error: APIError)
 }

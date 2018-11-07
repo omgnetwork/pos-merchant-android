@@ -11,7 +11,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
-import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
@@ -51,7 +50,6 @@ class MainViewModel(
     val liveFeedback: MutableLiveData<Feedback> by lazy { MutableLiveData<Feedback>() }
 
     /* Control transaction status */
-    val liveError: MutableLiveData<Event<APIError>> by lazy { MutableLiveData<Event<APIError>>() }
     val liveLoading: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */

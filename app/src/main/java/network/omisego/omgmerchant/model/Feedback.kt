@@ -12,7 +12,7 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionSource
-import co.omisego.omisego.model.Wallet
+import co.omisego.omisego.model.User
 import kotlinx.android.parcel.Parcelize
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
@@ -63,14 +63,14 @@ data class Feedback(
             )
         }
 
-        fun error(args: ConfirmFragmentArgs, wallet: Wallet, error: APIError?): Feedback {
+        fun error(args: ConfirmFragmentArgs, address: String?, user: User, error: APIError?): Feedback {
             val source = TransactionSource(
-                wallet.address,
+                address ?: "-",
                 args.amount.toBigDecimal().multiply(args.token.subunitToUnit),
                 args.token.id,
                 args.token,
-                wallet.userId,
-                wallet.user,
+                user.id,
+                user,
                 null,
                 null
             )

@@ -31,14 +31,32 @@ class CreateTransactionHandlerViewModel(
     var error: APIError? = null
 
     override val liveAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
-    val liveWallet: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    override val liveUserInformation: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     override fun onHandlePayload(payload: String) {
         remoteRepository.transfer(createTransactionCreateParams(payload), liveAPIResult)
     }
 
-    override fun <T> convertResultToFeedback(success: APIResult.Success<T>): Feedback {
+    override fun <T> handleSucceedToHandlePayload(success: APIResult.Success<T>): Feedback {
         return Feedback.success(args.transactionType, success.data as Transaction)
+    }
+
+    override fun handleFailToHandlePayload(payload: String, error: APIError) {
+        this.error = error
+        remoteRepository.loadWallet(WalletParams(payload), liveUserInformation)
+    }
+
+    override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
+        if (data is Wallet) {
+            liveFeedback?.value = Feedback.error(args, data.address, data.user!!, error)
+            return
+        }
+
+        throw IllegalStateException("Expected object ${Wallet::class}, but got unexpected object : $data")
+    }
+
+    override fun handleFailToRetrieveUserInformation(error: APIError) {
+        this.error = error
     }
 
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {
@@ -60,22 +78,5 @@ class CreateTransactionHandlerViewModel(
                 )
             }
         }
-    }
-
-    fun getUserWallet(address: String) {
-        remoteRepository.loadWallet(WalletParams(address), liveWallet)
-    }
-
-    fun handleTransferFail(qrPayload: String, error: APIError) {
-        getUserWallet(qrPayload)
-        this.error = error
-    }
-
-    fun handleGetWalletSuccess(wallet: Wallet) {
-        liveFeedback?.value = Feedback.error(args, wallet, error)
-    }
-
-    fun handleGetWalletFailed(error: APIError) {
-//        toast(error.description)
     }
 }

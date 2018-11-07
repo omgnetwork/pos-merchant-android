@@ -18,6 +18,7 @@ import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
 import co.omisego.omisego.model.params.TransactionListParams
+import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import co.omisego.omisego.model.params.admin.TransactionCreateParams
@@ -30,8 +31,8 @@ import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.storage.Storage
 
 class RemoteRepository() {
-    fun loadWallet(params: WalletParams, liveWallet: MutableLiveData<APIResult>) {
-        ClientProvider.client.getWallet(params).subscribe(liveWallet)
+    fun loadWallet(params: WalletParams, liveWallet: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.getWallet(params).subscribeEvent(liveWallet)
     }
 
     fun loadWalletAndSave(params: AccountWalletListParams) {
@@ -52,6 +53,11 @@ class RemoteRepository() {
     fun loadAccounts(liveAPIResult: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client
             .getAccounts(AccountListParams.create(searchTerm = null))
+            .subscribeEvent(liveAPIResult)
+    }
+
+    fun loadTransactionRequest(params: TransactionRequestParams, liveAPIResult: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.getTransactionRequest(params)
             .subscribeEvent(liveAPIResult)
     }
 
