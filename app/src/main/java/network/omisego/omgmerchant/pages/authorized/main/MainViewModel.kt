@@ -21,7 +21,6 @@ import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
@@ -29,12 +28,12 @@ import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 class MainViewModel(
     internal val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
-) : ViewModel(), LoadTokenViewModel {
+) : ViewModel() {
     internal var showSplash = true
     internal var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
 
     /* LiveData */
-    override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
 
     /* Control next button ui */
     val liveEnableNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
@@ -96,12 +95,12 @@ class MainViewModel(
     ): NavBottomNavigationDirections.ActionGlobalScanFragment {
         return when (currentCalculatorMode) {
             CalculatorMode.RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveToken.value!!)
+                NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveSelectedToken.value!!)
                     .setAmount(receiveViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_RECEIVE)
             }
             CalculatorMode.TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveToken.value!!)
+                NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveSelectedToken.value!!)
                     .setAmount(topupViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_TOPUP)
             }
@@ -114,12 +113,12 @@ class MainViewModel(
     ): NavBottomNavigationDirections.ActionGlobalConfirmFragment {
         return when (currentCalculatorMode) {
             CalculatorMode.RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(receiveViewModel.liveToken.value!!)
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(receiveViewModel.liveSelectedToken.value!!)
                     .setAmount(receiveViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_RECEIVE)
             }
             CalculatorMode.TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(topupViewModel.liveToken.value!!)
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(topupViewModel.liveSelectedToken.value!!)
                     .setAmount(topupViewModel.liveCalculator.value!!)
                     .setTransactionType(SCAN_TOPUP)
             }

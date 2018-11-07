@@ -28,6 +28,10 @@
     <string name="topup_title">Top-up</string>
     <string name="topup_next">Next</string>
 
+    <!-- Token Spinner -->
+    <string name="token_spinner_empty_list">Empty</string>
+    <string name="token_spinner_fetch_error">Can\'t load tokens</string>
+
     <!-- Scan -->
     <!-- e.g. 380.00 UXD -->
     <string name="scan_title">Scan</string>

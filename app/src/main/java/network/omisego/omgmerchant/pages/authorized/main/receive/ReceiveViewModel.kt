@@ -14,17 +14,14 @@ import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
 import network.omisego.omgmerchant.utils.NumberDecorator
 
 class ReceiveViewModel(
     val handler: CalculatorInteraction,
-    override val liveCalculator: LiveCalculator,
+    val liveCalculator: LiveCalculator,
     private val calculation: Calculation
-) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel, NextButtonBehavior {
-    override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
-    var liveTokenSpinner: LiveTokenSpinner? = null
+) : ViewModel(), CalculatorInteraction.Operation, NextButtonBehavior {
+    val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     val numberDecorator: NumberDecorator by lazy { NumberDecorator() }
 
     /* Implement CalculatorInteraction.Operation */
@@ -52,15 +49,6 @@ class ReceiveViewModel(
     override fun shouldEnableNextButton(): Boolean {
         val calculatorValue = liveCalculator.value
         return calculatorValue != "0" && calculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1
-    }
-
-    override fun startListeningTokenSpinner() {
-        liveTokenSpinner?.listen()
-        liveTokenSpinner?.start()
-    }
-
-    override fun onCleared() {
-        liveTokenSpinner?.stop()
     }
 
     init {

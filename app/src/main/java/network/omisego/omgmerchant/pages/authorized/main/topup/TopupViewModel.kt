@@ -13,15 +13,12 @@ import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
 
 class TopupViewModel(
     val handler: CalculatorInteraction,
-    override val liveCalculator: LiveCalculator
-) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel, NextButtonBehavior {
-    override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
-    var liveTokenSpinner: LiveTokenSpinner? = null
+    val liveCalculator: LiveCalculator
+) : ViewModel(), CalculatorInteraction.Operation, NextButtonBehavior {
+    val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
 
     override fun onAppend(char: CharSequence) {
         if (liveCalculator.value?.contains(".") == true && char == ".") return
@@ -45,15 +42,6 @@ class TopupViewModel(
 
     override fun shouldEnableNextButton(): Boolean {
         return liveCalculator.value != "0"
-    }
-
-    override fun startListeningTokenSpinner() {
-        liveTokenSpinner?.listen()
-        liveTokenSpinner?.start()
-    }
-
-    override fun onCleared() {
-        liveTokenSpinner?.stop()
     }
 
     init {

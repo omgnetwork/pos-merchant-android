@@ -47,9 +47,9 @@ class MainViewModelTest {
 
         // Mocking dependencies
         whenever(mockReceiveViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveToken).thenReturn(mock())
+        whenever(mockReceiveViewModel.liveSelectedToken).thenReturn(mock())
         whenever(mockReceiveViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockReceiveViewModel.liveToken.value).thenReturn(theSelectedToken)
+        whenever(mockReceiveViewModel.liveSelectedToken.value).thenReturn(theSelectedToken)
 
         // Verify
         val expectedAction = NavBottomNavigationDirections.ActionGlobalScanFragment(
@@ -70,9 +70,9 @@ class MainViewModelTest {
 
         // Mocking dependencies
         whenever(mockTopupViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockTopupViewModel.liveToken).thenReturn(mock())
+        whenever(mockTopupViewModel.liveSelectedToken).thenReturn(mock())
         whenever(mockTopupViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockTopupViewModel.liveToken.value).thenReturn(theSelectedToken)
+        whenever(mockTopupViewModel.liveSelectedToken.value).thenReturn(theSelectedToken)
 
         // Verify
         val expectedAction = NavBottomNavigationDirections.ActionGlobalScanFragment(
@@ -93,9 +93,9 @@ class MainViewModelTest {
 
         // Mocking dependencies
         whenever(mockReceiveViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveToken).thenReturn(mock())
+        whenever(mockReceiveViewModel.liveSelectedToken).thenReturn(mock())
         whenever(mockReceiveViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockReceiveViewModel.liveToken.value).thenReturn(theSelectedToken)
+        whenever(mockReceiveViewModel.liveSelectedToken.value).thenReturn(theSelectedToken)
 
         // Verify
         val expectedAction = NavBottomNavigationDirections.ActionGlobalConfirmFragment(
@@ -116,9 +116,9 @@ class MainViewModelTest {
 
         // Mocking dependencies
         whenever(mockTopupViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockTopupViewModel.liveToken).thenReturn(mock())
+        whenever(mockTopupViewModel.liveSelectedToken).thenReturn(mock())
         whenever(mockTopupViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockTopupViewModel.liveToken.value).thenReturn(theSelectedToken)
+        whenever(mockTopupViewModel.liveSelectedToken.value).thenReturn(theSelectedToken)
 
         // Verify
         val expectedAction = NavBottomNavigationDirections.ActionGlobalConfirmFragment(
