@@ -2,7 +2,6 @@ package network.omisego.omgmerchant
 
 import android.app.Application
 import com.facebook.stetho.Stetho
-import network.omisego.omgmerchant.network.ClientProvider
 import network.omisego.omgmerchant.utils.Contextor
 
 /*
@@ -15,7 +14,6 @@ import network.omisego.omgmerchant.utils.Contextor
 class MerchantApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        ClientProvider.init()
         Contextor.context = applicationContext
         Stetho.initializeWithDefaults(this)
     }

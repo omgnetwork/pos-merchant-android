@@ -37,7 +37,7 @@ class RemoteRepository() {
 
     fun loadWalletAndSave(params: AccountWalletListParams) {
         async {
-            ClientProvider.deferredClient.await()
+            ClientProvider.client
                 .getAccountWallets(params)
                 .enqueue(object : OMGCallback<PaginationList<Wallet>> {
                     override fun fail(response: OMGResponse<APIError>) {
