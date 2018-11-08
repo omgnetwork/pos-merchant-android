@@ -11,7 +11,9 @@ import kotlinx.android.synthetic.main.fragment_topup.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
+import network.omisego.omgmerchant.extensions.findMainFragment
 import network.omisego.omgmerchant.extensions.observeFor
+import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.extensions.selectedToken
 import network.omisego.omgmerchant.extensions.setError
@@ -24,7 +26,7 @@ class ReceiveFragment : BaseFragment() {
     private lateinit var viewModel: ReceiveViewModel
 
     override fun onProvideViewModel() {
-        viewModel = provideMainFragmentViewModel()
+        viewModel = provideMainFragmentAndroidViewModel()
         mainViewModel = provideMainFragmentViewModel()
     }
 
@@ -42,12 +44,17 @@ class ReceiveFragment : BaseFragment() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
         binding.decorator = viewModel.numberDecorator
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }
 
     override fun onObserveLiveData() {
-        activity?.observeFor(viewModel.liveCalculator) {
-            mainViewModel.liveEnableNext.value = viewModel.shouldEnableNextButton()
+        findMainFragment().observeFor(viewModel.liveCalculator) {
+            notifyCalculatorStateChange()
+        }
+
+        findMainFragment().observeFor(viewModel.liveSelectedToken) {
+            notifyCalculatorStateChange()
         }
 
         with(mainViewModel) {
@@ -59,6 +66,11 @@ class ReceiveFragment : BaseFragment() {
                 spinner.selectedToken = viewModel.liveSelectedToken.value
             }
         }
+    }
+
+    private fun notifyCalculatorStateChange() {
+        mainViewModel.liveEnableNext.value = viewModel.shouldEnableNextButton()
+        viewModel.dispatchHelperTextState()
     }
 
     private fun handleLoadTokens(tokens: PaginationList<Token>) {

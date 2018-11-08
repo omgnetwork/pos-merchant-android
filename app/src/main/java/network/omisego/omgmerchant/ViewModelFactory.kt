@@ -9,11 +9,8 @@ package network.omisego.omgmerchant
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import network.omisego.omgmerchant.calculator.Calculation
-import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
-import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.handler.ConsumeTransactionRequestHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.handler.CreateTransactionHandlerViewModel
@@ -21,8 +18,6 @@ import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
-import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
-import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -31,19 +26,6 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
         when {
             modelClass.isAssignableFrom(SelectAccountViewModel::class.java) -> {
                 return SelectAccountViewModel(LocalRepository(), RemoteRepository()) as T
-            }
-            modelClass.isAssignableFrom(ReceiveViewModel::class.java) -> {
-                return ReceiveViewModel(
-                    CalculatorInteraction(),
-                    LiveCalculator("0"),
-                    Calculation()
-                ) as T
-            }
-            modelClass.isAssignableFrom(TopupViewModel::class.java) -> {
-                return TopupViewModel(
-                    CalculatorInteraction(),
-                    LiveCalculator("0")
-                ) as T
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(

@@ -13,7 +13,7 @@ import network.omisego.omgmerchant.utils.Validator
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-object TextInputLayoutUtil {
+object TextInputLayoutBinding {
     @JvmStatic
     @BindingAdapter("validator")
     fun validate(view: TextInputLayout, validator: Validator) {

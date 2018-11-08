@@ -43,8 +43,8 @@ class MainFragment : BaseFragment() {
         qrPayloadViewModel = provideMainFragmentViewModel()
         mainViewModel = provideMainFragmentViewModel()
         confirmViewModel = provideMainFragmentAndroidViewModel()
-        receiveViewModel = provideMainFragmentViewModel()
-        topupViewModel = provideMainFragmentViewModel()
+        receiveViewModel = provideMainFragmentAndroidViewModel()
+        topupViewModel = provideMainFragmentAndroidViewModel()
 
         qrHandlerManager = QRHandlerManager(this).apply {
             this.liveLoading = mainViewModel.liveLoading
@@ -138,8 +138,8 @@ class MainFragment : BaseFragment() {
 
         /* Restore the next button state */
         menuNext = menu?.findItem(R.id.next).apply {
-            this?.isEnabled = mainViewModel.liveEnableNext.value!!
-            this?.isVisible = mainViewModel.liveShowNext.value!!
+            this?.isEnabled = mainViewModel.liveEnableNext.value ?: false
+            this?.isVisible = mainViewModel.liveShowNext.value ?: false
         }
 
         super.onCreateOptionsMenu(menu, inflater)

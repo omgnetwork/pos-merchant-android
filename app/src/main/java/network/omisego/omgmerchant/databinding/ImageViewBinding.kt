@@ -16,7 +16,7 @@ import network.omisego.omgmerchant.extensions.dpToPx
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-object ImageViewUtil {
+object ImageViewBinding {
     @JvmStatic
     @BindingAdapter("loadImage")
     fun loadImage(view: ImageView, imageUrl: String) {

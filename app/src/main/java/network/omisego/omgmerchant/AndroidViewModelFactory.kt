@@ -3,8 +3,11 @@ package network.omisego.omgmerchant
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import network.omisego.omgmerchant.calculator.Calculation
+import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.data.LocalRepository
 import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel
@@ -12,6 +15,8 @@ import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingVie
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.SettingHelpViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListTransformer
 import network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListViewModel
+import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
+import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.authorized.splash.SplashViewModel
 import network.omisego.omgmerchant.pages.unauthorized.signin.FingerprintBottomSheetViewModel
@@ -55,6 +60,22 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             }
             modelClass.isAssignableFrom(ConfirmViewModel::class.java) -> {
                 ConfirmViewModel(application, LocalRepository(), RemoteRepository()) as T
+            }
+            modelClass.isAssignableFrom(ReceiveViewModel::class.java) -> {
+                return ReceiveViewModel(
+                    application,
+                    CalculatorInteraction(),
+                    LiveCalculator("0"),
+                    Calculation()
+                ) as T
+            }
+
+            modelClass.isAssignableFrom(TopupViewModel::class.java) -> {
+                return TopupViewModel(
+                    application,
+                    CalculatorInteraction(),
+                    LiveCalculator("0")
+                ) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
