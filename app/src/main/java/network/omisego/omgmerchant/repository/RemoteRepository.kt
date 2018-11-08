@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.data
+package network.omisego.omgmerchant.repository
 
 /*
  * OmiseGO

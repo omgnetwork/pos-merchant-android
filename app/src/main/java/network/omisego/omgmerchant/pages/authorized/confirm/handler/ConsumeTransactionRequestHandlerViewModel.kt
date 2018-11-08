@@ -14,8 +14,8 @@ import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback

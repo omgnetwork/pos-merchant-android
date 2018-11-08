@@ -12,8 +12,8 @@ import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.AdminAuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential

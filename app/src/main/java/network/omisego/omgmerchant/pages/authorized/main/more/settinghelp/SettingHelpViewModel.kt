@@ -13,7 +13,7 @@ import android.arch.lifecycle.MutableLiveData
 import co.infinum.goldfinger.Goldfinger
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 

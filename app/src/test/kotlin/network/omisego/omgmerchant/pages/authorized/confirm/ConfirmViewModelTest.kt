@@ -22,8 +22,8 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP

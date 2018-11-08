@@ -9,8 +9,8 @@ package network.omisego.omgmerchant
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.handler.ConsumeTransactionRequestHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.handler.CreateTransactionHandlerViewModel

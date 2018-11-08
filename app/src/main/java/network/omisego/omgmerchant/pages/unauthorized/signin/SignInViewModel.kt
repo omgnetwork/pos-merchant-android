@@ -18,8 +18,8 @@ import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.extensions.runBelowM
 import network.omisego.omgmerchant.extensions.runOnMToP

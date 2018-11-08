@@ -14,8 +14,8 @@ import androidx.navigation.NavController
 import co.omisego.omisego.model.params.TokenListParams
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult

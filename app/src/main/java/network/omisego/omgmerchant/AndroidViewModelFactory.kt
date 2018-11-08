@@ -5,8 +5,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer

@@ -13,8 +13,8 @@ import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.params.AccountWalletListParams
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class SplashViewModel(
