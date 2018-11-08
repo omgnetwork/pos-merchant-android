@@ -35,6 +35,7 @@ fun MaterialSpinner.setTokens(tokens: PaginationList<Token>, liveSelectedToken: 
     if (tokens.data.isNotEmpty()) {
         setItems(tokens.data)
         setAdapter(defaultAdapter(tokens))
+        selectedIndex = getItems<Token>().indexOfFirst { it.id == liveSelectedToken?.value?.id ?: selectedToken?.id }
         liveSelectedToken?.value = selectedToken
     } else {
         val emptyMsg = this.context?.getString(R.string.token_spinner_empty_list)
