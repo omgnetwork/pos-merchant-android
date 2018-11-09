@@ -12,23 +12,13 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.drawable.Drawable
-import co.omisego.omisego.model.Transaction
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
-import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.helper.map
 import network.omisego.omgmerchant.model.Feedback
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.utils.map
 
 class FeedbackViewModel(
     val app: Application,
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
     private val transformer: FeedbackTransformer
 ) : AndroidViewModel(app) {
-    val liveTransaction: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
-    val liveLoading: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(false) }
     val liveFeedback: MutableLiveData<Feedback> = MutableLiveData()
 
     /* binding data */
@@ -41,24 +31,5 @@ class FeedbackViewModel(
     val date: LiveData<String> = liveFeedback.map { transformer.transformDate(app, it) }
     val errorCode: LiveData<String> = liveFeedback.map { transformer.transformErrorCode(app, it) }
     val errorDescription: LiveData<String> = liveFeedback.map { transformer.transformErrorDescription(app, it) }
-
-    fun setFeedback(transactionType: String, transaction: Transaction) {
-        liveFeedback.value = if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
-            true,
-            transactionType,
-            transaction.createdAt,
-            transaction.from
-        ) else {
-            Feedback(
-                true,
-                transactionType,
-                transaction.createdAt,
-                transaction.to
-            )
-        }
-    }
-
-    fun deletePersistenceFeedback() {
-        localRepository.deleteFeedback()
-    }
+    val liveShowError: LiveData<Boolean> = liveFeedback.map { it.error != null }
 }

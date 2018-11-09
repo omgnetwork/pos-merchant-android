@@ -14,13 +14,14 @@ import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.params.admin.TransactionCreateParams
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class CreateTransactionHandlerViewModel(
     val localRepository: LocalRepository,
@@ -65,7 +66,7 @@ class CreateTransactionHandlerViewModel(
                 return TransactionCreateParams(
                     fromAddress = payload,
                     toAddress = localRepository.loadWallet()?.address!!,
-                    amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
+                    amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
                     tokenId = args.token.id
                 )
             }
@@ -73,7 +74,7 @@ class CreateTransactionHandlerViewModel(
                 return TransactionCreateParams(
                     fromAddress = localRepository.loadWallet()?.address,
                     toAddress = payload,
-                    amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
+                    amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
                     tokenId = args.token.id
                 )
             }

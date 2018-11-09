@@ -10,14 +10,22 @@ package network.omisego.omgmerchant.pages.authorized.scan
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.helper.HelperAmountFormatter
+import network.omisego.omgmerchant.model.AmountFormat
 
 class ScanViewModel(
-    private val app: Application
+    private val app: Application,
+    private val amountFormatter: HelperAmountFormatter
 ) : AndroidViewModel(app) {
     lateinit var args: ScanFragmentArgs
 
     val amountText: String
-        get() = app.getString(R.string.scan_amount, args.amount.toBigDecimal(), args.token.symbol)
+        get() {
+            return amountFormatter.format(
+                AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit),
+                args.token
+            )
+        }
 
     val title: String
         get() {

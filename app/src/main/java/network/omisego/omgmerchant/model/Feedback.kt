@@ -66,7 +66,7 @@ data class Feedback(
         fun error(args: ConfirmFragmentArgs, address: String?, user: User?, error: APIError?): Feedback {
             val source = TransactionSource(
                 address ?: "-",
-                args.amount.toBigDecimal().multiply(args.token.subunitToUnit),
+                AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
                 args.token.id,
                 args.token,
                 user?.id,

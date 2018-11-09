@@ -11,6 +11,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
@@ -41,10 +42,12 @@ class FeedbackTransformer {
     }
 
     fun transformAmount(context: Context, feedback: Feedback): String {
-        return context.getString(
-            R.string.feedback_amount,
-            feedback.source.amount.divide(feedback.source.token.subunitToUnit),
-            feedback.source.token.symbol)
+        val subunit = AmountFormat.Subunit(feedback.source.amount, feedback.source.token.subunitToUnit)
+        return String.format(
+            "%s %s",
+            subunit.toUnit().display(),
+            feedback.source.token.symbol
+        )
     }
 
     fun transformUserId(context: Context, feedback: Feedback): String {

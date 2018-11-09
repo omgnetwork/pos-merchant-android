@@ -12,10 +12,11 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
+import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class ConfirmViewModel(
     val app: Application,
@@ -31,7 +32,14 @@ class ConfirmViewModel(
         get() = qrPayload
 
     val amountText: String
-        get() = app.getString(R.string.confirm_transaction_amount, args.amount.toBigDecimal(), args.token.symbol)
+        get() {
+            val subunit = AmountFormat.Subunit(args.amount.toBigDecimal(), args.token.subunitToUnit)
+            return String.format(
+                "%s %s",
+                subunit.toUnit().display(),
+                args.token.symbol
+            )
+        }
 
     val transactionDirectionText: String
         get() = if (args.transactionType == SCAN_RECEIVE) {

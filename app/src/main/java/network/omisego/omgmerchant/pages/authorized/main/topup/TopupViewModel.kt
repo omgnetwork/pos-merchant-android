@@ -14,15 +14,14 @@ import android.support.v4.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.model.LiveCalculator
 import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
 
 class TopupViewModel(
     val app: Application,
-    val handler: CalculatorInteraction,
-    val liveCalculator: LiveCalculator
+    val handler: CalculatorInteraction
 ) : AndroidViewModel(app), CalculatorInteraction.Operation, NextButtonBehavior {
     val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+    val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
 
     val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val liveCalculatorHelperText: MutableLiveData<String> by lazy { MutableLiveData<String>() }

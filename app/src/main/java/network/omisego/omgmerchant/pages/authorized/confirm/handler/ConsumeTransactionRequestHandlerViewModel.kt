@@ -14,12 +14,13 @@ import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
+import network.omisego.omgmerchant.model.AmountFormat
 
 class ConsumeTransactionRequestHandlerViewModel(
     private val localRepository: LocalRepository,
@@ -71,7 +72,7 @@ class ConsumeTransactionRequestHandlerViewModel(
     internal fun createTransactionConsumptionParams(payload: String): TransactionConsumptionParams {
         return TransactionConsumptionParams.create(
             formattedTransactionRequestId = payload,
-            amount = args.amount.toBigDecimal().multiply(args.token.subunitToUnit).setScale(0),
+            amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
             tokenId = args.token.id,
             accountId = localRepository.loadAccount()?.id,
             exchangeAccountId = localRepository.loadAccount()?.id,
