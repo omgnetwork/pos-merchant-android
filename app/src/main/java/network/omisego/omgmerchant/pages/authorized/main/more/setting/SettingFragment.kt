@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_setting.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
-import network.omisego.omgmerchant.custom.MarginDividerDecorator
+import network.omisego.omgmerchant.custom.CustomRecyclerMarginDivider
 import network.omisego.omgmerchant.databinding.FragmentSettingBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.utils.provideMarginLeft
+import network.omisego.omgmerchant.helper.provideMarginLeft
 
 class SettingFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingBinding
@@ -68,6 +68,6 @@ class SettingFragment : BaseFragment() {
         adapter = SettingAdapter(viewModel, viewModel.menus)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.addItemDecoration(MarginDividerDecorator(context!!, context!!.provideMarginLeft(72)))
+        recyclerView.addItemDecoration(CustomRecyclerMarginDivider(context!!, context!!.provideMarginLeft(72)))
     }
 }

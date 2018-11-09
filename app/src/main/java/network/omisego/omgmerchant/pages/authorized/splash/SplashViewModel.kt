@@ -15,14 +15,13 @@ import co.omisego.omisego.model.params.AccountWalletListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 
 class SplashViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
-    val liveAccount: MutableLiveData<Account> by lazy { mutableLiveDataOf<Account>() }
+    val liveAccount: MutableLiveData<Account> by lazy { MutableLiveData<Account>() }
     val accountDescription: String
         get() = app.getString(R.string.welcome_account_info, liveAccount.value?.name)
 

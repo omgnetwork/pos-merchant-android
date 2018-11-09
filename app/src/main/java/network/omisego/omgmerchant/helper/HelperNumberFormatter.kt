@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.utils
+package network.omisego.omgmerchant.helper
 
 /*
  * OmiseGO
@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.utils
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-class NumberDecorator {
+class HelperNumberFormatter {
     fun formatByNumber(number: String): String {
         return try {
             val split = number.split(".")

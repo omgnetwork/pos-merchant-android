@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.utils
+package network.omisego.omgmerchant.helper
 
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes

@@ -21,9 +21,9 @@ import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.runOnM
-import network.omisego.omgmerchant.extensions.runOnMToP
-import network.omisego.omgmerchant.extensions.runOnP
+import network.omisego.omgmerchant.helper.runOnM
+import network.omisego.omgmerchant.helper.runOnMToP
+import network.omisego.omgmerchant.helper.runOnP
 import network.omisego.omgmerchant.extensions.scrollBottom
 import network.omisego.omgmerchant.extensions.toast
 

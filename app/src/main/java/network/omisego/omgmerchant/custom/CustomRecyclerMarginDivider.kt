@@ -16,7 +16,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import network.omisego.omgmerchant.R
 
-class MarginDividerDecorator(context: Context, val margin: Rect) : DividerItemDecoration(context, VERTICAL) {
+class CustomRecyclerMarginDivider(context: Context, val margin: Rect) : DividerItemDecoration(context, VERTICAL) {
     private val divider: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.shape_divider)!! }
     private val bound: Rect = Rect()
 

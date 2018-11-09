@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_setting_help.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
-import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
+import network.omisego.omgmerchant.custom.CustomLoadingRecyclerAdapter
 import network.omisego.omgmerchant.databinding.FragmentSettingHelpBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
 import network.omisego.omgmerchant.extensions.observeFor
@@ -19,7 +19,7 @@ import network.omisego.omgmerchant.extensions.toast
 class SettingHelpFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingHelpBinding
     private lateinit var viewModel: SettingHelpViewModel
-    private lateinit var adapter: LoadingRecyclerAdapter<String, ViewholderSettingHelpBinding>
+    private lateinit var adapter: CustomLoadingRecyclerAdapter<String, ViewholderSettingHelpBinding>
     private lateinit var confirmFingerprintDialog: ConfirmFingerprintDialog
 
     override fun onProvideViewModel() {
@@ -76,7 +76,7 @@ class SettingHelpFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = LoadingRecyclerAdapter(
+        adapter = CustomLoadingRecyclerAdapter(
             R.layout.viewholder_transaction_loading,
             R.layout.viewholder_setting_help,
             viewModel

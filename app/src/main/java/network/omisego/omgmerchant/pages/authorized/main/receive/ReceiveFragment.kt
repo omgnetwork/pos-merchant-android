@@ -43,7 +43,7 @@ class ReceiveFragment : BaseFragment() {
     override fun onBindDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
-        binding.decorator = viewModel.numberDecorator
+        binding.decorator = viewModel.helperNumberFormatter
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }

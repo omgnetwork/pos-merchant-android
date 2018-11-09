@@ -19,7 +19,7 @@ import network.omisego.omgmerchant.extensions.selectedToken
 import network.omisego.omgmerchant.extensions.setError
 import network.omisego.omgmerchant.extensions.setTokens
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
-import network.omisego.omgmerchant.utils.NumberDecorator
+import network.omisego.omgmerchant.helper.HelperNumberFormatter
 
 class TopupFragment : BaseFragment() {
     private lateinit var binding: FragmentTopupBinding
@@ -34,7 +34,7 @@ class TopupFragment : BaseFragment() {
     override fun onBindDataBinding() {
         binding.liveCalc = viewModel.liveCalculator
         binding.handler = viewModel.handler
-        binding.decorator = NumberDecorator()
+        binding.decorator = HelperNumberFormatter()
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }

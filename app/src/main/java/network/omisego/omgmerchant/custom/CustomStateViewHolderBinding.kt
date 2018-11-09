@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.base
+package network.omisego.omgmerchant.custom
 
 import android.databinding.ViewDataBinding
 
@@ -9,6 +9,6 @@ import android.databinding.ViewDataBinding
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-interface StateViewHolderBinding<T, R : ViewDataBinding> {
+interface CustomStateViewHolderBinding<T, R : ViewDataBinding> {
     fun bind(binding: R, data: T)
 }

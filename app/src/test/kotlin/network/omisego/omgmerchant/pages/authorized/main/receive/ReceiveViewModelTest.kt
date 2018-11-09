@@ -8,7 +8,7 @@ package network.omisego.omgmerchant.pages.authorized.main.receive
  */
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import network.omisego.omgmerchant.model.LiveCalculator
+import android.arch.lifecycle.MutableLiveData
 import org.amshove.kluent.mock
 import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldEqual
@@ -20,8 +20,8 @@ class ReceiveViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val liveCalculator: LiveCalculator by lazy { LiveCalculator() }
-    private val viewModel: ReceiveViewModel by lazy { ReceiveViewModel(mock(), liveCalculator, mock()) }
+    private val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "" } }
+    private val viewModel: ReceiveViewModel by lazy { ReceiveViewModel(mock(), mock(), mock()) }
 
     @Test
     fun `test next button enable state`() {
@@ -46,7 +46,7 @@ class ReceiveViewModelTest {
     @Test
     fun `test calculator should not be able to have multiple dots`() {
         liveCalculator.value = "1.1"
-        viewModel.onAppend(".")
+        viewModel.onAppend('.')
         liveCalculator.value shouldEqual "1.1"
     }
 
@@ -54,16 +54,16 @@ class ReceiveViewModelTest {
     fun `test calculator should not be able to add multiple zeroes without non-zero value in the left-most digit`() {
         /* Should not be able to add */
         liveCalculator.value = "0"
-        viewModel.onAppend("0")
-        liveCalculator.value shouldEqual "0"
+        viewModel.onAppend('0')
+        liveCalculator.value shouldEqual '0'
 
         /* Should be ok */
         liveCalculator.value = "10"
-        viewModel.onAppend("0")
+        viewModel.onAppend('0')
         liveCalculator.value shouldEqual "100"
 
         liveCalculator.value = "0."
-        viewModel.onAppend("0")
+        viewModel.onAppend('0')
         liveCalculator.value shouldEqual "0.0"
     }
 }

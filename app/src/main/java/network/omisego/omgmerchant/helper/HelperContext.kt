@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.utils
+package network.omisego.omgmerchant.helper
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,6 +11,6 @@ import android.content.Context
  */
 
 @SuppressLint("StaticFieldLeak")
-object Contextor {
+object HelperContext {
     lateinit var context: Context
 }

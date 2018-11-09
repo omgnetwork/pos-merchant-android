@@ -17,7 +17,7 @@ import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.set
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.model.Feedback
-import network.omisego.omgmerchant.utils.Contextor.context
+import network.omisego.omgmerchant.helper.HelperContext.context
 
 /*
  * OmiseGO

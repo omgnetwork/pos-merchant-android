@@ -16,7 +16,7 @@ import android.support.v4.content.ContextCompat
 import co.infinum.goldfinger.Error
 import co.infinum.goldfinger.Goldfinger
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.utils.Contextor
+import network.omisego.omgmerchant.helper.HelperContext
 
 class FingerprintBottomSheetViewModel(
     val app: Application
@@ -31,7 +31,7 @@ class FingerprintBottomSheetViewModel(
     }
 
     fun init() {
-        goldFinger = Goldfinger.Builder(Contextor.context).build()
+        goldFinger = Goldfinger.Builder(HelperContext.context).build()
     }
 
     fun hasEnrolledFingerprint() = goldFinger?.hasEnrolledFingerprint()

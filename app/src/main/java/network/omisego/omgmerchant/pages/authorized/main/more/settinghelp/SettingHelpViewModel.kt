@@ -12,16 +12,15 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import co.infinum.goldfinger.Goldfinger
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingHelpBinding
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
+import network.omisego.omgmerchant.repository.LocalRepository
 
 class SettingHelpViewModel(
     val app: Application,
     val repository: LocalRepository
-) : AndroidViewModel(app), StateViewHolderBinding<String, ViewholderSettingHelpBinding> {
-    val liveClickMenu: MutableLiveData<String> by lazy { mutableLiveDataOf<String>() }
+) : AndroidViewModel(app), CustomStateViewHolderBinding<String, ViewholderSettingHelpBinding> {
+    val liveClickMenu: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val liveAuthenticateSuccessful: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     override fun bind(binding: ViewholderSettingHelpBinding, data: String) {

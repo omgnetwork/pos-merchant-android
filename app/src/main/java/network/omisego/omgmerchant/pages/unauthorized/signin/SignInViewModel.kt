@@ -13,37 +13,35 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
+import android.os.CancellationSignal
 import co.omisego.omisego.model.AdminAuthenticationToken
 import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
-import network.omisego.omgmerchant.extensions.runBelowM
-import network.omisego.omgmerchant.extensions.runOnMToP
-import network.omisego.omgmerchant.extensions.runOnP
+import network.omisego.omgmerchant.custom.EmailValidator
+import network.omisego.omgmerchant.custom.PasswordValidator
+import network.omisego.omgmerchant.custom.Validator
+import network.omisego.omgmerchant.helper.runBelowM
+import network.omisego.omgmerchant.helper.runOnMToP
+import network.omisego.omgmerchant.helper.runOnP
+import network.omisego.omgmerchant.helper.HelperContext.context
+import network.omisego.omgmerchant.helper.mapPropChanged
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
-import network.omisego.omgmerchant.utils.BiometricHelper
-import network.omisego.omgmerchant.utils.Contextor.context
-import network.omisego.omgmerchant.utils.EmailValidator
-import network.omisego.omgmerchant.utils.PasswordValidator
-import network.omisego.omgmerchant.utils.Validator
-import network.omisego.omgmerchant.utils.mapPropChanged
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SignInViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
-    private val biometricHelper: BiometricHelper
+    private val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
     private val liveState: LiveState<SignInState> by lazy {
         LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
     }
-    private val liveByPassValidation: MutableLiveData<Boolean> by lazy { mutableLiveDataOf(true) }
+    private val liveByPassValidation: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>().apply { this.value = true } }
     val liveSignInAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     val liveBtnText: LiveData<String> by lazy { liveState.mapPropChanged { it.btnText } }
@@ -94,7 +92,7 @@ class SignInViewModel(
                 .build()
 
             prompt?.authenticate(
-                biometricHelper.createCancellationSignal(),
+                CancellationSignal(),
                 app.mainExecutor,
                 biometricCallback
             )

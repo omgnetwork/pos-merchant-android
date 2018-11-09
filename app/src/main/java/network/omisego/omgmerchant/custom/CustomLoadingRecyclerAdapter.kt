@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.base
+package network.omisego.omgmerchant.custom
 
 /*
  * OmiseGO
@@ -16,11 +16,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import java.util.UUID
 
-class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
+class CustomLoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
     @LayoutRes private val loadingRes: Int,
     @LayoutRes private val contentRes: Int,
-    private val stateViewHolderBinding: StateViewHolderBinding<T, V>
-) : RecyclerView.Adapter<StateViewHolder>() {
+    private val stateViewHolderBinding: CustomStateViewHolderBinding<T, V>
+) : RecyclerView.Adapter<CustomStateViewHolder>() {
     private val contentLoadingList: MutableList<Any> = mutableListOf()
     private val contentList: MutableList<T> = mutableListOf()
 
@@ -53,12 +53,12 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
     }
 
     private fun dispatchUpdate(oldList: List<Any>, newList: List<Any>) {
-        val diff = LoadingDiffCallback(oldList, newList)
+        val diff = CustomLoadingDiffCallback(oldList, newList)
         val result = DiffUtil.calculateDiff(diff)
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StateViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomStateViewHolder {
         val layoutRes = when (viewType) {
             1 -> loadingRes
             2 -> contentRes
@@ -68,11 +68,11 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
         return when (viewType) {
             1 -> {
                 val itemView = LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
-                StateViewHolder.Loading(itemView)
+                CustomStateViewHolder.Loading(itemView)
             }
             2 -> {
                 val binding: V = DataBindingUtil.inflate(LayoutInflater.from(parent.context), contentRes, parent, false)
-                StateViewHolder.Show(binding)
+                CustomStateViewHolder.Show(binding)
             }
             else -> {
                 throw UnsupportedOperationException("Currently not support viewType $viewType")
@@ -90,10 +90,10 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
 
     override fun getItemCount() = contentLoadingList.size
 
-    override fun onBindViewHolder(holder: StateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomStateViewHolder, position: Int) {
         when (holder) {
-            is StateViewHolder.Show<*> -> {
-                stateViewHolderBinding.bind((holder as StateViewHolder.Show<V>).binding, contentList[position])
+            is CustomStateViewHolder.Show<*> -> {
+                stateViewHolderBinding.bind((holder as CustomStateViewHolder.Show<V>).binding, contentList[position])
             }
         }
     }

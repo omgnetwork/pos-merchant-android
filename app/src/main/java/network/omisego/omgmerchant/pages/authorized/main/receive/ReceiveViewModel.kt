@@ -15,18 +15,17 @@ import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.helper.HelperNumberFormatter
 import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
-import network.omisego.omgmerchant.utils.NumberDecorator
 
 class ReceiveViewModel(
     val app: Application,
     val handler: CalculatorInteraction,
-    val liveCalculator: LiveCalculator,
     private val calculation: Calculation
 ) : AndroidViewModel(app), CalculatorInteraction.Operation, NextButtonBehavior {
     val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
-    val numberDecorator: NumberDecorator by lazy { NumberDecorator() }
+    val helperNumberFormatter: HelperNumberFormatter by lazy { HelperNumberFormatter() }
+    val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
 
     val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val liveCalculatorHelperText: MutableLiveData<String> by lazy { MutableLiveData<String>() }

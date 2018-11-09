@@ -27,7 +27,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
-import network.omisego.omgmerchant.utils.stringRes
+import network.omisego.omgmerchant.helper.stringRes
 import org.amshove.kluent.mock
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldEqualTo

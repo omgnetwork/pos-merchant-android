@@ -2,7 +2,7 @@ package network.omisego.omgmerchant
 
 import android.app.Application
 import com.facebook.stetho.Stetho
-import network.omisego.omgmerchant.utils.Contextor
+import network.omisego.omgmerchant.helper.HelperContext
 
 /*
  * OmiseGO
@@ -14,7 +14,7 @@ import network.omisego.omgmerchant.utils.Contextor
 class MerchantApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        Contextor.context = applicationContext
+        HelperContext.context = applicationContext
         Stetho.initializeWithDefaults(this)
     }
 }

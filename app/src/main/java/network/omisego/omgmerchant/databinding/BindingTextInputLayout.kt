@@ -2,9 +2,9 @@ package network.omisego.omgmerchant.databinding
 
 import android.databinding.BindingAdapter
 import android.support.design.widget.TextInputLayout
+import network.omisego.omgmerchant.custom.MinimalTextChangeListener
+import network.omisego.omgmerchant.custom.Validator
 import network.omisego.omgmerchant.model.ValidateResult
-import network.omisego.omgmerchant.utils.MinimalTextChangeListener
-import network.omisego.omgmerchant.utils.Validator
 
 /*
  * OmiseGO
@@ -13,7 +13,7 @@ import network.omisego.omgmerchant.utils.Validator
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-object TextInputLayoutBinding {
+object BindingTextInputLayout {
     @JvmStatic
     @BindingAdapter("validator")
     fun validate(view: TextInputLayout, validator: Validator) {

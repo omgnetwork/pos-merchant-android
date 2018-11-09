@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.base
+package network.omisego.omgmerchant.custom
 
 import android.support.v7.util.DiffUtil
 
@@ -9,7 +9,7 @@ import android.support.v7.util.DiffUtil
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-class LoadingDiffCallback(
+class CustomLoadingDiffCallback(
     private val contentItems: List<*>,
     private val allItems: List<Any>
 ) : DiffUtil.Callback() {

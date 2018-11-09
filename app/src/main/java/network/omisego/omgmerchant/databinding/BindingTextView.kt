@@ -13,11 +13,11 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.utils.Contextor
+import network.omisego.omgmerchant.helper.HelperContext
 
-object TextViewBinding {
+object BindingTextView {
     private val fadeInAnimation by lazy {
-        AnimationUtils.loadAnimation(Contextor.context, R.anim.fade_in)
+        AnimationUtils.loadAnimation(HelperContext.context, R.anim.fade_in)
     }
 
     @JvmStatic

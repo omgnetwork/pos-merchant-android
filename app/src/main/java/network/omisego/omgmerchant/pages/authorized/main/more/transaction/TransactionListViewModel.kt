@@ -15,23 +15,23 @@ import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.params.TransactionListParams
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
+import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.AmountFormat
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class TransactionListViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository,
     private val transformer: TransactionListTransformer
-) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
+) : AndroidViewModel(app), CustomStateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
 
     /* Live data */
-    val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+    val liveTransactionFailedDescription: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val liveTransactionListAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     /* get data from repository */
@@ -56,16 +56,18 @@ class TransactionListViewModel(
         }
         if (transaction.error == null) {
             liveTransactionFailedDescription.value = if (transaction.isTopup) {
+                val subunit = AmountFormat.Subunit(transaction.to.amount, transaction.to.token.subunitToUnit)
                 app.getString(
                     R.string.transaction_list_topup_info,
-                    transaction.to.amount.divide(transaction.to.token.subunitToUnit),
+                    subunit.toUnit().display(),
                     transaction.to.token.symbol,
                     transaction.to.userId
                 )
             } else {
+                val subunit = AmountFormat.Subunit(transaction.from.amount, transaction.from.token.subunitToUnit)
                 app.getString(
                     R.string.transaction_list_receive_info,
-                    transaction.from.amount.divide(transaction.from.token.subunitToUnit),
+                    subunit.toUnit().display(),
                     transaction.from.token.symbol,
                     transaction.from.userId
                 )

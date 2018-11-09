@@ -14,8 +14,8 @@ import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_transaction_list.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
-import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
-import network.omisego.omgmerchant.custom.MarginDividerDecorator
+import network.omisego.omgmerchant.custom.CustomLoadingRecyclerAdapter
+import network.omisego.omgmerchant.custom.CustomRecyclerMarginDivider
 import network.omisego.omgmerchant.databinding.FragmentTransactionListBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
 import network.omisego.omgmerchant.extensions.dpToPx
@@ -27,7 +27,7 @@ import network.omisego.omgmerchant.extensions.toast
 class TransactionListFragment : BaseFragment() {
     private lateinit var binding: FragmentTransactionListBinding
     private lateinit var viewModel: TransactionListViewModel
-    private lateinit var adapter: LoadingRecyclerAdapter<Transaction, ViewholderTransactionBinding>
+    private lateinit var adapter: CustomLoadingRecyclerAdapter<Transaction, ViewholderTransactionBinding>
     private val linearLayoutManager by lazy { LinearLayoutManager(context) }
     private var currentPage: Int = 1
     private var lastVisibleItem: Int = 0
@@ -37,7 +37,7 @@ class TransactionListFragment : BaseFragment() {
     private val dividerDecorator by lazy {
         val paddingSize = context?.dpToPx(16f)!!
         val margin = Rect(paddingSize, 0, paddingSize, 0)
-        MarginDividerDecorator(context!!, margin)
+        CustomRecyclerMarginDivider(context!!, margin)
     }
 
     companion object {
@@ -130,7 +130,7 @@ class TransactionListFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = LoadingRecyclerAdapter(R.layout.viewholder_transaction_loading, R.layout.viewholder_transaction, viewModel)
+        adapter = CustomLoadingRecyclerAdapter(R.layout.viewholder_transaction_loading, R.layout.viewholder_transaction, viewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = linearLayoutManager
     }

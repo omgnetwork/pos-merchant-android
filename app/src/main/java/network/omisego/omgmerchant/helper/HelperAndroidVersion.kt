@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.extensions
+package network.omisego.omgmerchant.helper
 
 /*
  * OmiseGO

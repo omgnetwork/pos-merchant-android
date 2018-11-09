@@ -10,20 +10,19 @@ package network.omisego.omgmerchant.pages.authorized.account
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
-import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
+import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SelectAccountViewModel(
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository
-) : ViewModel(), StateViewHolderBinding<Account, ViewholderAccountBinding> {
+) : ViewModel(), CustomStateViewHolderBinding<Account, ViewholderAccountBinding> {
     val liveAccountList: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
-    val liveAccountSelect: MutableLiveData<Account> by lazy { mutableLiveDataOf<Account>() }
+    val liveAccountSelect: MutableLiveData<Account> by lazy { MutableLiveData<Account>() }
 
     override fun bind(binding: ViewholderAccountBinding, data: Account) {
         binding.account = data

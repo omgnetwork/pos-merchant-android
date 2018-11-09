@@ -12,7 +12,7 @@ import android.view.View
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-object ResourceBinding {
+object BindingResource {
     @JvmStatic
     @BindingAdapter("backgroundDrawable")
     fun setBackgroundDrawable(
