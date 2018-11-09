@@ -13,6 +13,7 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
@@ -21,11 +22,11 @@ import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
+import network.omisego.omgmerchant.extensions.scrollBottom
+import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.helper.runOnM
 import network.omisego.omgmerchant.helper.runOnMToP
 import network.omisego.omgmerchant.helper.runOnP
-import network.omisego.omgmerchant.extensions.scrollBottom
-import network.omisego.omgmerchant.extensions.toast
 
 class SignInFragment : BaseFragment() {
     private lateinit var binding: FragmentSignInBinding
@@ -52,8 +53,8 @@ class SignInFragment : BaseFragment() {
             }
         }
         observeEventFor(viewModel.liveSignInAPIResult) {
-            viewModel.hideLoading(getString(R.string.sign_in_button))
             it.handle(this::handleSignInSuccess, this::handleSignInError)
+            viewModel.hideLoading(getString(R.string.sign_in_button))
         }
 
         runOnP { subscribeSignInWithFingerprintP() }
@@ -81,7 +82,7 @@ class SignInFragment : BaseFragment() {
             scrollBottom()
         }
 
-        btnSignIn.setOnClickListener { viewModel.signIn() }
+        btnSignIn.setOnClickListener { signIn() }
         etPassword.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 signIn()
@@ -92,8 +93,10 @@ class SignInFragment : BaseFragment() {
 
     private fun navigateToMain(data: AdminAuthenticationToken) {
         launch(Dispatchers.Main) {
-            viewModel.saveCredential(data).await()
-            viewModel.saveUserEmail(etEmail.text.toString())
+            async {
+                viewModel.saveUserEmail(etEmail.text.toString())
+                viewModel.saveCredential(data)
+            }
             findRootController().navigate(R.id.action_sign_in_to_main)
         }
     }
