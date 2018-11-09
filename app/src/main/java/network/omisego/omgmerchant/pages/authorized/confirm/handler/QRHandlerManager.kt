@@ -88,6 +88,9 @@ class QRHandlerManager(
                                     dispatchSuccessEvent(feedback)
                                 }
                             })
+                        } else {
+                            val transaction = handleSucceedToHandlePayload(result)
+                            dispatchSuccessEvent(transaction)
                         }
                     }
                 }

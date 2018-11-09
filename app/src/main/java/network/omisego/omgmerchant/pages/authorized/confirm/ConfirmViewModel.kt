@@ -15,6 +15,7 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -29,7 +30,14 @@ class ConfirmViewModel(
     val liveNoClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
 
     val addressText: String
-        get() = qrPayload
+        get() {
+            val ids = qrPayload.split("|")
+            return if (args.transactionType == SCAN_TOPUP) {
+                ids[0]
+            } else {
+                ids[1]
+            }
+        }
 
     val amountText: String
         get() {

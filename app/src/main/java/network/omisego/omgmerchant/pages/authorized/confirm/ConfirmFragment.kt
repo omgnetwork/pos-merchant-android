@@ -32,7 +32,6 @@ class ConfirmFragment : BaseFragment() {
         viewModel = provideMainFragmentAndroidViewModel()
         qrPayloadViewModel = provideMainFragmentViewModel()
         mainViewModel = provideMainFragmentViewModel()
-        viewModel.qrPayload = qrPayloadViewModel.liveQRPayload.value!!
     }
 
     override fun onReceiveArgs() {
@@ -40,6 +39,7 @@ class ConfirmFragment : BaseFragment() {
     }
 
     override fun onBindDataBinding() {
+        viewModel.qrPayload = qrPayloadViewModel.liveQRPayload.value!!
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }
@@ -47,9 +47,6 @@ class ConfirmFragment : BaseFragment() {
     override fun onObserveLiveData() {
         with(viewModel) {
             observeEventFor(liveNoClick) { findNavController().navigateUp() }
-            observeEventFor(liveYesClick) {
-                // Handle the implementation in MainFragment
-            }
         }
     }
 
