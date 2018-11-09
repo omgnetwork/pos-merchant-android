@@ -17,6 +17,7 @@ import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.operation.startListeningEvents
 import co.omisego.omisego.websocket.listener.TransactionConsumptionListener
 import network.omisego.omgmerchant.extensions.observeEventFor
+import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
@@ -47,7 +48,7 @@ class QRHandlerManager(
             } else {
                 transactionRequestIds[1]
             }
-            viewModelProvider.provideMainFragmentViewModel<ConsumeTransactionRequestHandlerViewModel>().apply {
+            viewModelProvider.provideMainFragmentAndroidViewModel<ConsumeTransactionRequestHandlerViewModel>().apply {
                 this.liveFeedback = this@QRHandlerManager.liveFeedback
             }
         } else {

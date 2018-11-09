@@ -7,8 +7,9 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.TransactionConsumption
@@ -16,6 +17,7 @@ import co.omisego.omisego.model.TransactionConsumptionStatus
 import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
+import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.AmountFormat
@@ -25,9 +27,10 @@ import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class ConsumeTransactionRequestHandlerViewModel(
+    val app: Application,
     private val localRepository: LocalRepository,
     override val remoteRepository: RemoteRepository
-) : ViewModel(), AbstractQRHandler {
+) : AndroidViewModel(app), AbstractQRHandler {
     var error: APIError? = null
     override lateinit var args: ConfirmFragmentArgs
     override var liveFeedback: MutableLiveData<Feedback>? = null
@@ -59,7 +62,7 @@ class ConsumeTransactionRequestHandlerViewModel(
                     args,
                     data.transactionRequest.address,
                     data.transactionRequest.user,
-                    APIError(ErrorCode.SDK_UNEXPECTED_ERROR, "${data.transactionRequest.user?.email} has rejected the transaction consumption.")
+                    APIError(ErrorCode.SDK_UNEXPECTED_ERROR, app.getString(R.string.feedback_user_reject))
                 )
             }
             else -> {

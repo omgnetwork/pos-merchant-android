@@ -7,6 +7,7 @@ import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.helper.HelperAmountFormatter
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.ConsumeTransactionRequestHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel
@@ -73,6 +74,10 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                     application,
                     CalculatorInteraction()
                 ) as T
+            }
+
+            modelClass.isAssignableFrom(ConsumeTransactionRequestHandlerViewModel::class.java) -> {
+                return ConsumeTransactionRequestHandlerViewModel(application, LocalRepository(), RemoteRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

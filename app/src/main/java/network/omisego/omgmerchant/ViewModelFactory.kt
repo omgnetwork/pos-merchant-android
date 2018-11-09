@@ -9,16 +9,15 @@ package network.omisego.omgmerchant
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
-import network.omisego.omgmerchant.pages.authorized.confirm.handler.ConsumeTransactionRequestHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.handler.CreateTransactionHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
@@ -47,9 +46,6 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(CreateTransactionHandlerViewModel::class.java) -> {
                 return CreateTransactionHandlerViewModel(LocalRepository(), RemoteRepository()) as T
-            }
-            modelClass.isAssignableFrom(ConsumeTransactionRequestHandlerViewModel::class.java) -> {
-                return ConsumeTransactionRequestHandlerViewModel(LocalRepository(), RemoteRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
