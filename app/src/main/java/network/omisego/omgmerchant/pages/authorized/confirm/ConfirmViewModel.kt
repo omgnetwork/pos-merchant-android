@@ -33,10 +33,10 @@ class ConfirmViewModel(
 
     val amountText: String
         get() {
-            val subunit = AmountFormat.Subunit(args.amount.toBigDecimal(), args.token.subunitToUnit)
+            val subunit = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit)
             return String.format(
                 "%s %s",
-                subunit.toUnit().display(),
+                subunit.display(),
                 args.token.symbol
             )
         }

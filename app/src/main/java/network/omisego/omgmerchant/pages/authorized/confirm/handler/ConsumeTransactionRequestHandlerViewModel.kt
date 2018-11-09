@@ -9,18 +9,20 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.TransactionConsumption
+import co.omisego.omisego.model.TransactionConsumptionStatus
 import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
-import network.omisego.omgmerchant.model.AmountFormat
 
 class ConsumeTransactionRequestHandlerViewModel(
     private val localRepository: LocalRepository,
@@ -45,10 +47,25 @@ class ConsumeTransactionRequestHandlerViewModel(
      */
     override fun <T> handleSucceedToHandlePayload(success: APIResult.Success<T>): Feedback {
         val data = success.data as TransactionConsumption
-        return Feedback.success(
-            args.transactionType,
-            data
-        )
+        when (data.status) {
+            TransactionConsumptionStatus.CONFIRMED -> {
+                return Feedback.success(
+                    args.transactionType,
+                    data
+                )
+            }
+            TransactionConsumptionStatus.REJECTED -> {
+                return Feedback.error(
+                    args,
+                    data.transactionRequest.address,
+                    data.transactionRequest.user,
+                    APIError(ErrorCode.SDK_UNEXPECTED_ERROR, "${data.transactionRequest.user?.email} has rejected the transaction consumption.")
+                )
+            }
+            else -> {
+                throw UnsupportedOperationException("Need to handle.")
+            }
+        }
     }
 
     override fun handleFailToHandlePayload(payload: String, error: APIError) {

@@ -55,7 +55,7 @@ data class Feedback(
                     amount = transactionConsumption.estimatedConsumptionAmount,
                     tokenId = transactionConsumption.token.id,
                     token = transactionConsumption.token,
-                    userId = transactionConsumption.user?.id,
+                    userId = transactionConsumption.transactionRequest.user?.id,
                     user = transactionConsumption.transactionRequest.user,
                     accountId = null,
                     account = null

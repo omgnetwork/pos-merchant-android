@@ -69,8 +69,8 @@ class QRHandlerManager(
             when (result) {
                 is APIResult.Success<*> -> {
                     if (result.data is Transaction) {
-                        val transaction = handleSucceedToHandlePayload(result)
-                        dispatchSuccessEvent(transaction)
+                        val feedback = handleSucceedToHandlePayload(result)
+                        dispatchSuccessEvent(feedback)
                     } else if (result.data is TransactionConsumption) {
                         if (result.data.transactionRequest.requireConfirmation) {
                             result.data.stopListening(socketClient)
@@ -83,13 +83,10 @@ class QRHandlerManager(
 
                                 override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
                                     result.data.stopListening(socketClient)
-                                    val transaction = handleSucceedToHandlePayload(result)
-                                    dispatchSuccessEvent(transaction)
+                                    val feedback = handleSucceedToHandlePayload(APIResult.Success(transactionConsumption))
+                                    dispatchSuccessEvent(feedback)
                                 }
                             })
-                        } else {
-                            val transaction = handleSucceedToHandlePayload(result)
-                            dispatchSuccessEvent(transaction)
                         }
                     }
                 }
