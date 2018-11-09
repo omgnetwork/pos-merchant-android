@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        app:backgroundDrawable="@{backgroundDrawable}"
+        app:backgroundDrawable="@{safeUnbox(backgroundDrawable)}"
         tools:showIn="@layout/fragment_receive">
 
         <TextView
@@ -34,7 +34,7 @@
             android:textSize="24sp"
             android:onClick="@{handler::handleNumPadPressed}"
             android:text="@{number}"
-            app:backgroundDrawable="@{backgroundDrawable}"
+            app:backgroundDrawable="@{safeUnbox(backgroundDrawable)}"
             tools:text="X" />
     </FrameLayout>
 </layout>

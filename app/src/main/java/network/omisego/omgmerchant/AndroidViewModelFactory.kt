@@ -5,9 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.repository.LocalRepository
-import network.omisego.omgmerchant.repository.RemoteRepository
-import network.omisego.omgmerchant.model.LiveCalculator
+import network.omisego.omgmerchant.helper.HelperAmountFormatter
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel
@@ -21,7 +19,8 @@ import network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel
 import network.omisego.omgmerchant.pages.authorized.splash.SplashViewModel
 import network.omisego.omgmerchant.pages.unauthorized.signin.FingerprintBottomSheetViewModel
 import network.omisego.omgmerchant.pages.unauthorized.signin.SignInViewModel
-import network.omisego.omgmerchant.utils.BiometricHelper
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 /*
  * OmiseGO
@@ -35,16 +34,16 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
-                return SignInViewModel(application, LocalRepository(), RemoteRepository(), BiometricHelper()) as T
+                return SignInViewModel(application, LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
                 SplashViewModel(application, LocalRepository(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(FeedbackViewModel::class.java) -> {
-                FeedbackViewModel(application, LocalRepository(), RemoteRepository(), FeedbackTransformer()) as T
+                FeedbackViewModel(application, FeedbackTransformer()) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
-                ScanViewModel(application) as T
+                ScanViewModel(application, HelperAmountFormatter()) as T
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
                 SettingViewModel(application, LocalRepository()) as T
@@ -65,7 +64,6 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
                 return ReceiveViewModel(
                     application,
                     CalculatorInteraction(),
-                    LiveCalculator("0"),
                     Calculation()
                 ) as T
             }
@@ -73,8 +71,7 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
             modelClass.isAssignableFrom(TopupViewModel::class.java) -> {
                 return TopupViewModel(
                     application,
-                    CalculatorInteraction(),
-                    LiveCalculator("0")
+                    CalculatorInteraction()
                 ) as T
             }
             else -> {

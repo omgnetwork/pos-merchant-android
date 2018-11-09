@@ -10,11 +10,11 @@
 
         <variable
             name="decorator"
-            type="network.omisego.omgmerchant.utils.NumberDecorator" />
+            type="network.omisego.omgmerchant.helper.HelperNumberFormatter" />
 
         <variable
             name="liveCalc"
-            type="network.omisego.omgmerchant.model.LiveCalculator" />
+            type="android.arch.lifecycle.LiveData&lt;String&gt;" />
 
         <variable
             name="handler"
