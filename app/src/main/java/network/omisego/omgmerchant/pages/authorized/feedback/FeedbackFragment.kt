@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.Transaction
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentFeedbackBinding
-import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.extensions.toast
 
 class FeedbackFragment : BaseFragment() {
     private lateinit var binding: FragmentFeedbackBinding
@@ -46,22 +42,5 @@ class FeedbackFragment : BaseFragment() {
     }
 
     override fun onObserveLiveData() {
-        with(viewModel) {
-            observeFor(liveTransaction) {
-                viewModel.liveLoading.value = false
-                it.handle(
-                    this@FeedbackFragment::handleTransferSuccess,
-                    this@FeedbackFragment::handleTransferFail
-                )
-            }
-        }
-    }
-
-    private fun handleTransferSuccess(transaction: Transaction) {
-        viewModel.setFeedback(viewModel.liveFeedback.value!!.transactionType, transaction)
-    }
-
-    private fun handleTransferFail(error: APIError) {
-        toast(error.description)
     }
 }
