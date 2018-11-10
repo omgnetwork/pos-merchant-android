@@ -13,23 +13,22 @@ import android.arch.lifecycle.MutableLiveData
 import android.support.v4.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.behavior.BehaviorCalculatorController
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.helper.HelperNumberFormatter
-import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
 
 class ReceiveViewModel(
     val app: Application,
     val handler: CalculatorInteraction,
     private val calculation: Calculation
-) : AndroidViewModel(app), CalculatorInteraction.Operation, NextButtonBehavior {
-    val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
-    val helperNumberFormatter: HelperNumberFormatter by lazy { HelperNumberFormatter() }
-    val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
-
-    val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val liveCalculatorHelperText: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val liveCalculatorHelperColorText: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+) : AndroidViewModel(app), CalculatorInteraction.Operation, BehaviorCalculatorController {
+    override val helperNumberFormatter: HelperNumberFormatter by lazy { HelperNumberFormatter() }
+    override val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+    override val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
+    override val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    override val liveCalculatorHelperText: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    override val liveCalculatorHelperColorText: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
     override fun onAppend(char: Char) {
         if (char in '0'..'9' && liveCalculatorShowHelperText.value == true) return
@@ -62,7 +61,7 @@ class ReceiveViewModel(
             && liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 
-    fun dispatchHelperTextState() {
+    override fun dispatchHelperTextState() {
         try {
             val calculatorValue = liveCalculator.value
             val subunitToUnit = liveSelectedToken.value?.subunitToUnit
