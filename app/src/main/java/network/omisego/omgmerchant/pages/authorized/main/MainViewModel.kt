@@ -40,8 +40,6 @@ class MainViewModel(
     val liveEnableNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val liveShowNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
-    val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
-
     /* Control whether should hide toolbar or bottom navigation e.g. the select account page has its own toolbar, so we don't need to show it. */
     val liveToolbarBottomNavVisibility: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
