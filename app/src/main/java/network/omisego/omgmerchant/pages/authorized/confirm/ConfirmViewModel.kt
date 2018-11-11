@@ -32,8 +32,8 @@ class ConfirmViewModel(
     val liveYesClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
     val liveNoClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
 
-    val addressText: String
-        get() = args.address
+    val email: String
+        get() = args.user.email
 
     val amountText: String
         get() {
