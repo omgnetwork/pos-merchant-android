@@ -47,6 +47,12 @@
             android:name="transaction_type"
             android:defaultValue="receive"
             app:argType="string" />
+        <argument
+            android:name="user"
+            app:argType="co.omisego.omisego.model.User" />
+        <argument
+            android:name="address"
+            app:argType="string" />
 
     </fragment>
     <fragment

@@ -39,7 +39,6 @@ class ConfirmFragment : BaseFragment() {
     }
 
     override fun onBindDataBinding() {
-        viewModel.qrPayload = qrPayloadViewModel.liveQRPayload.value!!
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
     }

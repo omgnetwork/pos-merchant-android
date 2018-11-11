@@ -10,7 +10,6 @@ package network.omisego.omgmerchant
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
-import network.omisego.omgmerchant.pages.authorized.confirm.handler.CreateTransactionHandlerViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
@@ -43,9 +42,6 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(QRPayloadViewModel::class.java) -> {
                 return QRPayloadViewModel() as T
-            }
-            modelClass.isAssignableFrom(CreateTransactionHandlerViewModel::class.java) -> {
-                return CreateTransactionHandlerViewModel(LocalRepository(), RemoteRepository()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

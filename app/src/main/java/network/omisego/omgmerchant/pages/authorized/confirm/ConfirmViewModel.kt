@@ -11,11 +11,14 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
+import androidx.navigation.NavDirections
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.AbstractConfirmHandler
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.HandlerConsumeTransactionRequest
+import network.omisego.omgmerchant.pages.authorized.confirm.handler.HandlerCreateTransaction
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -25,19 +28,12 @@ class ConfirmViewModel(
     val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
     lateinit var args: ConfirmFragmentArgs
-    lateinit var qrPayload: String
+    lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     val liveYesClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
     val liveNoClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
 
     val addressText: String
-        get() {
-            val ids = qrPayload.split("|")
-            return if (args.transactionType == SCAN_TOPUP) {
-                ids[0]
-            } else {
-                ids[1]
-            }
-        }
+        get() = args.address
 
     val amountText: String
         get() {
@@ -63,11 +59,31 @@ class ConfirmViewModel(
             app.getString(R.string.confirm_transaction_type_top_up)
         }
 
+    companion object {
+        const val PREFIX_TX_REQUEST = "txr_"
+    }
+
     fun handleYesClick(view: View) {
         liveYesClick.value = Event(view)
     }
 
     fun handleNoClick(view: View) {
         liveNoClick.value = Event(view)
+    }
+
+    fun handleQRPayload() {
+        val handler: AbstractConfirmHandler = if (args.address.startsWith(PREFIX_TX_REQUEST)) {
+            HandlerConsumeTransactionRequest(localRepository, remoteRepository).apply {
+                this.liveDirection = this@ConfirmViewModel.liveDirection
+            }
+        } else {
+            HandlerCreateTransaction(localRepository, remoteRepository).apply {
+                this.liveDirection = this@ConfirmViewModel.liveDirection
+            }
+        }
+
+        this.liveDirection.value = Event(handler.createActionForLoadingPage())
+        handler.args = args
+        handler.onHandlePayload(args.address)
     }
 }

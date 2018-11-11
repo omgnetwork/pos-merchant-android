@@ -45,4 +45,3 @@ fun <T> OMGCall<T>.subscribeEvent(
     })
     return liveCallback
 }
-

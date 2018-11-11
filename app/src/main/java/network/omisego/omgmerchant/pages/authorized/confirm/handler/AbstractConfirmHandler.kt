@@ -1,12 +1,13 @@
 package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import android.arch.lifecycle.MutableLiveData
+import androidx.navigation.NavDirections
 import co.omisego.omisego.model.APIError
-import network.omisego.omgmerchant.repository.RemoteRepository
+import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.livedata.Event
-import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 /*
  * OmiseGO
@@ -28,20 +29,22 @@ import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
  * After finish calling to the api, for the consumption of transaction request, we need to go to `WaitingConfirmationFragment`, waiting for finalized event, then go to the `Feedback` page.
  *
  */
-interface AbstractQRHandler {
+interface AbstractConfirmHandler {
     var args: ConfirmFragmentArgs
     val remoteRepository: RemoteRepository
-    val liveAPIResult: MutableLiveData<Event<APIResult>>
-    val liveUserInformation: MutableLiveData<Event<APIResult>>
-    var liveFeedback: MutableLiveData<Feedback>?
+    val liveDirection: MutableLiveData<Event<NavDirections>>
 
     fun onHandlePayload(payload: String)
 
-    fun <T> handleSucceedToHandlePayload(success: APIResult.Success<T>): Feedback
+    fun <T> handleSucceedToHandlePayload(data: T)
 
-    fun handleFailToHandlePayload(payload: String, error: APIError)
+    fun handleFailToHandlePayload(error: APIError)
 
-    fun <R> handleSucceedToRetrieveUserInformation(data: R)
+    fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
+        return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
+    }
 
-    fun handleFailToRetrieveUserInformation(error: APIError)
+    fun createActionForLoadingPage() : NavBottomNavigationDirections.ActionGlobalLoadingFragment {
+        return NavBottomNavigationDirections.ActionGlobalLoadingFragment()
+    }
 }

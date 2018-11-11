@@ -9,8 +9,12 @@ package network.omisego.omgmerchant.repository
 
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.custom.OMGCallback
+import co.omisego.omisego.custom.retrofit2.adapter.OMGCall
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
+import co.omisego.omisego.model.Transaction
+import co.omisego.omisego.model.TransactionConsumption
+import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.pagination.PaginationList
 import co.omisego.omisego.model.params.AccountListParams
@@ -33,6 +37,10 @@ import network.omisego.omgmerchant.storage.Storage
 class RemoteRepository() {
     fun loadWallet(params: WalletParams, liveWallet: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client.getWallet(params).subscribeEvent(liveWallet)
+    }
+
+    fun loadWallet(params: WalletParams): OMGCall<Wallet> {
+        return ClientProvider.client.getWallet(params)
     }
 
     fun loadWalletAndSave(params: AccountWalletListParams) {
@@ -61,6 +69,10 @@ class RemoteRepository() {
             .subscribeEvent(liveAPIResult)
     }
 
+    fun loadTransactionRequest(params: TransactionRequestParams): OMGCall<TransactionRequest> {
+        return ClientProvider.client.getTransactionRequest(params)
+    }
+
     fun loadTransactions(params: TransactionListParams, liveAPIResult: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client
             .getTransactions(params)
@@ -81,7 +93,15 @@ class RemoteRepository() {
         ClientProvider.client.createTransaction(params).subscribeEvent(liveTransaction)
     }
 
+    fun transfer(params: TransactionCreateParams): OMGCall<Transaction> {
+        return ClientProvider.client.createTransaction(params)
+    }
+
     fun consumeTransactionRequest(params: TransactionConsumptionParams, liveTransactionConsumption: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client.consumeTransactionRequest(params).subscribeEvent(liveTransactionConsumption)
+    }
+
+    fun consumeTransactionRequest(params: TransactionConsumptionParams): OMGCall<TransactionConsumption> {
+        return ClientProvider.client.consumeTransactionRequest(params)
     }
 }

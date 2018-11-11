@@ -1,4 +1,4 @@
-package network.omisego.omgmerchant.behavior
+package network.omisego.omgmerchant.pages.authorized.main
 
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Token
@@ -11,7 +11,7 @@ import network.omisego.omgmerchant.helper.HelperNumberFormatter
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-interface BehaviorCalculatorController {
+interface AbstractCalculatorController {
     val helperNumberFormatter: HelperNumberFormatter
     val liveSelectedToken: MutableLiveData<Token>
     val liveCalculator: MutableLiveData<String>

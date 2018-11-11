@@ -8,14 +8,13 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  */
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.navigation.NavDirections
+import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.Transaction
-import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.params.admin.TransactionCreateParams
 import network.omisego.omgmerchant.livedata.Event
-import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
@@ -23,41 +22,35 @@ import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
-class CreateTransactionHandlerViewModel(
+class HandlerCreateTransaction(
     val localRepository: LocalRepository,
     override val remoteRepository: RemoteRepository
-) : ViewModel(), AbstractQRHandler {
+) : AbstractConfirmHandler {
+    override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     override lateinit var args: ConfirmFragmentArgs
-    override var liveFeedback: MutableLiveData<Feedback>? = null
-    var error: APIError? = null
-
-    override val liveAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
-    override val liveUserInformation: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     override fun onHandlePayload(payload: String) {
-        remoteRepository.transfer(createTransactionCreateParams(payload), liveAPIResult)
+        remoteRepository.transfer(createTransactionCreateParams(payload)).enqueue(object : OMGCallback<Transaction> {
+            override fun fail(response: OMGResponse<APIError>) {
+                handleFailToHandlePayload(response.data)
+            }
+
+            override fun success(response: OMGResponse<Transaction>) {
+                handleSucceedToHandlePayload(response.data)
+            }
+        })
     }
 
-    override fun <T> handleSucceedToHandlePayload(success: APIResult.Success<T>): Feedback {
-        return Feedback.success(args.transactionType, success.data as Transaction)
-    }
-
-    override fun handleFailToHandlePayload(payload: String, error: APIError) {
-        this.error = error
-        remoteRepository.loadWallet(WalletParams(payload), liveUserInformation)
-    }
-
-    override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
-        if (data is Wallet) {
-            liveFeedback?.value = Feedback.error(args, data.address, data.user, error)
-            return
+    override fun <T> handleSucceedToHandlePayload(data: T) {
+        if (data is Transaction) {
+            val feedback = Feedback.success(args.transactionType, data as Transaction)
+            liveDirection.value = Event(createActionForFeedbackPage(feedback))
         }
-
-        throw IllegalStateException("Expected object ${Wallet::class}, but got unexpected object : $data")
     }
 
-    override fun handleFailToRetrieveUserInformation(error: APIError) {
-        liveFeedback?.value = Feedback.error(args, null, null, error)
+    override fun handleFailToHandlePayload(error: APIError) {
+        val feedback = Feedback.error(args, null, args.user, error)
+        liveDirection.value = Event(createActionForFeedbackPage(feedback))
     }
 
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {

@@ -20,10 +20,9 @@ import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
-import network.omisego.omgmerchant.pages.authorized.confirm.handler.QRHandlerManager
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel
 
 class MainFragment : BaseFragment() {
 
@@ -31,25 +30,29 @@ class MainFragment : BaseFragment() {
     private lateinit var receiveViewModel: ReceiveViewModel
     private lateinit var topupViewModel: TopupViewModel
     private lateinit var confirmViewModel: ConfirmViewModel
-    private lateinit var qrPayloadViewModel: QRPayloadViewModel
+    private lateinit var scanViewModel: ScanViewModel
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var qrHandlerManager: QRHandlerManager
 
     /* Local */
     private lateinit var binding: FragmentMainBinding
     private var menuNext: MenuItem? = null
 
     override fun onProvideViewModel() {
-        qrPayloadViewModel = provideMainFragmentViewModel()
         mainViewModel = provideMainFragmentViewModel()
         confirmViewModel = provideMainFragmentAndroidViewModel()
         receiveViewModel = provideMainFragmentAndroidViewModel()
         topupViewModel = provideMainFragmentAndroidViewModel()
+        scanViewModel = provideMainFragmentAndroidViewModel()
 
-        qrHandlerManager = QRHandlerManager(this).apply {
-            this.liveLoading = mainViewModel.liveLoading
-            this.liveFeedback = mainViewModel.liveFeedback
-        }
+//        transactionManager = TransactionManager(this).apply {
+//            this.liveLoading = mainViewModel.liveLoading
+//            this.liveFeedback = mainViewModel.liveFeedback
+//        }
+    }
+
+    override fun onReceiveArgs() {
+        confirmViewModel.liveDirection = mainViewModel.liveDirection
+        scanViewModel.liveDirection = mainViewModel.liveDirection
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -78,9 +81,6 @@ class MainFragment : BaseFragment() {
 
     override fun onObserveLiveData() {
         with(mainViewModel) {
-            observeEventFor(liveDestinationId) { destinationId ->
-                findChildController().navigate(destinationId)
-            }
             observeFor(liveToolbarBottomNavVisibility) {
                 showFullscreen(it)
             }
@@ -90,28 +90,18 @@ class MainFragment : BaseFragment() {
             observeFor(liveShowNext) {
                 menuNext?.isVisible = it
             }
-            observeFor(liveFeedback) { feedback ->
-                findChildController().navigateUp()
-                findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
-            }
-            observeEventFor(liveLoading) { loading ->
-                if (loading) {
-                    findChildController().navigate(R.id.action_global_loadingFragment)
+            observeEventFor(liveDirection) { direction ->
+                if (findChildController().currentDestination?.id !in arrayOf(R.id.receive, R.id.topup)) {
+                    findChildController().navigateUp()
                 }
+                findChildController().navigate(direction)
             }
         }
 
         with(confirmViewModel) {
             observeEventFor(liveYesClick) {
-                findChildController().navigateUp()
-                qrHandlerManager.handleQRPayload(confirmViewModel.qrPayload, args)
+                handleQRPayload()
             }
-        }
-
-        observeFor(qrPayloadViewModel.liveQRPayload) {
-            findChildController().navigateUp()
-            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-            qrPayloadViewModel.removeCache(it)
         }
     }
 

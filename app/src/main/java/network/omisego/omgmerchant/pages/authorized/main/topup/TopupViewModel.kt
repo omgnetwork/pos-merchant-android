@@ -13,14 +13,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.support.v4.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.behavior.BehaviorCalculatorController
+import network.omisego.omgmerchant.pages.authorized.main.AbstractCalculatorController
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.helper.HelperNumberFormatter
 
 class TopupViewModel(
     val app: Application,
     val handler: CalculatorInteraction
-) : AndroidViewModel(app), CalculatorInteraction.Operation, BehaviorCalculatorController {
+) : AndroidViewModel(app), CalculatorInteraction.Operation, AbstractCalculatorController {
     override val helperNumberFormatter: HelperNumberFormatter by lazy { HelperNumberFormatter() }
     override val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     override val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }

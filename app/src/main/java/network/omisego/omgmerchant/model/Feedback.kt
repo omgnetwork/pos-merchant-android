@@ -9,6 +9,7 @@ package network.omisego.omgmerchant.model
 
 import android.os.Parcelable
 import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionSource
@@ -16,6 +17,8 @@ import co.omisego.omisego.model.User
 import kotlinx.android.parcel.Parcelize
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
+import network.omisego.omgmerchant.pages.authorized.scan.ScanFragmentArgs
+import java.math.BigDecimal
 import java.util.Date
 
 @Parcelize
@@ -63,28 +66,43 @@ data class Feedback(
             )
         }
 
+        fun error(args: ScanFragmentArgs, address: String?, user: User?, error: APIError?): Feedback {
+            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, user, error)
+        }
+
         fun error(args: ConfirmFragmentArgs, address: String?, user: User?, error: APIError?): Feedback {
+            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, user, error)
+        }
+
+        private fun createError(
+            token: Token,
+            transactionType: String,
+            amount: BigDecimal,
+            address: String?,
+            user: User?,
+            error: APIError?
+        ): Feedback {
             val source = TransactionSource(
                 address ?: "-",
-                AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
-                args.token.id,
-                args.token,
+                AmountFormat.Unit(amount, token.subunitToUnit).toSubunit().amount,
+                token.id,
+                token,
                 user?.id,
                 user,
                 null,
                 null
             )
 
-            return if (args.transactionType.equals(SCAN_RECEIVE, true)) Feedback(
+            return if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(
                 false,
-                args.transactionType,
+                transactionType,
                 Date(),
                 source,
                 error
             ) else {
                 Feedback(
                     false,
-                    args.transactionType,
+                    transactionType,
                     Date(),
                     source,
                     error

@@ -10,7 +10,7 @@ package network.omisego.omgmerchant.base
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_topup.*
-import network.omisego.omgmerchant.behavior.BehaviorCalculatorController
+import network.omisego.omgmerchant.pages.authorized.main.AbstractCalculatorController
 import network.omisego.omgmerchant.extensions.findMainFragment
 import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
@@ -18,7 +18,7 @@ import network.omisego.omgmerchant.extensions.setError
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 
 abstract class BaseCalculatorFragment : BaseFragment() {
-    lateinit var behavior: BehaviorCalculatorController
+    lateinit var controller: AbstractCalculatorController
     lateinit var mainViewModel: MainViewModel
 
     abstract fun onSetTokens(tokens: PaginationList<Token>)
@@ -29,16 +29,16 @@ abstract class BaseCalculatorFragment : BaseFragment() {
         mainViewModel = provideMainFragmentViewModel()
     }
 
-    fun setupBehavior(behavior: BehaviorCalculatorController) {
-        this.behavior = behavior
+    fun setupBehavior(controller: AbstractCalculatorController) {
+        this.controller = controller
     }
 
     override fun onObserveLiveData() {
-        findMainFragment().observeFor(behavior.liveCalculator) {
+        findMainFragment().observeFor(controller.liveCalculator) {
             notifyCalculatorStateChange()
         }
 
-        findMainFragment().observeFor(behavior.liveSelectedToken) {
+        findMainFragment().observeFor(controller.liveSelectedToken) {
             notifyCalculatorStateChange()
         }
 
@@ -48,13 +48,13 @@ abstract class BaseCalculatorFragment : BaseFragment() {
                     ::onSetTokens,
                     spinner::setError
                 )
-                onSetSelectedToken(behavior.liveSelectedToken.value)
+                onSetSelectedToken(controller.liveSelectedToken.value)
             }
         }
     }
 
     private fun notifyCalculatorStateChange() {
-        mainViewModel.liveEnableNext.value = behavior.shouldEnableNextButton()
-        behavior.dispatchHelperTextState()
+        mainViewModel.liveEnableNext.value = controller.shouldEnableNextButton()
+        controller.dispatchHelperTextState()
     }
 }
