@@ -10,6 +10,7 @@ package network.omisego.omgmerchant.pages.authorized.confirm
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
+import co.omisego.omisego.extension.bd
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.spy
 import com.nhaarman.mockito_kotlin.verify
@@ -56,9 +57,10 @@ class ConfirmViewModelTest {
     fun `test amount text is displayed correctly`() {
         whenever(mockArgs.amount).thenReturn("100")
         whenever(mockArgs.token).thenReturn(mock())
+        whenever(mockArgs.token.subunitToUnit).thenReturn(1.bd)
         whenever(mockArgs.token.symbol).thenReturn("OMG")
 
-        viewModel.amountText shouldEqualTo "100.00 OMG"
+        viewModel.amountText shouldEqualTo "100 OMG"
     }
 
     @Test
