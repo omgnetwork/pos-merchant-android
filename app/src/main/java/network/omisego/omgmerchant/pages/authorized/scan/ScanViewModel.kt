@@ -16,6 +16,7 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.helper.HelperAmountFormatter
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
+import network.omisego.omgmerchant.pages.authorized.scan.handler.AbstractScanHandler
 import network.omisego.omgmerchant.pages.authorized.scan.handler.HandlerGetTransactionRequest
 import network.omisego.omgmerchant.pages.authorized.scan.handler.HandlerGetUserWallet
 import network.omisego.omgmerchant.repository.RemoteRepository
@@ -55,35 +56,20 @@ class ScanViewModel(
     override fun onCanceled() {}
 
     override fun onDecoded(payload: String) {
-        retrieveUserInformation(payload)
+        findScanPayloadHandler(payload).retrieve(payload)
     }
 
-    fun removeCache(text: String?) {
-        text ?: return
-        postVerification?.onRemoveCache(cacheText = text)
-    }
-
-    fun retrieveUserInformation(rawPayload: String) {
-        val payload: String
-        val handler = if (rawPayload.startsWith(PREFIX_TX_REQUEST)) {
-            val transactionRequestIds = rawPayload.split("|")
-            payload = if (args.transactionType == SCAN_TOPUP) {
-                transactionRequestIds[0]
-            } else {
-                transactionRequestIds[1]
-            }
-
+    fun findScanPayloadHandler(payload: String): AbstractScanHandler {
+        return if (payload.startsWith(PREFIX_TX_REQUEST)) {
             HandlerGetTransactionRequest(remoteRepository).apply {
                 args = this@ScanViewModel.args
                 liveDirection = this@ScanViewModel.liveDirection
             }
         } else {
-            payload = rawPayload
             HandlerGetUserWallet(remoteRepository).apply {
                 args = this@ScanViewModel.args
                 liveDirection = this@ScanViewModel.liveDirection
             }
         }
-        handler.retrieve(payload)
     }
 }

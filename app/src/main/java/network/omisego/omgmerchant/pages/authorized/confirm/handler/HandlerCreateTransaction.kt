@@ -25,7 +25,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 class HandlerCreateTransaction(
     val localRepository: LocalRepository,
     override val remoteRepository: RemoteRepository
-) : AbstractConfirmHandler {
+) : AbstractConfirmHandler() {
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     override lateinit var args: ConfirmFragmentArgs
 
@@ -43,14 +43,14 @@ class HandlerCreateTransaction(
 
     override fun <T> handleSucceedToHandlePayload(data: T) {
         if (data is Transaction) {
-            val feedback = Feedback.success(args.transactionType, data as Transaction)
-            liveDirection.value = Event(createActionForFeedbackPage(feedback))
+            val feedback = Feedback.success(args.transactionType, data)
+            liveDirection.value = Event(createDestinationFeedback(feedback))
         }
     }
 
     override fun handleFailToHandlePayload(error: APIError) {
         val feedback = Feedback.error(args, null, args.user, error)
-        liveDirection.value = Event(createActionForFeedbackPage(feedback))
+        liveDirection.value = Event(createDestinationFeedback(feedback))
     }
 
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {

@@ -3,6 +3,9 @@ package network.omisego.omgmerchant.helper
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import org.robolectric.RuntimeEnvironment
+import java.io.File
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 /*
  * OmiseGO
@@ -14,3 +17,9 @@ import org.robolectric.RuntimeEnvironment
 fun stringRes(@StringRes id: Int) = RuntimeEnvironment.application.getString(id)
 
 fun drawableRes(@DrawableRes id: Int) = RuntimeEnvironment.application.getDrawable(id)
+
+class ResourceFile(private val fileName: String) : ReadOnlyProperty<Any, File> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): File {
+        return File(javaClass.classLoader.getResource("object/$fileName").path)
+    }
+}

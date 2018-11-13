@@ -138,9 +138,14 @@ class MainFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
-                val action = mainViewModel.createActionForScanPage(
+                val (amount, token) = mainViewModel.getAmountTokenPairByCalculatorMode(
                     receiveViewModel,
                     topupViewModel
+                )
+                val action = mainViewModel.createDestinationQRScan(
+                    mainViewModel.currentCalculatorMode,
+                    amount,
+                    token
                 )
                 findChildController().navigate(action)
                 true

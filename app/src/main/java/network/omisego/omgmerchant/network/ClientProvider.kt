@@ -8,6 +8,7 @@ package network.omisego.omgmerchant.network
  */
 
 import co.omisego.omisego.OMGAPIAdmin
+import co.omisego.omisego.custom.retrofit2.executor.MainThreadExecutor
 import co.omisego.omisego.model.AdminConfiguration
 import co.omisego.omisego.network.ewallet.EWalletAdmin
 import co.omisego.omisego.websocket.OMGSocketClient
@@ -15,7 +16,9 @@ import co.omisego.omisego.websocket.SocketClientContract
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
+import okhttp3.HttpUrl
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.Executor
 
 object ClientProvider {
     private val credential: Credential
@@ -36,11 +39,13 @@ object ClientProvider {
         socketClient = createSocketClient()
     }
 
-    private fun create(): OMGAPIAdmin {
+    fun create(debugUrl: HttpUrl? = null, executor: Executor = MainThreadExecutor()): OMGAPIAdmin {
         return OMGAPIAdmin(
             EWalletAdmin.Builder {
                 clientConfiguration = adminConfiguration
                 debug = true
+                callbackExecutor = executor
+                this.debugUrl = debugUrl
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {

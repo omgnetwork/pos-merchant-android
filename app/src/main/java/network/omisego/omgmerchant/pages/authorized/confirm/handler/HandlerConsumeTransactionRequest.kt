@@ -31,7 +31,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 class HandlerConsumeTransactionRequest(
     private val localRepository: LocalRepository,
     override val remoteRepository: RemoteRepository
-) : AbstractConfirmHandler {
+) : AbstractConfirmHandler() {
     override lateinit var args: ConfirmFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     private val socketClient by lazy {
@@ -78,7 +78,7 @@ class HandlerConsumeTransactionRequest(
                         args.transactionType,
                         data
                     )
-                    liveDirection.value = Event(createActionForFeedbackPage(feedback))
+                    liveDirection.value = Event(createDestinationFeedback(feedback))
                 }
                 TransactionConsumptionStatus.REJECTED -> {
                     val feedback = Feedback.error(
@@ -87,7 +87,7 @@ class HandlerConsumeTransactionRequest(
                         data.transactionRequest.user,
                         APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_user_reject))
                     )
-                    liveDirection.value = Event(createActionForFeedbackPage(feedback))
+                    liveDirection.value = Event(createDestinationFeedback(feedback))
                 }
                 else -> {
                     throw UnsupportedOperationException("Need to handle.")
@@ -98,7 +98,7 @@ class HandlerConsumeTransactionRequest(
 
     override fun handleFailToHandlePayload(error: APIError) {
         val feedback = Feedback.error(args, null, args.user, error)
-        liveDirection.value = Event(createActionForFeedbackPage(feedback))
+        liveDirection.value = Event(createDestinationFeedback(feedback))
     }
 
     internal fun createTransactionConsumptionParams(payload: String): TransactionConsumptionParams {

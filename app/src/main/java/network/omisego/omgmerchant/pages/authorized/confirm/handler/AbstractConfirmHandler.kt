@@ -3,9 +3,9 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
 import android.arch.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.APIError
-import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.livedata.Event
-import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.pages.authorized.ConfirmNavDirectionCreator
+import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -29,22 +29,16 @@ import network.omisego.omgmerchant.repository.RemoteRepository
  * After finish calling to the api, for the consumption of transaction request, we need to go to `WaitingConfirmationFragment`, waiting for finalized event, then go to the `Feedback` page.
  *
  */
-interface AbstractConfirmHandler {
-    var args: ConfirmFragmentArgs
-    val remoteRepository: RemoteRepository
-    val liveDirection: MutableLiveData<Event<NavDirections>>
+abstract class AbstractConfirmHandler(
+    private val navDirectionCreator: ConfirmNavDirectionCreator = NavDirectionCreator()
+) : ConfirmNavDirectionCreator by navDirectionCreator {
+    abstract var args: ConfirmFragmentArgs
+    abstract val remoteRepository: RemoteRepository
+    abstract val liveDirection: MutableLiveData<Event<NavDirections>>
 
-    fun onHandlePayload(payload: String)
+    abstract fun onHandlePayload(payload: String)
 
-    fun <T> handleSucceedToHandlePayload(data: T)
+    abstract fun <T> handleSucceedToHandlePayload(data: T)
 
-    fun handleFailToHandlePayload(error: APIError)
-
-    fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
-        return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
-    }
-
-    fun createActionForLoadingPage() : NavBottomNavigationDirections.ActionGlobalLoadingFragment {
-        return NavBottomNavigationDirections.ActionGlobalLoadingFragment()
-    }
+    abstract fun handleFailToHandlePayload(error: APIError)
 }

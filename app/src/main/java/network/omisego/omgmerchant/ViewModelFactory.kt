@@ -9,6 +9,7 @@ package network.omisego.omgmerchant
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
@@ -27,6 +28,7 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(
+                    NavDirectionCreator(),
                     LocalRepository(),
                     RemoteRepository()
                 ) as T

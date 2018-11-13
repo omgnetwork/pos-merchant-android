@@ -72,7 +72,14 @@ class ConfirmViewModel(
     }
 
     fun handleQRPayload() {
-        val handler: AbstractConfirmHandler = if (args.address.startsWith(PREFIX_TX_REQUEST)) {
+        val handler: AbstractConfirmHandler = findConfirmHandler()
+        liveDirection.value = Event(handler.createDestinationLoading())
+        handler.args = args
+        handler.onHandlePayload(args.address)
+    }
+
+    fun findConfirmHandler(): AbstractConfirmHandler {
+        return if (args.address.startsWith(PREFIX_TX_REQUEST)) {
             HandlerConsumeTransactionRequest(localRepository, remoteRepository).apply {
                 this.liveDirection = this@ConfirmViewModel.liveDirection
             }
@@ -81,9 +88,5 @@ class ConfirmViewModel(
                 this.liveDirection = this@ConfirmViewModel.liveDirection
             }
         }
-
-        this.liveDirection.value = Event(handler.createActionForLoadingPage())
-        handler.args = args
-        handler.onHandlePayload(args.address)
     }
 }

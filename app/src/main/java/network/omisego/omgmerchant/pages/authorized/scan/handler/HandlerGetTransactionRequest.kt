@@ -17,6 +17,7 @@ import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.params.TransactionRequestParams
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.pages.authorized.scan.ScanFragmentArgs
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -27,7 +28,13 @@ class HandlerGetTransactionRequest(
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
 
     override fun retrieve(payload: String) {
-        val request = remoteRepository.loadTransactionRequest(TransactionRequestParams(payload))
+        val transactionRequestIds = payload.split("|")
+        val transactionRequestId = if (args.transactionType == SCAN_TOPUP) {
+            transactionRequestIds[0]
+        } else {
+            transactionRequestIds[1]
+        }
+        val request = remoteRepository.loadTransactionRequest(TransactionRequestParams(transactionRequestId))
         request.enqueue(object : OMGCallback<TransactionRequest> {
             override fun fail(response: OMGResponse<APIError>) {
                 handleFailToRetrieveUserInformation(response.data)

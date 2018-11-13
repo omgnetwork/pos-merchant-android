@@ -12,24 +12,23 @@ import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.params.TokenListParams
-import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.fetchedThenCache
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
-import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.pages.authorized.MainNavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class MainViewModel(
+    private val navDirectionCreator: MainNavDirectionCreator,
     internal val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
-) : ViewModel() {
+) : ViewModel(), MainNavDirectionCreator by navDirectionCreator {
     internal var showSplash = true
     internal var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
 
@@ -84,35 +83,13 @@ class MainViewModel(
         }
     }
 
-    fun createActionForScanPage(
-        receiveViewModel: ReceiveViewModel,
-        topupViewModel: TopupViewModel
-    ): NavBottomNavigationDirections.ActionGlobalScanFragment {
-        return when (currentCalculatorMode) {
-            CalculatorMode.RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveSelectedToken.value!!)
-                    .setAmount(receiveViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_RECEIVE)
-            }
-            CalculatorMode.TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveSelectedToken.value!!)
-                    .setAmount(topupViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_TOPUP)
-            }
-        }
-    }
-
-    fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
-        return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
-    }
-
     fun displayOtherDestinationByCondition() {
         when (meetDestination()) {
             DestinationCondition.DEST_SELECT_ACCOUNT -> {
-                liveDirection.value = Event(createActionForSelectAccount())
+                liveDirection.value = Event(createDestinationSelectAccount())
             }
             DestinationCondition.DEST_SPLASH -> {
-                liveDirection.value = Event(createActionForSplashFragment())
+                liveDirection.value = Event(createDestinationSplash())
                 showSplash = false
             }
             DestinationCondition.DEST_MAIN -> {
@@ -120,33 +97,39 @@ class MainViewModel(
         }
     }
 
-    fun createActionForSelectAccount(): NavBottomNavigationDirections.ActionGlobalSelectAccountFragment {
-        return NavBottomNavigationDirections.actionGlobalSelectAccountFragment()
-    }
-
-    fun createActionForSplashFragment(): NavBottomNavigationDirections.ActionGlobalSplashFragment {
-        return NavBottomNavigationDirections.actionGlobalSplashFragment()
-    }
-
-    /* Fetch data from repository */
-    fun getAccount() = localRepository.loadAccount()
-
-    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
-        remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
-        liveTokenAPIResult
-    }
-
-    internal fun meetDestination(): DestinationCondition {
-        return when {
-            getAccount() == null -> DestinationCondition.DEST_SELECT_ACCOUNT
-            showSplash -> DestinationCondition.DEST_SPLASH
-            else -> DestinationCondition.DEST_MAIN
+    fun getAmountTokenPairByCalculatorMode(
+        receiveViewModel: ReceiveViewModel,
+        topupViewModel: TopupViewModel
+    ): Pair<String, Token> {
+        return when (currentCalculatorMode) {
+            CalculatorMode.RECEIVE -> {
+                receiveViewModel.liveCalculator.value!! to receiveViewModel.liveSelectedToken.value!!
+            }
+            CalculatorMode.TOPUP -> {
+                topupViewModel.liveCalculator.value!! to topupViewModel.liveSelectedToken.value!!
+            }
         }
     }
 
-    enum class DestinationCondition {
-        DEST_SPLASH,
-        DEST_SELECT_ACCOUNT,
-        DEST_MAIN;
+/* Fetch data from repository */
+fun getAccount() = localRepository.loadAccount()
+
+fun getTokens() = liveTokenAPIResult.fetchedThenCache {
+    remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
+    liveTokenAPIResult
+}
+
+internal fun meetDestination(): DestinationCondition {
+    return when {
+        getAccount() == null -> DestinationCondition.DEST_SELECT_ACCOUNT
+        showSplash -> DestinationCondition.DEST_SPLASH
+        else -> DestinationCondition.DEST_MAIN
     }
+}
+
+enum class DestinationCondition {
+    DEST_SPLASH,
+    DEST_SELECT_ACCOUNT,
+    DEST_MAIN;
+}
 }
