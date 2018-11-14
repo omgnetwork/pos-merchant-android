@@ -6,6 +6,11 @@
     <data>
 
         <import type="network.omisego.omgmerchant.R" />
+
+        <variable
+            name="viewModel"
+            type="network.omisego.omgmerchant.pages.authorized.loading.LoadingViewModel" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -43,6 +48,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             tools:text="dasfjkdsfklasmflkdsfmkladsfmksdlfmksdlfmdlskfmkldsmfkldsmfklsdmfkldsfmlkdsfmalfmslfkmsdlfm" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{(view) -> viewModel.cancelTransactionConsumption()}"
+            android:text="@string/dialog_fingerprint_btn_cancel"
+            android:textColor="@color/color_confirm_password"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentStatus"
+            app:layout_constraintVertical_bias="0.0"
+            app:liveVisible="@{viewModel.liveShowingCancelButton}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

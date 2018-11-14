@@ -43,11 +43,6 @@ class MainFragment : BaseFragment() {
         receiveViewModel = provideMainFragmentAndroidViewModel()
         topupViewModel = provideMainFragmentAndroidViewModel()
         scanViewModel = provideMainFragmentAndroidViewModel()
-
-//        transactionManager = TransactionManager(this).apply {
-//            this.liveLoading = mainViewModel.liveLoading
-//            this.liveFeedback = mainViewModel.liveFeedback
-//        }
     }
 
     override fun onReceiveArgs() {

@@ -34,6 +34,7 @@ class HandlerConsumeTransactionRequest(
 ) : AbstractConfirmHandler() {
     override lateinit var args: ConfirmFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
+    lateinit var liveTransactionConsumptionCancelId: MutableLiveData<String>
     private val socketClient by lazy {
         ClientProvider.socketClient
     }
@@ -52,6 +53,8 @@ class HandlerConsumeTransactionRequest(
                 val data = response.data
                 if (data.transactionRequest.requireConfirmation) {
                     data.stopListening(socketClient)
+                    // emit transaction consumption id
+                    liveTransactionConsumptionCancelId.value = data.id
                     data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
                         override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
                             data.stopListening(socketClient)

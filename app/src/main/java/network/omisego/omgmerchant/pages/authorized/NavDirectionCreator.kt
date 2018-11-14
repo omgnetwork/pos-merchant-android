@@ -47,7 +47,7 @@ class NavDirectionCreator : MainNavDirectionCreator, ConfirmNavDirectionCreator 
         return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
     }
 
-    override fun createDestinationLoading() : NavBottomNavigationDirections.ActionGlobalLoadingFragment {
+    override fun createDestinationLoading(): NavBottomNavigationDirections.ActionGlobalLoadingFragment {
         return NavBottomNavigationDirections.ActionGlobalLoadingFragment()
     }
 }

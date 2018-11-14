@@ -12,6 +12,7 @@ import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
+import network.omisego.omgmerchant.pages.authorized.loading.LoadingViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
@@ -41,6 +42,9 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             }
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
                 return ConfirmFingerprintViewModel(LocalRepository(), RemoteRepository(), ParamsCreator()) as T
+            }
+            modelClass.isAssignableFrom(LoadingViewModel::class.java) -> {
+                return LoadingViewModel(RemoteRepository(), ParamsCreator()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -20,6 +20,7 @@ import co.omisego.omisego.model.pagination.PaginationList
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
+import co.omisego.omisego.model.params.TransactionConsumptionActionParams
 import co.omisego.omisego.model.params.TransactionListParams
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
@@ -96,6 +97,10 @@ class RemoteRepository {
 
     fun transfer(params: TransactionCreateParams): OMGCall<Transaction> {
         return ClientProvider.client.createTransaction(params)
+    }
+
+    fun rejectTransactionConsumption(params: TransactionConsumptionActionParams, liveResult: MutableLiveData<Event<APIResult>>) {
+        ClientProvider.client.rejectTransactionConsumption(params).subscribeEvent(liveResult)
     }
 
     fun consumeTransactionRequest(params: TransactionConsumptionParams, liveTransactionConsumption: MutableLiveData<Event<APIResult>>) {

@@ -29,6 +29,7 @@ class ConfirmViewModel(
 ) : AndroidViewModel(app) {
     lateinit var args: ConfirmFragmentArgs
     lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
+    lateinit var liveCancelTransactionConsumptionId: MutableLiveData<String>
     val liveYesClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
     val liveNoClick: MutableLiveData<Event<View>> by lazy { MutableLiveData<Event<View>>() }
 
@@ -82,6 +83,7 @@ class ConfirmViewModel(
         return if (args.address.startsWith(PREFIX_TX_REQUEST)) {
             HandlerConsumeTransactionRequest(localRepository, remoteRepository).apply {
                 this.liveDirection = this@ConfirmViewModel.liveDirection
+                this.liveTransactionConsumptionCancelId = this@ConfirmViewModel.liveCancelTransactionConsumptionId
             }
         } else {
             HandlerCreateTransaction(localRepository, remoteRepository).apply {

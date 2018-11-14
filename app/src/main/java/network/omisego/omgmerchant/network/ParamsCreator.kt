@@ -11,6 +11,7 @@ import co.omisego.omisego.model.params.AccountListParams
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
+import co.omisego.omisego.model.params.TransactionConsumptionActionParams
 import co.omisego.omisego.model.params.TransactionListParams
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
@@ -21,6 +22,10 @@ import network.omisego.omgmerchant.model.AmountFormat
 class ParamsCreator {
     fun createTransactionRequestParams(formattedId: String): TransactionRequestParams {
         return TransactionRequestParams(formattedId)
+    }
+
+    fun createTransactionConsumptionActionParams(id: String): TransactionConsumptionActionParams {
+        return TransactionConsumptionActionParams(id)
     }
 
     fun createLoginParams(email: String, password: String): LoginParams {

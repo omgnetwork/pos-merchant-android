@@ -41,6 +41,7 @@
 
     <!-- Loading -->
     <string name="loading_waiting_confirmation">Waiting for the user to confirm...</string>
+    <string name="loading_cancel">Cancel</string>
 
     <!-- Feedback -->
     <string name="feedback_success_payment_title">Payment successful</string>

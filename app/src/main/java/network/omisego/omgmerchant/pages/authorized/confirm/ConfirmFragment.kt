@@ -19,16 +19,21 @@ import network.omisego.omgmerchant.databinding.FragmentConfirmBinding
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
+import network.omisego.omgmerchant.pages.authorized.loading.LoadingViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 
 class ConfirmFragment : BaseFragment() {
     private lateinit var binding: FragmentConfirmBinding
     private lateinit var viewModel: ConfirmViewModel
+    private lateinit var loadingViewModel: LoadingViewModel
     private lateinit var mainViewModel: MainViewModel
 
     override fun onProvideViewModel() {
         viewModel = provideMainFragmentAndroidViewModel()
         mainViewModel = provideMainFragmentViewModel()
+        loadingViewModel = provideMainFragmentViewModel()
+
+        viewModel.liveCancelTransactionConsumptionId = loadingViewModel.liveTransactionConsumptionCancelId
     }
 
     override fun onReceiveArgs() {
