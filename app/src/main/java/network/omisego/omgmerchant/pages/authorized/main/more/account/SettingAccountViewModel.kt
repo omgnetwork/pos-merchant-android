@@ -10,17 +10,18 @@ package network.omisego.omgmerchant.pages.authorized.main.more.account
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
-import co.omisego.omisego.model.params.AccountWalletListParams
 import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SettingAccountViewModel(
     private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
+    private val remoteRepository: RemoteRepository,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ViewModel(), CustomStateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
     val liveAccountList: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
     val liveAccountSelect: MutableLiveData<Account> by lazy {
@@ -46,7 +47,7 @@ class SettingAccountViewModel(
 
     fun handleAccountClick(account: Account) {
         remoteRepository.loadWalletAndSave(
-            AccountWalletListParams.create(id = account.id, searchTerm = null)
+            paramsCreator.createAccountWalletListParams(account.id)
         )
         liveAccountSelect.value = account
     }

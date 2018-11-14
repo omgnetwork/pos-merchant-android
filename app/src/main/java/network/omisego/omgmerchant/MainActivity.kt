@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import androidx.navigation.findNavController
-import network.omisego.omgmerchant.helper.logi
+import network.omisego.omgmerchant.extensions.logi
 
 class MainActivity : AppCompatActivity() {
 

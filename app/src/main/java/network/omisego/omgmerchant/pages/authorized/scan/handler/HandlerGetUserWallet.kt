@@ -13,20 +13,21 @@ import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.params.WalletParams
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.scan.ScanFragmentArgs
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class HandlerGetUserWallet(
-    val remoteRepository: RemoteRepository
+    val remoteRepository: RemoteRepository,
+    override val paramsCreator: ParamsCreator = ParamsCreator()
 ) : AbstractScanHandler {
     override lateinit var args: ScanFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
 
     override fun retrieve(payload: String) {
-        remoteRepository.loadWallet(WalletParams(payload)).enqueue(object : OMGCallback<Wallet> {
+        remoteRepository.loadWallet(paramsCreator.createLoadWalletParams(payload)).enqueue(object : OMGCallback<Wallet> {
             override fun fail(response: OMGResponse<APIError>) {
                 handleFailToRetrieveUserInformation(response.data)
             }

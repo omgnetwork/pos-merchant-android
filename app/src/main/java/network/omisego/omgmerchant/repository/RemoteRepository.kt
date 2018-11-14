@@ -17,7 +17,6 @@ import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.model.pagination.PaginationList
-import co.omisego.omisego.model.params.AccountListParams
 import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
@@ -32,9 +31,11 @@ import network.omisego.omgmerchant.extensions.subscribeEvent
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.network.ClientProvider
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.storage.Storage
 
-class RemoteRepository() {
+class RemoteRepository {
+    private val paramsCreator by lazy { ParamsCreator() }
     fun loadWallet(params: WalletParams, liveWallet: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client.getWallet(params).subscribeEvent(liveWallet)
     }
@@ -60,7 +61,7 @@ class RemoteRepository() {
 
     fun loadAccounts(liveAPIResult: MutableLiveData<Event<APIResult>>) {
         ClientProvider.client
-            .getAccounts(AccountListParams.create(searchTerm = null))
+            .getAccounts(paramsCreator.createLoadAccountParams())
             .subscribeEvent(liveAPIResult)
     }
 

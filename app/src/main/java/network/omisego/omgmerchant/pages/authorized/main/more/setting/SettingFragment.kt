@@ -15,7 +15,7 @@ import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideAndroidViewModel
-import network.omisego.omgmerchant.helper.provideMarginLeft
+import network.omisego.omgmerchant.extensions.provideMarginLeft
 
 class SettingFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingBinding

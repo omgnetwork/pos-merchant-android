@@ -11,15 +11,16 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
-import co.omisego.omisego.model.params.AccountWalletListParams
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SplashViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
+    private val remoteRepository: RemoteRepository,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
 ) : AndroidViewModel(app) {
     val liveAccount: MutableLiveData<Account> by lazy { MutableLiveData<Account>() }
     val accountDescription: String
@@ -31,6 +32,7 @@ class SplashViewModel(
     }
 
     fun loadWalletAndSave() {
-        remoteRepository.loadWalletAndSave(AccountWalletListParams.create(id = localRepository.loadAccount()!!.id, searchTerm = null))
+        val params = paramsCreator.createAccountWalletListParams(localRepository.loadAccount()!!.id, searchTerm = null)
+        remoteRepository.loadWalletAndSave(params)
     }
 }

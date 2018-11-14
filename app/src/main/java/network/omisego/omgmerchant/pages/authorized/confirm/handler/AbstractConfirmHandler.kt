@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.APIError
 import network.omisego.omgmerchant.livedata.Event
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.ConfirmNavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
@@ -30,7 +31,8 @@ import network.omisego.omgmerchant.repository.RemoteRepository
  *
  */
 abstract class AbstractConfirmHandler(
-    private val navDirectionCreator: ConfirmNavDirectionCreator = NavDirectionCreator()
+    private val navDirectionCreator: ConfirmNavDirectionCreator = NavDirectionCreator(),
+    protected val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ConfirmNavDirectionCreator by navDirectionCreator {
     abstract var args: ConfirmFragmentArgs
     abstract val remoteRepository: RemoteRepository

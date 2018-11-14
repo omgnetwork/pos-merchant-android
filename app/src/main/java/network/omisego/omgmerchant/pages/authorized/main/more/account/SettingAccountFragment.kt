@@ -22,9 +22,9 @@ import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
+import network.omisego.omgmerchant.extensions.provideMarginLeft
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
-import network.omisego.omgmerchant.helper.provideMarginLeft
 
 class SettingAccountFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingAccountBinding

@@ -13,7 +13,7 @@ import android.arch.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.helper.HelperAmountFormatter
+import network.omisego.omgmerchant.helper.HelperFormatter
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.pages.authorized.scan.handler.AbstractScanHandler
@@ -23,7 +23,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 
 class ScanViewModel(
     private val app: Application,
-    private val amountFormatter: HelperAmountFormatter,
+    private val amountFormatter: HelperFormatter,
     private val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app), OMGQRScannerContract.Preview.Verifier {
     lateinit var args: ScanFragmentArgs
@@ -38,7 +38,7 @@ class ScanViewModel(
 
     val amountText: String
         get() {
-            return amountFormatter.format(
+            return amountFormatter.formatDisplayAmount(
                 AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit),
                 args.token
             )

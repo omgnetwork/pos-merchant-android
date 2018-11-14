@@ -15,7 +15,7 @@ import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.helper.HelperNumberFormatter
+import network.omisego.omgmerchant.helper.HelperFormatter
 import network.omisego.omgmerchant.pages.authorized.main.AbstractCalculatorController
 import java.math.BigDecimal
 
@@ -24,7 +24,7 @@ class ReceiveViewModel(
     val handler: CalculatorInteraction,
     private val calculation: Calculation
 ) : AndroidViewModel(app), CalculatorInteraction.Operation, AbstractCalculatorController {
-    override val helperNumberFormatter: HelperNumberFormatter by lazy { HelperNumberFormatter() }
+    override val formatter: HelperFormatter by lazy { HelperFormatter() }
     override val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
     override val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
     override val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }

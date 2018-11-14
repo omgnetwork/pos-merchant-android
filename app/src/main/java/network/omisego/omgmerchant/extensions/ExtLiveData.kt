@@ -1,15 +1,23 @@
-package network.omisego.omgmerchant.helper
+package network.omisego.omgmerchant.extensions
 
 /*
  * OmiseGO
  *
- * Created by Phuchit Sirimongkolsathien on 13/8/2018 AD.
+ * Created by Phuchit Sirimongkolsathien on 17/8/2018 AD.
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
+
+fun <T> MutableLiveData<T>.fetchedThenCache(fetch: (MutableLiveData<T>) -> LiveData<T>): LiveData<T> =
+    if (value != null) {
+        this
+    } else {
+        fetch(this)
+    }
 
 fun <T, R> LiveData<T>.map(transform: (T) -> R) = Transformations.map(this, transform)
 

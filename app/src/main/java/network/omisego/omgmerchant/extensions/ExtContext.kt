@@ -1,6 +1,7 @@
 package network.omisego.omgmerchant.extensions
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.TypedValue
 
 /*
@@ -12,4 +13,8 @@ import android.util.TypedValue
 
 fun Context.dpToPx(dp: Float): Int {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
+}
+
+fun Context.provideMarginLeft(marginLeft: Int = 96): Rect {
+    return Rect(dpToPx(marginLeft.toFloat()), 0, 0, 0)
 }

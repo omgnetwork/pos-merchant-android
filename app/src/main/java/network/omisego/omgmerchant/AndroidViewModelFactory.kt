@@ -5,7 +5,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.helper.HelperAmountFormatter
+import network.omisego.omgmerchant.helper.HelperFormatter
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackTransformer
 import network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel
@@ -34,22 +35,22 @@ class AndroidViewModelFactory(private val application: Application) : ViewModelP
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
-                return SignInViewModel(application, LocalRepository(), RemoteRepository()) as T
+                return SignInViewModel(application, LocalRepository(), RemoteRepository(), ParamsCreator()) as T
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                SplashViewModel(application, LocalRepository(), RemoteRepository()) as T
+                SplashViewModel(application, LocalRepository(), RemoteRepository(), ParamsCreator()) as T
             }
             modelClass.isAssignableFrom(FeedbackViewModel::class.java) -> {
                 FeedbackViewModel(application, FeedbackTransformer()) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
-                ScanViewModel(application, HelperAmountFormatter(), RemoteRepository()) as T
+                ScanViewModel(application, HelperFormatter(), RemoteRepository()) as T
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
                 SettingViewModel(application, LocalRepository()) as T
             }
             modelClass.isAssignableFrom(TransactionListViewModel::class.java) -> {
-                TransactionListViewModel(application, LocalRepository(), RemoteRepository(), TransactionListTransformer(application)) as T
+                TransactionListViewModel(application, LocalRepository(), RemoteRepository(), TransactionListTransformer(application), ParamsCreator()) as T
             }
             modelClass.isAssignableFrom(SettingHelpViewModel::class.java) -> {
                 SettingHelpViewModel(application, LocalRepository()) as T

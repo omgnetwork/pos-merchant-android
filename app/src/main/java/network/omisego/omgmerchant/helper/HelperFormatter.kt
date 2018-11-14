@@ -1,5 +1,8 @@
 package network.omisego.omgmerchant.helper
 
+import co.omisego.omisego.model.Token
+import network.omisego.omgmerchant.model.AmountFormat
+
 /*
  * OmiseGO
  *
@@ -7,8 +10,16 @@ package network.omisego.omgmerchant.helper
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-class HelperNumberFormatter {
-    fun formatByNumber(number: String): String {
+class HelperFormatter {
+    fun formatDisplayAmount(amountUnit: AmountFormat.Unit, token: Token): String {
+        return String.format(
+            "%s %s",
+            amountUnit.display(),
+            token.symbol
+        )
+    }
+
+    fun formatNonExpression(number: String): String {
         return try {
             val split = number.split(".")
             return if (split.size > 1 && split[1].isNotEmpty()) {
@@ -24,12 +35,12 @@ class HelperNumberFormatter {
         }
     }
 
-    fun formatByExpression(expression: String): String {
+    fun formatExpression(expression: String): String {
         val operatorIndex = expression.indexOfAny(charArrayOf('+', '-'))
-        if (operatorIndex == -1) return formatByNumber(expression)
+        if (operatorIndex == -1) return formatNonExpression(expression)
         val numbers = splitOperator(expression).filterNot { it.isEmpty() }
         return numbers.fold(expression) { acc, number ->
-            acc.replace(number, formatByNumber(number))
+            acc.replace(number, formatNonExpression(number))
         }
     }
 

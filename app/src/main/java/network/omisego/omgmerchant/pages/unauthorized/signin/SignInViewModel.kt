@@ -15,28 +15,29 @@ import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
 import co.omisego.omisego.model.AdminAuthenticationToken
-import co.omisego.omisego.model.params.LoginParams
 import kotlinx.coroutines.experimental.Deferred
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
 import network.omisego.omgmerchant.custom.EmailValidator
 import network.omisego.omgmerchant.custom.PasswordValidator
 import network.omisego.omgmerchant.custom.Validator
+import network.omisego.omgmerchant.extensions.mapPropChanged
+import network.omisego.omgmerchant.helper.HelperContext.context
 import network.omisego.omgmerchant.helper.runBelowM
 import network.omisego.omgmerchant.helper.runOnMToP
 import network.omisego.omgmerchant.helper.runOnP
-import network.omisego.omgmerchant.helper.HelperContext.context
-import network.omisego.omgmerchant.helper.mapPropChanged
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SignInViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
+    private val remoteRepository: RemoteRepository,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
 ) : AndroidViewModel(app) {
     private val liveState: LiveState<SignInState> by lazy {
         LiveState(SignInState("", "", context.getString(R.string.sign_in_button), false))
@@ -118,7 +119,8 @@ class SignInViewModel(
         arrayOf(emailValidator, passwordValidator).find { !it.validation.pass }?.let { return }
         liveByPassValidation.value = false
         isSignIn = true
-        remoteRepository.signIn(LoginParams(email, password), liveSignInAPIResult)
+        val params = paramsCreator.createLoginParams(email, password)
+        remoteRepository.signIn(params, liveSignInAPIResult)
     }
 
     fun hasCredential(): Boolean = localRepository.hasCredential()

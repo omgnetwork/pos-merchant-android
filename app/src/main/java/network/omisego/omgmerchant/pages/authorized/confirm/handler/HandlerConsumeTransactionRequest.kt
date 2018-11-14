@@ -102,9 +102,9 @@ class HandlerConsumeTransactionRequest(
     }
 
     internal fun createTransactionConsumptionParams(payload: String): TransactionConsumptionParams {
-        return TransactionConsumptionParams.create(
-            formattedTransactionRequestId = payload,
-            amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
+        return paramsCreator.createTransactionConsumptionParams(
+            formattedId = payload,
+            formattedAmount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit),
             tokenId = args.token.id,
             accountId = localRepository.loadAccount()?.id,
             exchangeAccountId = localRepository.loadAccount()?.id,

@@ -9,8 +9,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="decorator"
-            type="network.omisego.omgmerchant.helper.HelperNumberFormatter" />
+            name="formatter"
+            type="network.omisego.omgmerchant.helper.HelperFormatter" />
 
         <variable
             name="liveCalc"
@@ -54,7 +54,7 @@
             android:maxLines="1"
             android:scrollbars="horizontal"
             android:scrollHorizontally="true"
-            android:text="@{decorator.formatByExpression(liveCalc)}"
+            android:text="@{formatter.formatExpression(liveCalc)}"
             android:textColor="@color/colorBlack"
             app:autoSizeMaxTextSize="48sp"
             app:autoSizeMinTextSize="28sp"

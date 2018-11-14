@@ -15,7 +15,7 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.helper.HelperAmountFormatter
+import network.omisego.omgmerchant.helper.HelperFormatter
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.pages.authorized.scan.handler.AbstractScanHandler
 import network.omisego.omgmerchant.pages.authorized.scan.handler.HandlerGetTransactionRequest
@@ -39,7 +39,7 @@ class ScanViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    val mockAmountFormatter: HelperAmountFormatter = mock()
+    val mockAmountFormatter: HelperFormatter = mock()
     val mockRepository: RemoteRepository = mock()
     private val viewModel: ScanViewModel by lazy { ScanViewModel(RuntimeEnvironment.application, mockAmountFormatter, mockRepository) }
     private val mockArgs: ScanFragmentArgs by lazy { mock<ScanFragmentArgs>() }
@@ -51,11 +51,11 @@ class ScanViewModelTest {
         whenever(mockArgs.token).thenReturn(mock())
         whenever(mockArgs.token.subunitToUnit).thenReturn(1.bd)
         whenever(mockArgs.token.symbol).thenReturn("OMG")
-        whenever(mockAmountFormatter.format(any(), any())).thenReturn("100 OMG")
+        whenever(mockAmountFormatter.formatDisplayAmount(any(), any())).thenReturn("100 OMG")
 
         viewModel.amountText shouldEqualTo "100 OMG"
 
-        verify(mockAmountFormatter, times(1)).format(
+        verify(mockAmountFormatter, times(1)).formatDisplayAmount(
             AmountFormat.Unit(mockArgs.amount.toBigDecimal(), mockArgs.token.subunitToUnit), mockArgs.token
         )
     }

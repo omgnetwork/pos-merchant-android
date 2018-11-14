@@ -9,13 +9,13 @@ package network.omisego.omgmerchant
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SaveAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.account.SettingAccountViewModel
 import network.omisego.omgmerchant.pages.authorized.main.more.settinghelp.ConfirmFingerprintViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -34,16 +34,13 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 ) as T
             }
             modelClass.isAssignableFrom(SettingAccountViewModel::class.java) -> {
-                return SettingAccountViewModel(LocalRepository(), RemoteRepository()) as T
+                return SettingAccountViewModel(LocalRepository(), RemoteRepository(), ParamsCreator()) as T
             }
             modelClass.isAssignableFrom(SaveAccountViewModel::class.java) -> {
                 return SaveAccountViewModel() as T
             }
             modelClass.isAssignableFrom(ConfirmFingerprintViewModel::class.java) -> {
-                return ConfirmFingerprintViewModel(LocalRepository(), RemoteRepository()) as T
-            }
-            modelClass.isAssignableFrom(QRPayloadViewModel::class.java) -> {
-                return QRPayloadViewModel() as T
+                return ConfirmFingerprintViewModel(LocalRepository(), RemoteRepository(), ParamsCreator()) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -20,17 +20,14 @@ import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.QRPayloadViewModel
 
 class ConfirmFragment : BaseFragment() {
     private lateinit var binding: FragmentConfirmBinding
     private lateinit var viewModel: ConfirmViewModel
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var qrPayloadViewModel: QRPayloadViewModel
 
     override fun onProvideViewModel() {
         viewModel = provideMainFragmentAndroidViewModel()
-        qrPayloadViewModel = provideMainFragmentViewModel()
         mainViewModel = provideMainFragmentViewModel()
     }
 

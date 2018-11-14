@@ -12,7 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.drawable.Drawable
-import network.omisego.omgmerchant.helper.map
+import network.omisego.omgmerchant.extensions.map
 import network.omisego.omgmerchant.model.Feedback
 
 class FeedbackViewModel(

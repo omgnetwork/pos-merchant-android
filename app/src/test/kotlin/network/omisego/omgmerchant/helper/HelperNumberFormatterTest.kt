@@ -12,20 +12,20 @@ import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 
 class HelperNumberFormatterTest {
-    private val formatterHelper: HelperNumberFormatter by lazy { HelperNumberFormatter() }
+    private val formatterHelper: HelperFormatter by lazy { HelperFormatter() }
     @Test
     fun `formatByNumber should be correct`() {
-        formatterHelper.formatByNumber("100000") shouldEqualTo "100,000"
-        formatterHelper.formatByNumber("200000.53") shouldEqualTo "200,000.53"
-        formatterHelper.formatByNumber("100") shouldEqualTo "100"
-        formatterHelper.formatByNumber("55555555555") shouldEqualTo "55,555,555,555"
-        formatterHelper.formatByNumber("5555555555555555555555") shouldEqualTo "5,555,555,555,555,555,555,555"
+        formatterHelper.formatNonExpression("100000") shouldEqualTo "100,000"
+        formatterHelper.formatNonExpression("200000.53") shouldEqualTo "200,000.53"
+        formatterHelper.formatNonExpression("100") shouldEqualTo "100"
+        formatterHelper.formatNonExpression("55555555555") shouldEqualTo "55,555,555,555"
+        formatterHelper.formatNonExpression("5555555555555555555555") shouldEqualTo "5,555,555,555,555,555,555,555"
     }
 
     @Test
     fun `formatByExpression should be correct`() {
-        formatterHelper.formatByExpression("1234+4321") shouldEqualTo "1,234+4,321"
-        formatterHelper.formatByExpression("1-666666666666666666666") shouldEqualTo "1-666,666,666,666,666,666,666"
+        formatterHelper.formatExpression("1234+4321") shouldEqualTo "1,234+4,321"
+        formatterHelper.formatExpression("1-666666666666666666666") shouldEqualTo "1-666,666,666,666,666,666,666"
     }
 
     @Test

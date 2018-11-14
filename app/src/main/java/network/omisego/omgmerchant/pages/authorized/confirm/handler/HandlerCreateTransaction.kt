@@ -56,19 +56,19 @@ class HandlerCreateTransaction(
     internal fun createTransactionCreateParams(payload: String): TransactionCreateParams {
         when (args.transactionType) {
             SCAN_RECEIVE -> {
-                return TransactionCreateParams(
-                    fromAddress = payload,
-                    toAddress = localRepository.loadWallet()?.address!!,
-                    amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
-                    tokenId = args.token.id
+                return paramsCreator.createTransactionCreateParams(
+                    payload,
+                    localRepository.loadWallet()?.address!!,
+                    AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit),
+                    args.token.id
                 )
             }
             else -> {
-                return TransactionCreateParams(
-                    fromAddress = localRepository.loadWallet()?.address,
-                    toAddress = payload,
-                    amount = AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit).toSubunit().amount,
-                    tokenId = args.token.id
+                return paramsCreator.createTransactionCreateParams(
+                    localRepository.loadWallet()?.address!!,
+                    payload,
+                    AmountFormat.Unit(args.amount.toBigDecimal(), args.token.subunitToUnit),
+                    args.token.id
                 )
             }
         }

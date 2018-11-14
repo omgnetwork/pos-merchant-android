@@ -14,15 +14,16 @@ import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.TransactionRequest
-import co.omisego.omisego.model.params.TransactionRequestParams
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.pages.authorized.scan.ScanFragmentArgs
 import network.omisego.omgmerchant.repository.RemoteRepository
 
 class HandlerGetTransactionRequest(
-    val remoteRepository: RemoteRepository
+    val remoteRepository: RemoteRepository,
+    override val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ViewModel(), AbstractScanHandler {
     override lateinit var args: ScanFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
@@ -34,7 +35,8 @@ class HandlerGetTransactionRequest(
         } else {
             transactionRequestIds[1]
         }
-        val request = remoteRepository.loadTransactionRequest(TransactionRequestParams(transactionRequestId))
+        val params = paramsCreator.createGetTransactionRequestParams(transactionRequestId)
+        val request = remoteRepository.loadTransactionRequest(params)
         request.enqueue(object : OMGCallback<TransactionRequest> {
             override fun fail(response: OMGResponse<APIError>) {
                 handleFailToRetrieveUserInformation(response.data)

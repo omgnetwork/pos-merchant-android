@@ -13,13 +13,13 @@ import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.params.TransactionListParams
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.AmountFormat
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.repository.RemoteRepository
 
@@ -27,7 +27,8 @@ class TransactionListViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository,
-    private val transformer: TransactionListTransformer
+    private val transformer: TransactionListTransformer,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
 ) : AndroidViewModel(app), CustomStateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
 
     /* Live data */
@@ -76,7 +77,7 @@ class TransactionListViewModel(
     }
 
     fun loadTransactionOnPage(page: Int) {
-        val params = TransactionListParams.create(
+        val params = paramsCreator.createLoadTransactionsParams(
             page = page,
             perPage = 20,
             searchTerm = wallet.address

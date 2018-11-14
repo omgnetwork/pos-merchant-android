@@ -14,11 +14,13 @@ import co.omisego.omisego.model.User
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import network.omisego.omgmerchant.pages.authorized.scan.ScanFragmentArgs
 
 interface AbstractScanHandler {
+    val paramsCreator: ParamsCreator
     var args: ScanFragmentArgs
     var liveDirection: MutableLiveData<Event<NavDirections>>
 
