@@ -24,6 +24,7 @@ class LoadingFragment : BaseFragment() {
 
     override fun onProvideViewModel() {
         viewModel = provideMainFragmentViewModel()
+        viewModel.liveTransactionConsumptionCancelId.value = null
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
