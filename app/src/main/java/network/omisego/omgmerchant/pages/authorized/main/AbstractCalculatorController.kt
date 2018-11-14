@@ -3,6 +3,7 @@ package network.omisego.omgmerchant.pages.authorized.main
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.helper.HelperNumberFormatter
+import java.math.BigDecimal
 
 /*
  * OmiseGO
@@ -19,7 +20,10 @@ interface AbstractCalculatorController {
     val liveCalculatorHelperText: MutableLiveData<String>
     val liveCalculatorHelperColorText: MutableLiveData<Int>
 
-    fun dispatchHelperTextState()
+    fun dispatchHelperTextState(
+        calculatorText: String? = liveCalculator.value,
+        subunitToUnit: BigDecimal? = liveSelectedToken.value?.subunitToUnit
+    )
 
     fun shouldEnableNextButton(): Boolean
 }

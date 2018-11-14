@@ -17,6 +17,7 @@ import network.omisego.omgmerchant.calculator.Calculation
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
 import network.omisego.omgmerchant.helper.HelperNumberFormatter
 import network.omisego.omgmerchant.pages.authorized.main.AbstractCalculatorController
+import java.math.BigDecimal
 
 class ReceiveViewModel(
     val app: Application,
@@ -61,11 +62,9 @@ class ReceiveViewModel(
             && liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 
-    override fun dispatchHelperTextState() {
+    override fun dispatchHelperTextState(calculatorText: String?, subunitToUnit: BigDecimal?) {
         try {
-            val calculatorValue = liveCalculator.value
-            val subunitToUnit = liveSelectedToken.value?.subunitToUnit
-            val decimal = calculatorValue?.toBigDecimal()?.scale() ?: 0
+            val decimal = calculatorText?.toBigDecimal()?.scale() ?: 0
             val maxDecimal = Math.log10(subunitToUnit?.toDouble() ?: 10.0).toInt()
 
             when {

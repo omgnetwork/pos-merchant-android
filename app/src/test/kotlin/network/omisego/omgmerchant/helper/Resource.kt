@@ -1,5 +1,6 @@
 package network.omisego.omgmerchant.helper
 
+import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import org.robolectric.RuntimeEnvironment
@@ -17,6 +18,8 @@ import kotlin.reflect.KProperty
 fun stringRes(@StringRes id: Int) = RuntimeEnvironment.application.getString(id)
 
 fun drawableRes(@DrawableRes id: Int) = RuntimeEnvironment.application.getDrawable(id)
+
+fun colorRes(@ColorRes id: Int) = RuntimeEnvironment.application.getColor(id)
 
 class ResourceFile(private val fileName: String) : ReadOnlyProperty<Any, File> {
     override fun getValue(thisRef: Any, property: KProperty<*>): File {

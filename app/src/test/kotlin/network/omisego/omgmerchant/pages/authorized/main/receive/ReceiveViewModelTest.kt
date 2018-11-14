@@ -8,7 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.receive
  */
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import co.omisego.omisego.extension.bd
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.helper.colorRes
 import network.omisego.omgmerchant.helper.stringRes
 import org.amshove.kluent.mock
 import org.amshove.kluent.shouldBe
@@ -86,5 +88,28 @@ class ReceiveViewModelTest {
         viewModel.liveCalculator.value = "0."
         viewModel.onAppend('0')
         viewModel.liveCalculator.value shouldEqual "0.0"
+    }
+
+    @Test
+    fun `test helper text checking subunit limit`() {
+        // The maximum decimal scale has reached.
+        viewModel.dispatchHelperTextState("100.1", 10.bd)
+        viewModel.liveCalculatorShowHelperText.value shouldBe true
+        viewModel.liveCalculatorHelperText.value shouldEqual stringRes(R.string.calculator_helper_reach_maximum)
+        viewModel.liveCalculatorHelperColorText.value shouldEqual colorRes(R.color.colorGrayWeak)
+
+        viewModel.dispatchHelperTextState("1.1", 10.bd)
+        viewModel.liveCalculatorShowHelperText.value shouldBe true
+        viewModel.liveCalculatorHelperText.value shouldEqual stringRes(R.string.calculator_helper_reach_maximum)
+        viewModel.liveCalculatorHelperColorText.value shouldEqual colorRes(R.color.colorGrayWeak)
+
+        viewModel.dispatchHelperTextState("1.15", 10.bd)
+        viewModel.liveCalculatorShowHelperText.value shouldBe true
+        viewModel.liveCalculatorHelperText.value shouldEqual stringRes(R.string.calculator_helper_exceed_maximum)
+        viewModel.liveCalculatorHelperColorText.value shouldEqual colorRes(R.color.colorRed)
+
+        viewModel.dispatchHelperTextState("1.1", 100.bd)
+        viewModel.liveCalculatorShowHelperText.value shouldBe false
+        viewModel.liveCalculatorHelperText.value shouldEqual ""
     }
 }
