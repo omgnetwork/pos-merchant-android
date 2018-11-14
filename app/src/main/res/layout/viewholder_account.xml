@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.account.SelectAccountViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel" />
 
         <variable
             name="account"

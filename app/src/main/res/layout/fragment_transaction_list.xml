@@ -7,14 +7,14 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.main.more.transaction.TransactionListViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        tools:context=".pages.main.more.transaction.TransactionListFragment">
+        tools:context="network.omisego.omgmerchant.pages.authorized.main.more.transaction.TransactionListFragment">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"

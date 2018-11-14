@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.signin.FingerprintBottomSheetViewModel" />
+            type="network.omisego.omgmerchant.pages.unauthorized.signin.FingerprintBottomSheetViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

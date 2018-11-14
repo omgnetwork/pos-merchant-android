@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="network.omisego.omgmerchant.pages.account.SelectAccountViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        tools:context="network.omisego.omgmerchant.pages.account.SelectAccountFragment">
+        tools:context=".pages.authorized.account.SelectAccountFragment">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -27,7 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="@string/select_account_title" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

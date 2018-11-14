@@ -9,13 +9,13 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.feedback.FeedbackViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".pages.feedback.FeedbackFragment">
+        tools:context=".pages.authorized.feedback.FeedbackFragment">
 
         <TextView
             android:id="@+id/tvTitle"

@@ -40,7 +40,7 @@ class LoadingRecyclerAdapter<T : Any, V : ViewDataBinding>(
     }
 
     fun addLoadingItems(totalLoadingItems: Int) {
-        (0 until totalLoadingItems).forEach {
+        (0 until totalLoadingItems).forEach { _ ->
             contentLoadingList.add(UUID.randomUUID())
         }
         dispatchUpdate(contentList, contentLoadingList)

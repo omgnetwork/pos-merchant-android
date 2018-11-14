@@ -7,14 +7,17 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply from: 'gradleScript/dependencies.gradle'
 
+def config = rootProject.ext
+
 android {
-    compileSdkVersion 28
+    buildToolsVersion config.buildToolsVersion
+    compileSdkVersion config.compileSdkVersion
     defaultConfig {
-        applicationId "network.omisego.omgmerchant"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName appVersion
+        applicationId config.applicationId
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -26,7 +29,6 @@ android {
     sourceSets {
         test.java.srcDirs += 'src/test/kotlin'
     }
-    buildToolsVersion '28.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -34,13 +36,14 @@ android {
     dataBinding {
         enabled = true
     }
-    packagingOptions {
-        exclude 'META-INF/rxjava.properties'
-    }
     lintOptions {
         disable 'ParcelCreator'
     }
-
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 androidExtensions {
@@ -57,6 +60,8 @@ dependencies {
 
     /* Kotlin */
     implementation kotlinDependencies.stdlib
+    implementation kotlinDependencies.coroutines
+
     /* Navigation Component */
     implementation navigation.navFragment
     implementation navigation.navUI
@@ -72,9 +77,6 @@ dependencies {
     /* Networking */
     implementation retrofitDependencies.retrofit
     implementation retrofitDependencies.converterGson
-    implementation retrofitDependencies.adapterRxJava2
-    /* Reactive */
-    implementation rxJava2.rxandroid
     /* Load image */
     implementation glide.glide
 
@@ -88,12 +90,6 @@ dependencies {
     implementation firebase.crashlytics
 
     testImplementation test
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

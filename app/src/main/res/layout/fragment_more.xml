@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhiteWeak"
     android:paddingTop="16dp"
-    tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment">
+    tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment">
 
 
 </FrameLayout>

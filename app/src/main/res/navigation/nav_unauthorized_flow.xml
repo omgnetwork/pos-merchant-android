@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_root"
+    app:startDestination="@id/sign_in">
+
+    <fragment
+        android:id="@+id/main"
+        android:name="network.omisego.omgmerchant.pages.authorized.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@+id/sign_in"
+        android:name="network.omisego.omgmerchant.pages.unauthorized.signin.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/action_sign_in_to_main"
+            app:destination="@id/main"
+            app:popUpTo="@+id/sign_in"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_sign_in"
+        app:destination="@id/sign_in"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        app:popUpTo="@+id/sign_in"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_sign_in_pop"
+        app:popUpTo="@id/sign_in"
+        app:popUpToInclusive="true" />
+</navigation>

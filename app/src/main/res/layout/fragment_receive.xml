@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/numpad_background_white"
-        tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment"
+        tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment"
         tools:layout_editor_absoluteY="81dp">
 
         <View
@@ -65,7 +65,7 @@
 
         <com.jaredrummler.materialspinner.MaterialSpinner
             android:id="@+id/spinner"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/dropdown_token_list_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -73,8 +73,8 @@
             app:layout_constraintBottom_toTopOf="@+id/guide_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etInputNumber"
-            app:ms_dropdown_max_height="300dp"
             app:ms_arrow_tint="@color/colorGray"
+            app:ms_dropdown_max_height="300dp"
             app:ms_text_color="@color/colorGray"
             tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 

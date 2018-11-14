@@ -7,14 +7,15 @@
 
         <variable
             name="viewmodel"
-            type="network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhiteWeak"
-        tools:context="network.omisego.omgmerchant.pages.main.receive.ReceiveFragment">
+        android:paddingTop="16dp"
+        tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -24,7 +25,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             tools:listitem="@layout/viewholder_more_menu" />
 
         <TextView
@@ -34,8 +34,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/ripple_select_account"
             android:clickable="true"
-            android:onClick="@{() -> viewmodel.signOut()}"
             android:gravity="start"
+            android:onClick="@{() -> viewmodel.signOut()}"
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"

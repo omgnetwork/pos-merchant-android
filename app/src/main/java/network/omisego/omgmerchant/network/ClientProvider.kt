@@ -1,5 +1,12 @@
 package network.omisego.omgmerchant.network
 
+/*
+ * OmiseGO
+ *
+ * Created by Phuchit Sirimongkolsathien on 11/8/2018 AD.
+ * Copyright © 2017-2018 OmiseGO. All rights reserved.
+ */
+
 import co.omisego.omisego.OMGAPIAdmin
 import co.omisego.omisego.model.AdminConfiguration
 import co.omisego.omisego.network.ewallet.EWalletAdmin
@@ -8,13 +15,6 @@ import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
 import okhttp3.logging.HttpLoggingInterceptor
-
-/*
- * OmiseGO
- *
- * Created by Phuchit Sirimongkolsathien on 11/8/2018 AD.
- * Copyright © 2017-2018 OmiseGO. All rights reserved.
- */
 
 object ClientProvider {
     private val credential: Credential
@@ -47,7 +47,7 @@ object ClientProvider {
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
+                        level = HttpLoggingInterceptor.Level.BASIC
                     }
                 )
             }.build()

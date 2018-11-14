@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="network.omisego.omgmerchant.pages.confirm.ConfirmViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

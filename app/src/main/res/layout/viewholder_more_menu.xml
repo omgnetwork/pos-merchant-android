@@ -11,7 +11,7 @@
 
         <variable
             name="viewmodel"
-            type="network.omisego.omgmerchant.pages.main.more.setting.SettingViewModel" />
+            type="network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel" />
 
     </data>
 

@@ -9,7 +9,7 @@
     <string name="sign_in_sign_up">Sign up</string>
     <string name="sign_in_button">Sign In</string>
     <string name="sign_in_button_loading">Loading…</string>
-    <string name="sign_in_success">Sign in as %s successfully.</string>
+    <string name="sign_in_success">Sign in successfully.</string>
     <string name="sign_in_fingerprint">Fingerprint</string>
 
     <!-- Select Account -->
@@ -33,7 +33,7 @@
     <string name="scan_title">Scan</string>
     <string name="scan_title_payment">Scan to Receive</string>
     <string name="scan_title_topup">Scan to Top-up</string>
-    <string name="scan_amount" formatted="false">%,.2f %s</string>
+    <string name="scan_amount">%,.2f %s</string>
     <string name="scan_instruction">Align QR code here</string>
 
     <!-- Feedback -->
@@ -48,6 +48,10 @@
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>
     <string name="feedback_retry">Retry</string>
+    <string name="feedback_icon_success" translatable="false"></string>
+    <string name="feedback_icon_failed" translatable="false"></string>
+    <string name="feedback_error_code">Error code: %s</string>
+    <string name="feedback_error_code_unknown">Unknown</string>
 
     <!-- More -->
     <string name="more_title">More</string>

@@ -8,6 +8,7 @@ import co.omisego.omisego.model.Wallet
 import co.omisego.omisego.security.OMGKeyManager
 import co.omisego.omisego.utils.GsonProvider
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
@@ -66,17 +67,17 @@ object Storage {
 
     fun loadUserEmail() = sharePref[StorageKey.KEY_USER_EMAIL]
 
-    fun saveFingerprintCredential(password: String): Deferred<Unit> {
-        return async {
+    fun savePassword(password: String): Deferred<Unit> {
+        return async(Dispatchers.IO) {
             sharePref[StorageKey.KEY_FINGERPRINT_USER_PASSWORD] = password encryptWith keyManager
         }
     }
 
     fun loadFingerprintCredential() = sharePref[StorageKey.KEY_FINGERPRINT_USER_PASSWORD] decryptWith keyManager
 
-    fun hasFingerprintCredential() = sharePref.contains(StorageKey.KEY_FINGERPRINT_USER_PASSWORD)
+    fun hasPassword() = sharePref.contains(StorageKey.KEY_FINGERPRINT_USER_PASSWORD)
 
-    fun deleteFingerprintCredential() {
+    fun deletePassword() {
         sharePref.edit()
             .remove(StorageKey.KEY_FINGERPRINT_USER_PASSWORD)
             .apply()
@@ -130,7 +131,7 @@ object Storage {
         sharePref[StorageKey.KEY_FEEDBACK] = ""
     }
 
-    fun clearEverything() {
+    fun clearSession() {
         sharePref.edit()
             .remove(StorageKey.KEY_USER_ID)
             .remove(StorageKey.KEY_AUTHENTICATION_TOKEN)
