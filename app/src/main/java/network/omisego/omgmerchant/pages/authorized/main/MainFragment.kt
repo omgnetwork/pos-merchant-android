@@ -10,11 +10,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.ui.setupWithNavController
+import co.omisego.omisego.constant.enums.ErrorCode
+import co.omisego.omisego.model.APIError
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
+import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
@@ -90,6 +93,18 @@ class MainFragment : BaseFragment() {
                     findChildController().navigateUp()
                 }
                 findChildController().navigate(direction)
+            }
+
+            observeFor(liveTokenAPIResult) {
+                it.handle(mainViewModel::handleLoadTokenSuccess, object : (APIError) -> Unit {
+                    override fun invoke(error: APIError) {
+                        if (error.code == ErrorCode.CLIENT_INVALID_AUTH_SCHEME) {
+                            clearSession()
+                            findRootController().popBackStack()
+                            findRootController().navigate(R.id.action_global_sign_in)
+                        }
+                    }
+                })
             }
         }
 

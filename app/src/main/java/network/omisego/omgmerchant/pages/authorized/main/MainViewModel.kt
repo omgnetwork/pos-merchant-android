@@ -13,11 +13,13 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.Token
-import co.omisego.omisego.model.params.TokenListParams
+import co.omisego.omisego.model.pagination.PaginationList
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.fetchedThenCache
+import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.MainNavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
@@ -27,7 +29,8 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 class MainViewModel(
     private val navDirectionCreator: MainNavDirectionCreator,
     internal val localRepository: LocalRepository,
-    val remoteRepository: RemoteRepository
+    val remoteRepository: RemoteRepository,
+    val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ViewModel(), MainNavDirectionCreator by navDirectionCreator {
     internal var showSplash = true
     internal var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
@@ -111,25 +114,33 @@ class MainViewModel(
         }
     }
 
-/* Fetch data from repository */
-fun getAccount() = localRepository.loadAccount()
-
-fun getTokens() = liveTokenAPIResult.fetchedThenCache {
-    remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
-    liveTokenAPIResult
-}
-
-internal fun meetDestination(): DestinationCondition {
-    return when {
-        getAccount() == null -> DestinationCondition.DEST_SELECT_ACCOUNT
-        showSplash -> DestinationCondition.DEST_SPLASH
-        else -> DestinationCondition.DEST_MAIN
+    fun handleLoadTokenSuccess(tokens: PaginationList<Token>) {
+        logi("Loaded ${tokens.data.size} tokens")
     }
-}
 
-enum class DestinationCondition {
-    DEST_SPLASH,
-    DEST_SELECT_ACCOUNT,
-    DEST_MAIN;
-}
+    /* Fetch data from repository */
+    fun getAccount() = localRepository.loadAccount()
+
+    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
+        remoteRepository.listTokens(paramsCreator.createListTokensParams(), liveTokenAPIResult)
+        liveTokenAPIResult
+    }
+
+    fun clearSession() {
+        localRepository.clearSession()
+    }
+
+    internal fun meetDestination(): DestinationCondition {
+        return when {
+            getAccount() == null -> DestinationCondition.DEST_SELECT_ACCOUNT
+            showSplash -> DestinationCondition.DEST_SPLASH
+            else -> DestinationCondition.DEST_MAIN
+        }
+    }
+
+    enum class DestinationCondition {
+        DEST_SPLASH,
+        DEST_SELECT_ACCOUNT,
+        DEST_MAIN;
+    }
 }

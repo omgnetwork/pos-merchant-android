@@ -31,7 +31,8 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 return MainViewModel(
                     NavDirectionCreator(),
                     LocalRepository(),
-                    RemoteRepository()
+                    RemoteRepository(),
+                    ParamsCreator()
                 ) as T
             }
             modelClass.isAssignableFrom(SettingAccountViewModel::class.java) -> {

@@ -22,7 +22,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
 class LoadingViewModel(
     private val remoteRepository: RemoteRepository,
     private val paramsCreator: ParamsCreator = ParamsCreator()
-    ) : ViewModel() {
+) : ViewModel() {
     val liveTransactionConsumptionCancelId: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val liveTransactionConsumptionRejectResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
     val liveShowingCancelButton: LiveData<Boolean> by lazy { liveTransactionConsumptionCancelId.map { !it.isNullOrEmpty() } }
@@ -33,7 +33,7 @@ class LoadingViewModel(
     }
 
     fun handleRejectTransactionConsumptionSuccess(transactionConsumption: TransactionConsumption) {
-        logi("Cancel the transaction consumption")
+        logi("Cancel the transaction consumption ${transactionConsumption.id}")
     }
 
     fun handleRejectTransactionConsumptionFailed(error: APIError) {
