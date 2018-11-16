@@ -10,6 +10,7 @@ import co.omisego.omisego.utils.GsonProvider
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.async
+import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
@@ -34,8 +35,8 @@ object Storage {
 
     private val keyManager: OMGKeyManager by lazy {
         OMGKeyManager.Builder {
-            keyAlias = "omg"
-            iv = "omg:12345678"
+            keyAlias = BuildConfig.CLIENT_ENCRYPT_KEY_ALIAS
+            iv = BuildConfig.CLIENT_ENCRYPT_IV
         }.build(context)
     }
 

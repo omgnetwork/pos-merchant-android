@@ -14,6 +14,7 @@ import co.omisego.omisego.network.ewallet.EWalletAdmin
 import co.omisego.omisego.websocket.OMGSocketClient
 import co.omisego.omisego.websocket.SocketClientContract
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
 import okhttp3.HttpUrl
@@ -26,7 +27,7 @@ object ClientProvider {
 
     private val adminConfiguration: AdminConfiguration by lazy {
         AdminConfiguration(
-            "https://coffeego.omisego.io/api/admin/",
+            BuildConfig.CLIENT_API_BASE_URL,
             credential.userId,
             credential.authenticationToken
         )
@@ -58,7 +59,7 @@ object ClientProvider {
 
     private fun createSocketClient(): SocketClientContract.Client {
         return OMGSocketClient.Builder {
-            clientConfiguration = adminConfiguration.copy(baseURL = "wss://coffeego.omisego.io/api/admin/socket/")
+            clientConfiguration = adminConfiguration.copy(baseURL = BuildConfig.CLIENT_API_SOCKET_BASE_URL)
         }.build()
     }
 }

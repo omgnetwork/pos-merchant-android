@@ -8,7 +8,6 @@ ext {
     arch = "1.1.0"
     coroutines = "1.0.0"
 
-
     omisego = [
         sdk: "co.omisego:omisego-admin:${omisego}",
     ]
