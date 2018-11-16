@@ -67,6 +67,12 @@ android {
     }
 }
 
+android.applicationVariants.all { variant ->
+    variant.outputs.all {
+        outputFileName = "pos-merchant-${variant.name}-${variant.versionName}.apk"
+    }
+}
+
 androidExtensions {
     experimental = true
 }
