@@ -47,4 +47,3 @@ sealed class AmountFormat {
         }
     }
 }
-

@@ -25,5 +25,3 @@ fun <T> LifecycleOwner.observeEventFor(liveData: LiveData<Event<T>>, perform: (T
         perform(it)
     })
 }
-
-

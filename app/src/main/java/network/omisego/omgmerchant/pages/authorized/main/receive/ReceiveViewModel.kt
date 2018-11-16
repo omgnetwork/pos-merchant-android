@@ -57,9 +57,9 @@ class ReceiveViewModel(
 
     override fun shouldEnableNextButton(): Boolean {
         val calculatorValue = liveCalculator.value
-        return calculatorValue != "0"
-            && calculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1
-            && liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
+        return calculatorValue != "0" &&
+            calculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1 &&
+            liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 
     override fun dispatchHelperTextState(calculatorText: String?, subunitToUnit: BigDecimal?) {

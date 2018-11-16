@@ -13,5 +13,5 @@ import network.omisego.omgmerchant.model.Feedback
 interface ConfirmNavDirectionCreator {
     fun createDestinationFeedback(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment
 
-    fun createDestinationLoading() : NavBottomNavigationDirections.ActionGlobalLoadingFragment
+    fun createDestinationLoading(): NavBottomNavigationDirections.ActionGlobalLoadingFragment
 }
