@@ -41,6 +41,7 @@ before_script:
 script:
   - ./gradlew ktlintDebugCheck
   - ./gradlew lintDebug
+  - ./gradlew testDebugUnitTest
   - ./gradlew assembleDebug
 
 before_deploy:
