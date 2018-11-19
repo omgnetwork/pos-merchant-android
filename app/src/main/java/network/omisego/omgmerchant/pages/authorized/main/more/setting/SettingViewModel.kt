@@ -11,10 +11,11 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.SettingMenu
+import network.omisego.omgmerchant.repository.LocalRepository
 
 class SettingViewModel(
     val app: Application,
@@ -26,6 +27,8 @@ class SettingViewModel(
         SettingMenu("\uE91F", app.getString(R.string.more_setting_and_help))
     )
     val liveSignOut: MutableLiveData<Event<Boolean>> by lazy { MutableLiveData<Event<Boolean>>() }
+    val liveVersion: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val liveEndpoint: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val liveMenu: MutableLiveData<Event<SettingMenu>> by lazy { MutableLiveData<Event<SettingMenu>>() }
 
     fun signOut() {
@@ -37,5 +40,10 @@ class SettingViewModel(
 
     fun setLiveMenu(menu: SettingMenu?) {
         liveMenu.value = Event(menu!!)
+    }
+
+    init {
+        liveVersion.value = BuildConfig.VERSION_NAME
+        liveEndpoint.value = BuildConfig.CLIENT_API_BASE_URL
     }
 }

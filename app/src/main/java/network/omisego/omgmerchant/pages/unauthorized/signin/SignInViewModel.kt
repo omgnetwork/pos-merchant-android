@@ -16,6 +16,7 @@ import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
 import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.coroutines.experimental.Deferred
+import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState
 import network.omisego.omgmerchant.custom.EmailValidator
@@ -60,6 +61,9 @@ class SignInViewModel(
 
     /* OnClick LiveData */
     val liveShowPre28FingerprintDialog: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+
+    /* Info */
+    val liveVersion: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     private lateinit var biometricCallback: BiometricCallback
 
@@ -163,5 +167,6 @@ class SignInViewModel(
 
     init {
         liveState.state { it.copy(loading = false) }
+        liveVersion.value = BuildConfig.VERSION_NAME
     }
 }

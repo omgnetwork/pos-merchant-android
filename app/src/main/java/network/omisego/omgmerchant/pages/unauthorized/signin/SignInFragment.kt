@@ -1,5 +1,6 @@
 package network.omisego.omgmerchant.pages.unauthorized.signin
 
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build.VERSION_CODES.P
@@ -109,15 +110,15 @@ class SignInFragment : BaseFragment() {
     @RequiresApi(P)
     private fun subscribeSignInWithFingerprintP() {
         with(viewModel) {
-            observeFor(liveAuthenticationSucceeded) {
+            liveAuthenticationSucceeded.observe(this@SignInFragment, Observer {
                 if (viewModel.isFingerprintAvailable()) {
                     etEmail.setText(viewModel.loadUserEmail())
                     etPassword.setText(viewModel.loadUserPassword())
-                    signIn()
+                    this@SignInFragment.signIn()
                 } else {
                     toast(getString(R.string.dialog_fingerprint_option_not_enabled))
                 }
-            }
+            })
 
             observeFor(liveAuthenticationError) {
                 if (it?.first == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT || it?.first == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT_PERMANENT) {
