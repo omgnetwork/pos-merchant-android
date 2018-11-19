@@ -56,7 +56,11 @@ class ParamsCreator {
         perPage: Int = 20,
         searchTerm: String? = null
     ): TransactionListParams {
-        return TransactionListParams.create(searchTerm = searchTerm)
+        return TransactionListParams.create(
+            page = page,
+            perPage = perPage,
+            searchTerm = searchTerm
+        )
     }
 
     fun createListTokensParams(perPage: Int = 30, searchTerm: String? = null): TokenListParams {
