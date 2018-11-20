@@ -88,6 +88,9 @@
     <string name="setting_faq">FAQ</string>
     <string name="setting_term_of_use">Term of use</string>
     <string name="setting_privacy">Privacy</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_info">Info</string>
+    <string name="setting_endpoint">Endpoint</string>
 
     <!-- Numpad -->
     <string name="numpad_1">1</string>

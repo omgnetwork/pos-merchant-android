@@ -12,9 +12,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhiteWeak"
+        android:layout_height="match_parent"
         android:paddingTop="16dp"
+        android:background="@color/colorWhiteWeak4"
         tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment">
 
         <android.support.v7.widget.RecyclerView
@@ -25,13 +25,91 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="3"
             tools:listitem="@layout/viewholder_more_menu" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+
+            <TextView
+                android:id="@+id/tvInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/setting_info"
+                android:textColor="@color/colorGrayWeak"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvEndpoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/setting_endpoint"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
+
+            <TextView
+                android:id="@+id/tvEndpointData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="end"
+                android:text="@{viewmodel.liveEndpoint}"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvEndpoint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvEndpoint"
+                tools:text="https://coffeego" />
+
+            <TextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/setting_version"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEndpointData" />
+
+            <TextView
+                android:id="@+id/tvVersionData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{viewmodel.liveVersion}"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvVersion"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="version_data" />
+
+
+        </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvSignOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/ripple_select_account"
             android:clickable="true"
             android:gravity="start"
@@ -43,21 +121,9 @@
             android:textColor="@color/colorRed"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutInfo" />
 
-        <View
-            android:id="@+id/lineSignOut"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1f000000"
-            app:layout_constraintTop_toBottomOf="@+id/tvSignOut" />
 
-        <View
-            android:id="@+id/lineRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1f000000"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
