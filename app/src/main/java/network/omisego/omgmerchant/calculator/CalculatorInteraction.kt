@@ -44,7 +44,7 @@ class CalculatorInteraction(
                     with(condition) {
                         shouldClearBeforeAppend { operation?.onClear() }
                         dispatch(button) {
-                            callback.onAppend(it)
+                            callback.onAppend(it[0])
                         }
                     }
                 }
@@ -56,14 +56,14 @@ class CalculatorInteraction(
                     with(condition) {
                         handlePlusMinusEvaluation(callback::onEvaluate) {
                             dispatch(button) {
-                                callback.onAppend(it)
+                                callback.onAppend(it[0])
                             }
                         }
                     }
                 }
                 OP_PERCENT -> {
                     condition.evaluatePercent {
-                        callback.onAppend(it.sign)
+                        callback.onAppend(it.sign[0])
                         callback.onEvaluate()
                     }
                 }
@@ -79,7 +79,7 @@ class CalculatorInteraction(
     }
 
     interface Operation {
-        fun onAppend(char: CharSequence)
+        fun onAppend(char: Char)
         fun onClear()
         fun onDelete()
         fun onEvaluate(): Boolean

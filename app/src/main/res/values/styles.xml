@@ -58,6 +58,15 @@
         <item name="android:lineSpacingMultiplier">1.5</item>
     </style>
 
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorGray</item>
+        <item name="colorSecondary">@color/color_omg_btn_selector</item>
+        <item name="colorPrimaryDark">@color/colorGray</item>
+        <item name="android:navigationBarColor">@color/colorGray</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <style name="OMGNumPad">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/colorGrayWeak</item>

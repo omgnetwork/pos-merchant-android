@@ -47,6 +47,12 @@
             android:name="transaction_type"
             android:defaultValue="receive"
             app:argType="string" />
+        <argument
+            android:name="user"
+            app:argType="co.omisego.omisego.model.User" />
+        <argument
+            android:name="address"
+            app:argType="string" />
 
     </fragment>
     <fragment
@@ -133,5 +139,17 @@
         tools:layout="@layout/fragment_select" />
     <action
         android:id="@+id/action_global_selectAccountFragment"
-        app:destination="@id/selectAccountFragment" /><action android:id="@+id/action_global_confirmFragment" app:destination="@id/confirmFragment"/>
+        app:destination="@id/selectAccountFragment" />
+    <action
+        android:id="@+id/action_global_confirmFragment"
+        app:destination="@id/confirmFragment" />
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="network.omisego.omgmerchant.pages.authorized.loading.LoadingFragment"
+        android:label="LoadingFragment"
+        tools:layout="@layout/fragment_loading">
+    </fragment>
+    <action
+        android:id="@+id/action_global_loadingFragment"
+        app:destination="@id/loadingFragment" />
 </navigation>

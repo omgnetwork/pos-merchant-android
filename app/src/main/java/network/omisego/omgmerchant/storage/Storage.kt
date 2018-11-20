@@ -15,9 +15,9 @@ import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
 import network.omisego.omgmerchant.extensions.get
 import network.omisego.omgmerchant.extensions.set
+import network.omisego.omgmerchant.helper.HelperContext.context
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.model.Feedback
-import network.omisego.omgmerchant.utils.Contextor.context
 
 /*
  * OmiseGO
@@ -53,12 +53,16 @@ object Storage {
         if (!hasCredential()) {
             return Credential("", "")
         }
-        val userId = sharePref[StorageKey.KEY_USER_ID]!!
-        val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN]!!
-        return Credential(
-            userId decryptWith keyManager,
-            authenticationToken decryptWith keyManager
-        )
+        try {
+            val userId = sharePref[StorageKey.KEY_USER_ID]!!
+            val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN]!!
+            return Credential(
+                userId decryptWith keyManager,
+                authenticationToken decryptWith keyManager
+            )
+        } catch (e: Exception) {
+            return Credential("", "")
+        }
     }
 
     fun saveUserEmail(email: String) {

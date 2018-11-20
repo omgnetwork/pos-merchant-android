@@ -2,6 +2,7 @@
 <resources>
     <color name="colorBlue">#1A56F0</color>
     <color name="colorBlueWeak">#2176FF</color>
+    <color name="colorBlueDisabled">#631A56F0</color>
 
     <color name="colorBlack">#000000</color>
     <color name="colorBlackWeak">#04070D</color>

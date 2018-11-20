@@ -11,27 +11,28 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
+import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.Wallet
-import co.omisego.omisego.model.transaction.Transaction
-import co.omisego.omisego.model.transaction.list.TransactionListParams
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderTransactionBinding
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.model.AmountFormat
+import network.omisego.omgmerchant.network.ParamsCreator
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class TransactionListViewModel(
     private val app: Application,
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository,
-    private val transformer: TransactionListTransformer
-) : AndroidViewModel(app), StateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
+    private val transformer: TransactionListTransformer,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
+) : AndroidViewModel(app), CustomStateViewHolderBinding<Transaction, ViewholderTransactionBinding> {
 
     /* Live data */
-    val liveTransactionFailedDescription: MutableLiveData<String> by lazy { mutableLiveDataOf("") }
+    val liveTransactionFailedDescription: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val liveTransactionListAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     /* get data from repository */
@@ -56,16 +57,18 @@ class TransactionListViewModel(
         }
         if (transaction.error == null) {
             liveTransactionFailedDescription.value = if (transaction.isTopup) {
+                val subunit = AmountFormat.Subunit(transaction.to.amount, transaction.to.token.subunitToUnit)
                 app.getString(
                     R.string.transaction_list_topup_info,
-                    transaction.to.amount.divide(transaction.to.token.subunitToUnit),
+                    subunit.toUnit().display(),
                     transaction.to.token.symbol,
                     transaction.to.userId
                 )
             } else {
+                val subunit = AmountFormat.Subunit(transaction.from.amount, transaction.from.token.subunitToUnit)
                 app.getString(
                     R.string.transaction_list_receive_info,
-                    transaction.from.amount.divide(transaction.from.token.subunitToUnit),
+                    subunit.toUnit().display(),
                     transaction.from.token.symbol,
                     transaction.from.userId
                 )
@@ -74,7 +77,7 @@ class TransactionListViewModel(
     }
 
     fun loadTransactionOnPage(page: Int) {
-        val params = TransactionListParams.create(
+        val params = paramsCreator.createLoadTransactionsParams(
             page = page,
             perPage = 20,
             searchTerm = wallet.address

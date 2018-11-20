@@ -15,21 +15,21 @@ import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_setting_account.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
-import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
-import network.omisego.omgmerchant.custom.MarginDividerDecorator
+import network.omisego.omgmerchant.custom.CustomLoadingRecyclerAdapter
+import network.omisego.omgmerchant.custom.CustomRecyclerMarginDivider
 import network.omisego.omgmerchant.databinding.FragmentSettingAccountBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
+import network.omisego.omgmerchant.extensions.provideMarginLeft
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
-import network.omisego.omgmerchant.utils.provideMarginLeft
 
 class SettingAccountFragment : BaseFragment() {
     private lateinit var binding: FragmentSettingAccountBinding
     private lateinit var viewModel: SettingAccountViewModel
-    private lateinit var adapter: LoadingRecyclerAdapter<Account, ViewholderSettingAccountBinding>
+    private lateinit var adapter: CustomLoadingRecyclerAdapter<Account, ViewholderSettingAccountBinding>
     private var menuSave: MenuItem? = null
 
     override fun onProvideViewModel() {
@@ -80,9 +80,9 @@ class SettingAccountFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dividerDecorator = MarginDividerDecorator(context!!, context!!.provideMarginLeft(80))
+        val dividerDecorator = CustomRecyclerMarginDivider(context!!, context!!.provideMarginLeft(80))
 
-        adapter = LoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_setting_account, viewModel)
+        adapter = CustomLoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_setting_account, viewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(dividerDecorator)

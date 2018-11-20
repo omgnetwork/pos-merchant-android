@@ -11,43 +11,42 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
-import co.omisego.omisego.model.params.TokenListParams
-import network.omisego.omgmerchant.NavBottomNavigationDirections
+import androidx.navigation.NavDirections
+import co.omisego.omisego.model.Token
+import co.omisego.omisego.model.pagination.PaginationList
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.extensions.fetchedThenCache
+import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
-import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.network.ParamsCreator
+import network.omisego.omgmerchant.pages.authorized.MainNavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LoadTokenViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class MainViewModel(
+    private val navDirectionCreator: MainNavDirectionCreator,
     internal val localRepository: LocalRepository,
-    val remoteRepository: RemoteRepository
-) : ViewModel(), LoadTokenViewModel {
+    val remoteRepository: RemoteRepository,
+    val paramsCreator: ParamsCreator = ParamsCreator()
+) : ViewModel(), MainNavDirectionCreator by navDirectionCreator {
     internal var showSplash = true
     internal var currentCalculatorMode: CalculatorMode = CalculatorMode.RECEIVE
 
     /* LiveData */
-    override val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
+    val liveTokenAPIResult: MutableLiveData<APIResult> by lazy { MutableLiveData<APIResult>() }
 
     /* Control next button ui */
     val liveEnableNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val liveShowNext: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
-    /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
-    val liveDestinationId: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
-
     /* Control whether should hide toolbar or bottom navigation e.g. the select account page has its own toolbar, so we don't need to show it. */
     val liveToolbarBottomNavVisibility: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
-    /* Control feedback object which is set from the confirmation page */
-    val liveFeedback: MutableLiveData<Feedback> by lazy { MutableLiveData<Feedback>() }
+    /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
+    val liveDirection: MutableLiveData<Event<NavDirections>> by lazy { MutableLiveData<Event<NavDirections>>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     private val fullScreenPageIds = arrayOf(
@@ -55,7 +54,8 @@ class MainViewModel(
         R.id.selectAccountFragment,
         R.id.scan,
         R.id.confirmFragment,
-        R.id.feedbackFragment
+        R.id.feedbackFragment,
+        R.id.loadingFragment
     )
     val fullScreenNavigatedListener: NavController.OnNavigatedListener by lazy {
         NavController.OnNavigatedListener { _, destination ->
@@ -86,27 +86,13 @@ class MainViewModel(
         }
     }
 
-    /* Fetch data from repository */
-    fun hasCredential() = localRepository.hasCredential()
-
-    fun getAccount() = localRepository.loadAccount()
-
-    fun getCredential() = localRepository.loadCredential()
-
-    fun getFeedback() = localRepository.loadFeedback()
-
-    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
-        remoteRepository.listTokens(TokenListParams.create(perPage = 30, searchTerm = null), liveTokenAPIResult)
-        liveTokenAPIResult
-    }
-
     fun displayOtherDestinationByCondition() {
         when (meetDestination()) {
             DestinationCondition.DEST_SELECT_ACCOUNT -> {
-                liveDestinationId.value = Event(R.id.action_global_selectAccountFragment)
+                liveDirection.value = Event(createDestinationSelectAccount())
             }
             DestinationCondition.DEST_SPLASH -> {
-                liveDestinationId.value = Event(R.id.action_global_splashFragment)
+                liveDirection.value = Event(createDestinationSplash())
                 showSplash = false
             }
             DestinationCondition.DEST_MAIN -> {
@@ -114,44 +100,34 @@ class MainViewModel(
         }
     }
 
-    fun createActionForScanPage(
+    fun getAmountTokenPairByCalculatorMode(
         receiveViewModel: ReceiveViewModel,
         topupViewModel: TopupViewModel
-    ): NavBottomNavigationDirections.ActionGlobalScanFragment {
+    ): Pair<String, Token> {
         return when (currentCalculatorMode) {
             CalculatorMode.RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(receiveViewModel.liveToken.value!!)
-                    .setAmount(receiveViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_RECEIVE)
+                receiveViewModel.liveCalculator.value!! to receiveViewModel.liveSelectedToken.value!!
             }
             CalculatorMode.TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalScanFragment(topupViewModel.liveToken.value!!)
-                    .setAmount(topupViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_TOPUP)
+                topupViewModel.liveCalculator.value!! to topupViewModel.liveSelectedToken.value!!
             }
         }
     }
 
-    fun createActionForConfirmPage(
-        receiveViewModel: ReceiveViewModel,
-        topupViewModel: TopupViewModel
-    ): NavBottomNavigationDirections.ActionGlobalConfirmFragment {
-        return when (currentCalculatorMode) {
-            CalculatorMode.RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(receiveViewModel.liveToken.value!!)
-                    .setAmount(receiveViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_RECEIVE)
-            }
-            CalculatorMode.TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(topupViewModel.liveToken.value!!)
-                    .setAmount(topupViewModel.liveCalculator.value!!)
-                    .setTransactionType(SCAN_TOPUP)
-            }
-        }
+    fun handleLoadTokenSuccess(tokens: PaginationList<Token>) {
+        logi("Loaded ${tokens.data.size} tokens")
     }
 
-    fun createActionForFeedbackPage(feedback: Feedback): NavBottomNavigationDirections.ActionGlobalFeedbackFragment {
-        return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
+    /* Fetch data from repository */
+    fun getAccount() = localRepository.loadAccount()
+
+    fun getTokens() = liveTokenAPIResult.fetchedThenCache {
+        remoteRepository.listTokens(paramsCreator.createListTokensParams(), liveTokenAPIResult)
+        liveTokenAPIResult
+    }
+
+    fun clearSession() {
+        localRepository.clearSession()
     }
 
     internal fun meetDestination(): DestinationCondition {

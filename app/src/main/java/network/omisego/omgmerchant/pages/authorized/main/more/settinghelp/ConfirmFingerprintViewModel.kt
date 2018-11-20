@@ -9,29 +9,30 @@ package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import co.omisego.omisego.model.AuthenticationToken
-import co.omisego.omisego.model.params.LoginParams
+import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.coroutines.experimental.Deferred
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential
+import network.omisego.omgmerchant.network.ParamsCreator
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class ConfirmFingerprintViewModel(
     val localRepository: LocalRepository,
-    val remoteRepository: RemoteRepository
+    val remoteRepository: RemoteRepository,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ViewModel() {
     val liveAPIResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
 
     fun signIn(password: String) {
-        remoteRepository.signIn(LoginParams(
+        remoteRepository.signIn(paramsCreator.createLoginParams(
             localRepository.loadUserEmail(),
             password
         ), liveAPIResult)
     }
 
-    fun saveCredential(data: AuthenticationToken): Deferred<Unit> {
+    fun saveCredential(data: AdminAuthenticationToken): Deferred<Unit> {
         localRepository.saveUser(data.user)
         return localRepository.saveCredential(
             Credential(

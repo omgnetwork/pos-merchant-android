@@ -28,13 +28,20 @@
     <string name="topup_title">Top-up</string>
     <string name="topup_next">Next</string>
 
+    <!-- Token Spinner -->
+    <string name="token_spinner_empty_list">Empty</string>
+    <string name="token_spinner_fetch_error">Can\'t load tokens</string>
+
     <!-- Scan -->
     <!-- e.g. 380.00 UXD -->
     <string name="scan_title">Scan</string>
     <string name="scan_title_payment">Scan to Receive</string>
     <string name="scan_title_topup">Scan to Top-up</string>
-    <string name="scan_amount">%,.2f %s</string>
     <string name="scan_instruction">Align QR code here</string>
+
+    <!-- Loading -->
+    <string name="loading_waiting_confirmation">Waiting for the user to confirm...</string>
+    <string name="loading_cancel">Cancel</string>
 
     <!-- Feedback -->
     <string name="feedback_success_payment_title">Payment successful</string>
@@ -43,14 +50,14 @@
     <string name="feedback_fail_topup_title">Topup failed</string>
     <string name="feedback_customer_name">by %s</string>
     <string name="feedback_customer_id">User ID: %s</string>
-    <string name="feedback_amount">%,.2f %s</string>
+    <string name="feedback_user_reject">The user has rejected the transaction consumption.</string>
     <!-- Passing a calendar instance to formatter -->
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>
     <string name="feedback_retry">Retry</string>
     <string name="feedback_icon_success" translatable="false"></string>
     <string name="feedback_icon_failed" translatable="false"></string>
-    <string name="feedback_error_code">Error code: %s</string>
+    <string name="feedback_error_code">%s</string>
     <string name="feedback_error_code_unknown">Unknown</string>
 
     <!-- More -->
@@ -67,12 +74,12 @@
     <string name="transaction_list_title">Transaction</string>
     <!-- e.g. Jenny K. [3856...092] -->
     <string name="transaction_list_info_name_id">%s</string>
-    <string name="transaction_list_info_amount">%,.2f %s</string>
+    <string name="transaction_list_info_amount">%s %s</string>
     <string name="transaction_list_info_date_time">%1$tb %1$te, %1$tI:%1$tM %1$Tp</string>
     <string name="transaction_list_info_success">Success</string>
     <string name="transaction_list_info_failure">Failure</string>
-    <string name="transaction_list_topup_info">Top-up %,.2f %s to %s</string>
-    <string name="transaction_list_receive_info">Receive %,.2f %s from %s</string>
+    <string name="transaction_list_topup_info">Top-up %s %s to %s</string>
+    <string name="transaction_list_receive_info">Receive %s %s from %s</string>
     <string name="transaction_list_empty_transaction">EMPTY TRANSACTION</string>
 
     <!-- Setting -->
@@ -100,6 +107,10 @@
     <string name="numpad_dot">.</string>
     <string name="numpad_equal">=</string>
     <string name="numpad_percent">%</string>
+
+    <!-- Calculator helper text -->
+    <string name="calculator_helper_reach_maximum">Reach maximum subunit</string>
+    <string name="calculator_helper_exceed_maximum">Exceed maximum subunit</string>
 
     <!-- Menu -->
     <string name="main_menu_next">Next</string>
@@ -130,7 +141,6 @@
     <string name="confirm_transaction_direction_from">From</string>
     <string name="confirm_transaction_type_top_up">Topup</string>
     <string name="confirm_transaction_direction_to">To</string>
-    <string name="confirm_transaction_amount">%,.2f %s</string>
     <string name="confirm_transaction_yes">Yes</string>
     <string name="confirm_transaction_no">No</string>
 

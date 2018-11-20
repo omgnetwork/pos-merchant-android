@@ -7,11 +7,11 @@
 
         <variable
             name="emailValidator"
-            type="network.omisego.omgmerchant.utils.Validator" />
+            type="network.omisego.omgmerchant.custom.Validator" />
 
         <variable
             name="passwordValidator"
-            type="network.omisego.omgmerchant.utils.Validator" />
+            type="network.omisego.omgmerchant.custom.Validator" />
 
         <variable
             name="viewmodel"
@@ -54,7 +54,7 @@
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{!viewmodel.liveLoading}"
+                android:enabled="@{!safeUnbox(viewmodel.liveLoading)}"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -85,7 +85,7 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{!viewmodel.liveLoading}"
+                android:enabled="@{!safeUnbox(viewmodel.liveLoading)}"
                 android:imeOptions="actionSend"
                 android:inputType="textPassword"
                 android:maxLines="1"
@@ -130,7 +130,7 @@
             android:layout_marginStart="@dimen/fragment_sign_in_padding_horizontal"
             android:layout_marginEnd="@dimen/fragment_sign_in_padding_horizontal"
             android:layout_marginBottom="@dimen/fragment_sign_in_margin_vertical"
-            android:enabled="@{!viewmodel.liveLoading}"
+            android:enabled="@{!safeUnbox(viewmodel.liveLoading)}"
             android:text="@{viewmodel.liveBtnText}"
             app:layout_constraintBottom_toTopOf="@+id/btnFingerprint"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +148,7 @@
             android:layout_marginBottom="@dimen/fragment_sign_in_margin_vertical"
             android:drawableEnd="@drawable/ic_fingerprint"
             android:drawableTint="@color/color_button_outline"
-            android:enabled="@{!viewmodel.liveLoading}"
+            android:enabled="@{!safeUnbox(viewmodel.liveLoading)}"
             android:gravity="center"
             android:onClick="@{() -> viewmodel.handleFingerprintClick()}"
             android:paddingStart="@dimen/btn_fingerprint_padding_start"

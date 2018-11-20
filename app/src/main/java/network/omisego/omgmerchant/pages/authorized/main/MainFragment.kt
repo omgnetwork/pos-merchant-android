@@ -10,36 +10,47 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.ui.setupWithNavController
+import co.omisego.omisego.constant.enums.ErrorCode
+import co.omisego.omisego.model.APIError
 import kotlinx.android.synthetic.main.fragment_main.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
+import network.omisego.omgmerchant.extensions.findRootController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
-import network.omisego.omgmerchant.extensions.provideActivityViewModel
+import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
+import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.AddressViewModel
+import network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel
 
 class MainFragment : BaseFragment() {
 
     /* ViewModel */
     private lateinit var receiveViewModel: ReceiveViewModel
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var topupViewModel: TopupViewModel
-    private lateinit var addressViewModel: AddressViewModel
+    private lateinit var confirmViewModel: ConfirmViewModel
+    private lateinit var scanViewModel: ScanViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     /* Local */
     private lateinit var binding: FragmentMainBinding
     private var menuNext: MenuItem? = null
 
     override fun onProvideViewModel() {
-        addressViewModel = provideActivityViewModel()
         mainViewModel = provideMainFragmentViewModel()
-        receiveViewModel = provideMainFragmentViewModel()
-        topupViewModel = provideMainFragmentViewModel()
+        confirmViewModel = provideMainFragmentAndroidViewModel()
+        receiveViewModel = provideMainFragmentAndroidViewModel()
+        topupViewModel = provideMainFragmentAndroidViewModel()
+        scanViewModel = provideMainFragmentAndroidViewModel()
+    }
+
+    override fun onReceiveArgs() {
+        confirmViewModel.liveDirection = mainViewModel.liveDirection
+        scanViewModel.liveDirection = mainViewModel.liveDirection
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,9 +79,6 @@ class MainFragment : BaseFragment() {
 
     override fun onObserveLiveData() {
         with(mainViewModel) {
-            observeEventFor(liveDestinationId) { destinationId ->
-                findChildController().navigate(destinationId)
-            }
             observeFor(liveToolbarBottomNavVisibility) {
                 showFullscreen(it)
             }
@@ -80,16 +88,30 @@ class MainFragment : BaseFragment() {
             observeFor(liveShowNext) {
                 menuNext?.isVisible = it
             }
-            observeFor(liveFeedback) { feedback ->
-                findChildController().navigateUp()
-                findChildController().navigate(mainViewModel.createActionForFeedbackPage(feedback))
+            observeEventFor(liveDirection) { direction ->
+                if (findChildController().currentDestination?.id !in arrayOf(R.id.receive, R.id.topup)) {
+                    findChildController().navigateUp()
+                }
+                findChildController().navigate(direction)
+            }
+
+            observeFor(liveTokenAPIResult) {
+                it.handle(mainViewModel::handleLoadTokenSuccess, object : (APIError) -> Unit {
+                    override fun invoke(error: APIError) {
+                        if (error.code == ErrorCode.CLIENT_INVALID_AUTH_SCHEME) {
+                            clearSession()
+                            findRootController().popBackStack()
+                            findRootController().navigate(R.id.action_global_sign_in)
+                        }
+                    }
+                })
             }
         }
 
-        observeFor(addressViewModel.liveAddress) {
-            findChildController().navigateUp()
-            findChildController().navigate(mainViewModel.createActionForConfirmPage(receiveViewModel, topupViewModel))
-            addressViewModel.removeCache(it)
+        with(confirmViewModel) {
+            observeEventFor(liveYesClick) {
+                handleQRPayload()
+            }
         }
     }
 
@@ -116,8 +138,8 @@ class MainFragment : BaseFragment() {
 
         /* Restore the next button state */
         menuNext = menu?.findItem(R.id.next).apply {
-            this?.isEnabled = mainViewModel.liveEnableNext.value!!
-            this?.isVisible = mainViewModel.liveShowNext.value!!
+            this?.isEnabled = mainViewModel.liveEnableNext.value ?: false
+            this?.isVisible = mainViewModel.liveShowNext.value ?: false
         }
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -126,9 +148,14 @@ class MainFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.next -> {
-                val action = mainViewModel.createActionForScanPage(
+                val (amount, token) = mainViewModel.getAmountTokenPairByCalculatorMode(
                     receiveViewModel,
                     topupViewModel
+                )
+                val action = mainViewModel.createDestinationQRScan(
+                    mainViewModel.currentCalculatorMode,
+                    amount,
+                    token
                 )
                 findChildController().navigate(action)
                 true

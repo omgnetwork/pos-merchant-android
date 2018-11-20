@@ -8,49 +8,57 @@ package network.omisego.omgmerchant.network
  */
 
 import co.omisego.omisego.OMGAPIAdmin
+import co.omisego.omisego.custom.retrofit2.executor.MainThreadExecutor
 import co.omisego.omisego.model.AdminConfiguration
 import co.omisego.omisego.network.ewallet.EWalletAdmin
+import co.omisego.omisego.websocket.OMGSocketClient
+import co.omisego.omisego.websocket.SocketClientContract
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import kotlinx.coroutines.experimental.async
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
+import okhttp3.HttpUrl
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.Executor
 
 object ClientProvider {
     private val credential: Credential
         get() = Storage.loadCredential()
 
-    private lateinit var adminConfiguration: AdminConfiguration
-    lateinit var client: OMGAPIAdmin
-    val deferredClient = async {
-        adminConfiguration = AdminConfiguration(
+    private val adminConfiguration: AdminConfiguration by lazy {
+        AdminConfiguration(
             "https://coffeego.omisego.io/api/admin/",
             credential.userId,
             credential.authenticationToken
         )
-        create()
     }
-
-    fun init() {
-        async { client = deferredClient.await() }
-    }
+    var client: OMGAPIAdmin
+    var socketClient: SocketClientContract.Client
 
     init {
-        init()
+        client = create()
+        socketClient = createSocketClient()
     }
 
-    private fun create(): OMGAPIAdmin {
+    fun create(debugUrl: HttpUrl? = null, executor: Executor = MainThreadExecutor()): OMGAPIAdmin {
         return OMGAPIAdmin(
             EWalletAdmin.Builder {
                 clientConfiguration = adminConfiguration
                 debug = true
+                callbackExecutor = executor
+                this.debugUrl = debugUrl
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BASIC
+                        level = HttpLoggingInterceptor.Level.BODY
                     }
                 )
             }.build()
         )
+    }
+
+    private fun createSocketClient(): SocketClientContract.Client {
+        return OMGSocketClient.Builder {
+            clientConfiguration = adminConfiguration.copy(baseURL = "wss://coffeego.omisego.io/api/admin/socket/")
+        }.build()
     }
 }

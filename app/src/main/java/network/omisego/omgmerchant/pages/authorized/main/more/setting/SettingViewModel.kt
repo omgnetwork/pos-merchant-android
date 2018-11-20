@@ -12,7 +12,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.data.LocalRepository
+import network.omisego.omgmerchant.repository.LocalRepository
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.SettingMenu
 

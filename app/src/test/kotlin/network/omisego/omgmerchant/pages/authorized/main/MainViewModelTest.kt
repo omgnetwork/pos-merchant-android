@@ -8,22 +8,20 @@ package network.omisego.omgmerchant.pages.authorized.main
  */
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigator
 import co.omisego.omisego.model.Token
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.model.Feedback
+import network.omisego.omgmerchant.pages.authorized.MainNavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
-import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 import org.amshove.kluent.mock
+import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldEqual
 import org.junit.Rule
 import org.junit.Test
@@ -35,108 +33,33 @@ class MainViewModelTest {
 
     private val mockReceiveViewModel: ReceiveViewModel by lazy { mock<ReceiveViewModel>() }
     private val mockTopupViewModel: TopupViewModel by lazy { mock<TopupViewModel>() }
-    private val liveToken: MutableLiveData<Token> = MutableLiveData()
-    private val mainViewModel: MainViewModel by lazy { MainViewModel(mock(), mock()) }
+    private val mockDirectionCreator = mock<MainNavDirectionCreator>()
+    private val mainViewModel: MainViewModel by lazy { MainViewModel(mockDirectionCreator, mock(), mock()) }
 
     @Test
-    fun `test createActionForScanPage from receive page should return action correctly`() {
-        // Prepare
-        val theCalculatorValueThatUserHas = "1000"
-        val theSelectedToken = mock<Token>() // Whatever
-        mainViewModel.currentCalculatorMode = CalculatorMode.RECEIVE
+    fun `test MainViewModel should implement MainNavDirectionCreator`() {
+        mainViewModel shouldBeInstanceOf MainNavDirectionCreator::class
+    }
 
-        // Mocking dependencies
+    @Test
+    fun `test get amount and token by calculator mode correctly`() {
+        val mockReceiveToken = mock<Token>()
+        val mockTopupToken = mock<Token>()
+
         whenever(mockReceiveViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveToken).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockReceiveViewModel.liveToken.value).thenReturn(theSelectedToken)
-
-        // Verify
-        val expectedAction = NavBottomNavigationDirections.ActionGlobalScanFragment(
-            theSelectedToken
-        )
-            .setAmount(theCalculatorValueThatUserHas)
-            .setTransactionType(SCAN_RECEIVE)
-
-        mainViewModel.createActionForScanPage(mockReceiveViewModel, mockTopupViewModel) shouldEqual expectedAction
-    }
-
-    @Test
-    fun `test createActionForScanPage from top-up page should return action correctly`() {
-        // Prepare
-        val theCalculatorValueThatUserHas = "1500"
-        val theSelectedToken = mock<Token>() // Whatever
-        mainViewModel.currentCalculatorMode = CalculatorMode.TOPUP
-
-        // Mocking dependencies
+        whenever(mockReceiveViewModel.liveSelectedToken).thenReturn(mock())
         whenever(mockTopupViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockTopupViewModel.liveToken).thenReturn(mock())
-        whenever(mockTopupViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockTopupViewModel.liveToken.value).thenReturn(theSelectedToken)
+        whenever(mockTopupViewModel.liveSelectedToken).thenReturn(mock())
+        whenever(mockReceiveViewModel.liveCalculator.value).thenReturn("100")
+        whenever(mockReceiveViewModel.liveSelectedToken.value).thenReturn(mockReceiveToken)
+        whenever(mockTopupViewModel.liveCalculator.value).thenReturn("200")
+        whenever(mockTopupViewModel.liveSelectedToken.value).thenReturn(mockTopupToken)
 
-        // Verify
-        val expectedAction = NavBottomNavigationDirections.ActionGlobalScanFragment(
-            theSelectedToken
-        )
-            .setAmount(theCalculatorValueThatUserHas)
-            .setTransactionType(SCAN_TOPUP)
-
-        mainViewModel.createActionForScanPage(mockReceiveViewModel, mockTopupViewModel) shouldEqual expectedAction
-    }
-
-    @Test
-    fun `test createActionForConfirmPage from receive page should return action correctly`() {
-        // Prepare
-        val theCalculatorValueThatUserHas = "1000"
-        val theSelectedToken = mock<Token>() // Whatever
         mainViewModel.currentCalculatorMode = CalculatorMode.RECEIVE
+        mainViewModel.getAmountTokenPairByCalculatorMode(mockReceiveViewModel, mockTopupViewModel) shouldEqual ("100" to mockReceiveToken)
 
-        // Mocking dependencies
-        whenever(mockReceiveViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveToken).thenReturn(mock())
-        whenever(mockReceiveViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockReceiveViewModel.liveToken.value).thenReturn(theSelectedToken)
-
-        // Verify
-        val expectedAction = NavBottomNavigationDirections.ActionGlobalConfirmFragment(
-            theSelectedToken
-        )
-            .setAmount(theCalculatorValueThatUserHas)
-            .setTransactionType(SCAN_RECEIVE)
-
-        mainViewModel.createActionForConfirmPage(mockReceiveViewModel, mockTopupViewModel) shouldEqual expectedAction
-    }
-
-    @Test
-    fun `test createActionForConfirmPage from top-up page should return action correctly`() {
-        // Prepare
-        val theCalculatorValueThatUserHas = "1500"
-        val theSelectedToken = mock<Token>() // Whatever
         mainViewModel.currentCalculatorMode = CalculatorMode.TOPUP
-
-        // Mocking dependencies
-        whenever(mockTopupViewModel.liveCalculator).thenReturn(mock())
-        whenever(mockTopupViewModel.liveToken).thenReturn(mock())
-        whenever(mockTopupViewModel.liveCalculator.value).thenReturn(theCalculatorValueThatUserHas)
-        whenever(mockTopupViewModel.liveToken.value).thenReturn(theSelectedToken)
-
-        // Verify
-        val expectedAction = NavBottomNavigationDirections.ActionGlobalConfirmFragment(
-            theSelectedToken
-        )
-            .setAmount(theCalculatorValueThatUserHas)
-            .setTransactionType(SCAN_TOPUP)
-
-        mainViewModel.createActionForConfirmPage(mockReceiveViewModel, mockTopupViewModel) shouldEqual expectedAction
-    }
-
-    @Test
-    fun `test createActionForFeedbackPage from main page should return action correctly`() {
-        val mockFeedback = mock<Feedback>()
-
-        val expectedAction = NavBottomNavigationDirections.ActionGlobalFeedbackFragment(mockFeedback)
-
-        mainViewModel.createActionForFeedbackPage(mockFeedback) shouldEqual expectedAction
+        mainViewModel.getAmountTokenPairByCalculatorMode(mockReceiveViewModel, mockTopupViewModel) shouldEqual ("200" to mockTopupToken)
     }
 
     @Test
@@ -268,12 +191,12 @@ class MainViewModelTest {
         /* Select account */
         doReturn(MainViewModel.DestinationCondition.DEST_SELECT_ACCOUNT).`when`(spiedMainViewModel).meetDestination()
         spiedMainViewModel.displayOtherDestinationByCondition()
-        spiedMainViewModel.liveDestinationId.value?.peekContent() shouldEqual R.id.action_global_selectAccountFragment
+        verify(mockDirectionCreator).createDestinationSelectAccount()
 
         /* Splash */
-        whenever(spiedMainViewModel.meetDestination()).thenReturn(MainViewModel.DestinationCondition.DEST_SPLASH)
+        doReturn(MainViewModel.DestinationCondition.DEST_SPLASH).`when`(spiedMainViewModel).meetDestination()
         spiedMainViewModel.displayOtherDestinationByCondition()
-        spiedMainViewModel.liveDestinationId.value?.peekContent() shouldEqual R.id.action_global_splashFragment
+        verify(mockDirectionCreator).createDestinationSplash()
     }
 
     /*  ------------------ Move to another test file ------------------- */

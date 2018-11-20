@@ -53,7 +53,7 @@ class CalculatorInteractionTest {
 
         verify(mockOperation).onClear()
         verify(mockState).recentButton = CalculatorButton.NUM_1
-        verify(mockOperation).onAppend("1")
+        verify(mockOperation).onAppend('1')
     }
 
     @Test
@@ -65,7 +65,7 @@ class CalculatorInteractionTest {
 
         verify(mockOperation, never()).onClear()
         verify(mockState).recentButton = CalculatorButton.NUM_2
-        verify(mockOperation).onAppend("2")
+        verify(mockOperation).onAppend('2')
     }
 
     @Test
@@ -87,7 +87,7 @@ class CalculatorInteractionTest {
         calculatorHandler.handleNumPadPressed(mockTextView)
 
         verify(mockOperation, never()).onEvaluate()
-        verify(mockOperation).onAppend("+")
+        verify(mockOperation).onAppend('+')
         verify(mockState).containOperator = true
         verify(mockState).clearBeforeAppend = false
     }
@@ -100,7 +100,7 @@ class CalculatorInteractionTest {
         calculatorHandler.handleNumPadPressed(mockTextView)
 
         verify(mockOperation).onEvaluate()
-        verify(mockOperation).onAppend("+")
+        verify(mockOperation).onAppend('+')
         verify(mockState).containOperator = true
         verify(mockState).clearBeforeAppend = false
     }
@@ -113,7 +113,7 @@ class CalculatorInteractionTest {
 
         calculatorHandler.handleNumPadPressed(mockTextView)
 
-        verify(mockOperation).onAppend("%")
+        verify(mockOperation).onAppend('%')
         verify(mockOperation).onEvaluate()
         verify(mockState).clearBeforeAppend = true
     }
@@ -126,7 +126,7 @@ class CalculatorInteractionTest {
 
         calculatorHandler.handleNumPadPressed(mockTextView)
 
-        verify(mockOperation).onAppend("%")
+        verify(mockOperation).onAppend('%')
         verify(mockOperation).onEvaluate()
         verify(mockState, never()).clearBeforeAppend
     }

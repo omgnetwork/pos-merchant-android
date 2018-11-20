@@ -7,25 +7,32 @@ package network.omisego.omgmerchant.pages.authorized.main.topup
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import android.support.v4.content.ContextCompat
 import co.omisego.omisego.model.Token
+import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
-import network.omisego.omgmerchant.model.LiveCalculator
-import network.omisego.omgmerchant.pages.authorized.main.NextButtonBehavior
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.TokenSpinnerViewModel
+import network.omisego.omgmerchant.helper.HelperFormatter
+import network.omisego.omgmerchant.pages.authorized.main.AbstractCalculatorController
+import java.math.BigDecimal
 
 class TopupViewModel(
-    val handler: CalculatorInteraction,
-    override val liveCalculator: LiveCalculator
-) : ViewModel(), CalculatorInteraction.Operation, TokenSpinnerViewModel, NextButtonBehavior {
-    override val liveToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
-    var liveTokenSpinner: LiveTokenSpinner? = null
+    val app: Application,
+    val handler: CalculatorInteraction
+) : AndroidViewModel(app), CalculatorInteraction.Operation, AbstractCalculatorController {
+    override val formatter: HelperFormatter by lazy { HelperFormatter() }
+    override val liveSelectedToken: MutableLiveData<Token> by lazy { MutableLiveData<Token>() }
+    override val liveCalculator: MutableLiveData<String> by lazy { MutableLiveData<String>().apply { this.value = "0" } }
+    override val liveCalculatorShowHelperText: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    override val liveCalculatorHelperText: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    override val liveCalculatorHelperColorText: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
-    override fun onAppend(char: CharSequence) {
-        if (liveCalculator.value?.contains(".") == true && char == ".") return
-        if (liveCalculator.value == "0") liveCalculator.value = ""
+    override fun onAppend(char: Char) {
+        if (char in '0'..'9' && liveCalculatorShowHelperText.value == true) return
+        if (liveCalculator.value?.contains('.') == true && char == '.') return
+        if (liveCalculator.value == "0" && char != '.') liveCalculator.value = ""
         liveCalculator.value += char
     }
 
@@ -45,15 +52,33 @@ class TopupViewModel(
 
     override fun shouldEnableNextButton(): Boolean {
         return liveCalculator.value != "0"
+            && liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 
-    override fun startListeningTokenSpinner() {
-        liveTokenSpinner?.listen()
-        liveTokenSpinner?.start()
-    }
+    override fun dispatchHelperTextState(calculatorText: String?, subunitToUnit: BigDecimal?) {
+        try {
+            val decimal = calculatorText?.toBigDecimal()?.scale() ?: 0
+            val maxDecimal = Math.log10(subunitToUnit?.toDouble() ?: 10.0).toInt()
 
-    override fun onCleared() {
-        liveTokenSpinner?.stop()
+            when {
+                decimal > maxDecimal -> {
+                    liveCalculatorHelperColorText.value = ContextCompat.getColor(app, R.color.colorRed)
+                    liveCalculatorHelperText.value = app.getString(R.string.calculator_helper_exceed_maximum)
+                    liveCalculatorShowHelperText.value = true
+                }
+                decimal == maxDecimal -> {
+                    liveCalculatorHelperColorText.value = ContextCompat.getColor(app, R.color.colorGrayWeak)
+                    liveCalculatorHelperText.value = app.getString(R.string.calculator_helper_reach_maximum)
+                    liveCalculatorShowHelperText.value = true
+                }
+                else -> {
+                    liveCalculatorShowHelperText.value = false
+                    liveCalculatorHelperText.value = ""
+                }
+            }
+        } catch (e: Exception) {
+            liveCalculatorShowHelperText.value = false
+        }
     }
 
     init {

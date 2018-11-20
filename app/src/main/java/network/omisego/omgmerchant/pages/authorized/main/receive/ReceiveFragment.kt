@@ -5,23 +5,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_receive.*
+import co.omisego.omisego.model.Token
+import co.omisego.omisego.model.pagination.PaginationList
+import kotlinx.android.synthetic.main.fragment_topup.*
 import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.base.BaseFragment
+import network.omisego.omgmerchant.base.BaseCalculatorFragment
 import network.omisego.omgmerchant.databinding.FragmentReceiveBinding
-import network.omisego.omgmerchant.extensions.observeFor
-import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
-import network.omisego.omgmerchant.pages.authorized.main.MainViewModel
-import network.omisego.omgmerchant.pages.authorized.main.shared.spinner.LiveTokenSpinner
+import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
+import network.omisego.omgmerchant.extensions.selectedToken
+import network.omisego.omgmerchant.extensions.setTokens
 
-class ReceiveFragment : BaseFragment() {
+class ReceiveFragment : BaseCalculatorFragment() {
     private lateinit var binding: FragmentReceiveBinding
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ReceiveViewModel
 
     override fun onProvideViewModel() {
-        viewModel = provideMainFragmentViewModel()
-        mainViewModel = provideMainFragmentViewModel()
+        super.onProvideViewModel()
+        viewModel = provideMainFragmentAndroidViewModel()
+        setupBehavior(viewModel)
+    }
+
+    override fun onBindDataBinding() {
+        binding.liveCalc = viewModel.liveCalculator
+        binding.handler = viewModel.handler
+        binding.formatter = viewModel.formatter
+        binding.viewModel = viewModel
+        binding.setLifecycleOwner(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,24 +43,11 @@ class ReceiveFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onBindDataBinding() {
-        binding.liveCalc = viewModel.liveCalculator
-        binding.handler = viewModel.handler
-        binding.decorator = viewModel.numberDecorator
-        binding.setLifecycleOwner(this)
+    override fun onSetTokens(tokens: PaginationList<Token>) {
+        spinner.setTokens(tokens, viewModel.liveSelectedToken)
     }
 
-    override fun onObserveLiveData() {
-        activity?.observeFor(viewModel.liveCalculator) {
-            mainViewModel.liveEnableNext.value = viewModel.shouldEnableNextButton()
-        }
-
-        viewModel.liveTokenSpinner = LiveTokenSpinner(
-            spinner,
-            viewModel,
-            mainViewModel,
-            "Can't load token"
-        )
-        viewModel.startListeningTokenSpinner()
+    override fun onSetSelectedToken(token: Token?) {
+        spinner.selectedToken = token
     }
 }

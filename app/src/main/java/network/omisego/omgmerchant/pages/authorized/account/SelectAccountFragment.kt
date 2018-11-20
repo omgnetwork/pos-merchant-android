@@ -12,22 +12,22 @@ import co.omisego.omisego.model.pagination.PaginationList
 import kotlinx.android.synthetic.main.fragment_select.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
-import network.omisego.omgmerchant.base.LoadingRecyclerAdapter
-import network.omisego.omgmerchant.custom.MarginDividerDecorator
+import network.omisego.omgmerchant.custom.CustomLoadingRecyclerAdapter
+import network.omisego.omgmerchant.custom.CustomRecyclerMarginDivider
 import network.omisego.omgmerchant.databinding.FragmentSelectBinding
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
+import network.omisego.omgmerchant.extensions.provideMarginLeft
 import network.omisego.omgmerchant.extensions.provideViewModel
 import network.omisego.omgmerchant.extensions.toast
-import network.omisego.omgmerchant.utils.provideMarginLeft
 
 class SelectAccountFragment : BaseFragment() {
     private lateinit var binding: FragmentSelectBinding
     private lateinit var viewModel: SelectAccountViewModel
-    private lateinit var adapter: LoadingRecyclerAdapter<Account, ViewholderAccountBinding>
-    private lateinit var dividerDecorator: MarginDividerDecorator
+    private lateinit var adapter: CustomLoadingRecyclerAdapter<Account, ViewholderAccountBinding>
+    private lateinit var dividerDecorator: CustomRecyclerMarginDivider
 
     override fun onProvideViewModel() {
         viewModel = provideViewModel()
@@ -45,8 +45,8 @@ class SelectAccountFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = LoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_account, viewModel)
-        dividerDecorator = MarginDividerDecorator(context!!, context!!.provideMarginLeft())
+        adapter = CustomLoadingRecyclerAdapter(R.layout.viewholder_account_loading, R.layout.viewholder_account, viewModel)
+        dividerDecorator = CustomRecyclerMarginDivider(context!!, context!!.provideMarginLeft())
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)

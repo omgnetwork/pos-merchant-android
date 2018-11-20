@@ -10,22 +10,24 @@ package network.omisego.omgmerchant.pages.authorized.main.more.account
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
-import co.omisego.omisego.model.params.AccountWalletListParams
-import network.omisego.omgmerchant.base.StateViewHolderBinding
-import network.omisego.omgmerchant.data.LocalRepository
-import network.omisego.omgmerchant.data.RemoteRepository
+import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderSettingAccountBinding
-import network.omisego.omgmerchant.extensions.mutableLiveDataOf
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
+import network.omisego.omgmerchant.network.ParamsCreator
+import network.omisego.omgmerchant.repository.LocalRepository
+import network.omisego.omgmerchant.repository.RemoteRepository
 
 class SettingAccountViewModel(
     private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
-) : ViewModel(), StateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
+    private val remoteRepository: RemoteRepository,
+    private val paramsCreator: ParamsCreator = ParamsCreator()
+) : ViewModel(), CustomStateViewHolderBinding<Account, ViewholderSettingAccountBinding> {
     val liveAccountList: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
     val liveAccountSelect: MutableLiveData<Account> by lazy {
-        mutableLiveDataOf(localRepository.loadAccount()!!)
+        MutableLiveData<Account>().apply {
+            this.value = localRepository.loadAccount()!!
+        }
     }
 
     override fun bind(binding: ViewholderSettingAccountBinding, data: Account) {
@@ -45,7 +47,7 @@ class SettingAccountViewModel(
 
     fun handleAccountClick(account: Account) {
         remoteRepository.loadWalletAndSave(
-            AccountWalletListParams.create(id = account.id, searchTerm = null)
+            paramsCreator.createAccountWalletListParams(account.id)
         )
         liveAccountSelect.value = account
     }
