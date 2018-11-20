@@ -32,7 +32,7 @@ import network.omisego.omgmerchant.repository.RemoteRepository
  */
 abstract class AbstractConfirmHandler(
     private val navDirectionCreator: ConfirmNavDirectionCreator = NavDirectionCreator(),
-    protected val paramsCreator: ParamsCreator = ParamsCreator()
+    val paramsCreator: ParamsCreator = ParamsCreator()
 ) : ConfirmNavDirectionCreator by navDirectionCreator {
     abstract var args: ConfirmFragmentArgs
     abstract val remoteRepository: RemoteRepository
