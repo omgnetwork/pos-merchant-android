@@ -116,6 +116,7 @@ class ConfirmViewModelTest {
     fun `test find a confirm handler correctly`() {
         viewModel.args = mock()
         viewModel.liveDirection = MutableLiveData()
+        viewModel.liveCancelTransactionConsumptionId = MutableLiveData()
 
         whenever(viewModel.args.address).thenReturn("txr_transaction_request_id")
         viewModel.findConfirmHandler() shouldBeInstanceOf HandlerConsumeTransactionRequest::class

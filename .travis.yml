@@ -1,0 +1,72 @@
+os: linux
+language: android
+jdk: oraclejdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+
+env:
+  global:
+  - ANDROID_API=28
+  - ANDROID_BUILD_TOOLS=28.0.3
+  - ADB_INSTALL_TIMEOUT=5
+
+android:
+  components:
+  - tools
+  - platform-tools
+  - tools
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - build-tools-$ANDROID_BUILD_TOOLS
+  - android-$ANDROID_API
+  licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+
+before_script:
+  - export LATEST_TAG=$(git rev-list --tags --max-count=1 | git describe --abbrev=0)
+  - echo "${GOOGLE_SERVICES}" | base64 --decode > app/google-services.json
+  - echo "${LOCAL_PROPERTIES}" | base64 --decode > local.properties
+  - echo "" >> local.properties
+  - echo "app.version=${LATEST_TAG}" >> local.properties
+
+script:
+  - ./gradlew ktlintDebugCheck
+  - ./gradlew lintDebug
+  - ./gradlew testDebugUnitTest
+  - ./gradlew assembleDebug
+
+before_deploy:
+  - export BUILD_APK_FILE=$(ls app/build/outputs/apk/debug/*.apk)
+  - echo "Deploying ${BUILD_APK_FILE} to Github releases"
+  - echo "Deploying ${BUILD_APK_FILE} to Testfairy"
+
+deploy:
+  - provider: releases
+    file_glob: true
+    api_key:
+      secure: eksvftQUFaD9zat10/8Q6rboaBHcr1VRIY8NT+B7neO5S0WgiNblO42DzWVaYiRYstsHgAX1k+CIuY5dG5y4UFI3XDPrc3cWq1kPL62m9IxfDq+//gHcQZagbH3Qpy0zKyJR527iiMu7IKXEbOory8+Wqq4yYtifaiDK/vJsdf9mx9NjC+4ViZnN0PeV136cdaitytLS6mV4fYjG6GsejtGqkhev0OWGirRG1o2lCJJlx6qhrsmFurIObdu0mEtLq7VRsrSnOtF7Uai2I3R+svmkk1nsJJ3n+0P/Db9yqWhu6xnlmuEIjyxeB4iH/22doEEhsJQ1I2zyBaRhL+JmLveVEG4+0QoJ2u5JkL5m30F72xUWvddSkoaZjD5YhC9RmnMcwqW9OEXyJaNq3nFlYC7639wyvrio/BbbKtjfkahnidUwP7L1MTWnZ2kuvU8VKodt07i/IXCbHhi5Mp9aDfMB1HmVD48gQsFVjBNaDaeAHYvgBPb/tEZWyPpuNEjXSA2vMhFUxxVthOfcLEO8jRio1b36Ag1XvX794/VYpXE5dtg1j+viGttZe2d8WOOBbBa9sNqJKLf1AomLpmrkf0NSqqNE/MfsbK1eJqjuEJI5nXfhXL7RGY7U/LrQ60leGJPtPidrXnfYKNGM/gm2fbIWa0yF073HV0sGEPLKrVo=
+    file: $BUILD_APK_FILE
+    skip_cleanup: true
+    name: "POS Client Android ${TRAVIS_TAG}"
+    on:
+      tags: true
+  - provider: testfairy
+    api-key: $TESTFAIRY_API_KEY
+    app-file: $BUILD_APK_FILE
+    skip_cleanup: true
+    notify: true
+    testers-groups: omisego
+    on:
+      tags: true
+
+after_deploy:
+  - ./github_edit_release_script.sh

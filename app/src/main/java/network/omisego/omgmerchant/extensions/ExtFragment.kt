@@ -85,4 +85,3 @@ fun Fragment.toast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
 object Toaster {
     var toast: Toast? = null
 }
-

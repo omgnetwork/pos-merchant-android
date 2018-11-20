@@ -51,8 +51,8 @@ class TopupViewModel(
     override fun onEvaluate(): Boolean = false
 
     override fun shouldEnableNextButton(): Boolean {
-        return liveCalculator.value != "0"
-            && liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
+        return liveCalculator.value != "0" &&
+            liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 
     override fun dispatchHelperTextState(calculatorText: String?, subunitToUnit: BigDecimal?) {
