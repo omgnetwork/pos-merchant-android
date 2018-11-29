@@ -8,7 +8,7 @@ package network.omisego.omgmerchant.extensions
  */
 
 import android.content.Context
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 
 fun Context.getDrawableCompat(@DrawableRes res: Int) = ContextCompat.getDrawable(this, res)

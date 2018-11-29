@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.base
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 
 open class LiveState<T>(initialState: T) : MutableLiveData<T>() {
     fun state(transform: (T) -> T) {

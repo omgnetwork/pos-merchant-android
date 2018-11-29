@@ -8,11 +8,11 @@ package network.omisego.omgmerchant.extensions
  */
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
+import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation

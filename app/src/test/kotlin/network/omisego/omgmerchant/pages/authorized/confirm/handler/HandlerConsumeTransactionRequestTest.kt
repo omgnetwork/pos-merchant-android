@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.APIError

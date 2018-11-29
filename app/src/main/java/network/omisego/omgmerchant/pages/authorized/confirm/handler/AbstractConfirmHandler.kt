@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.APIError
 import network.omisego.omgmerchant.livedata.Event

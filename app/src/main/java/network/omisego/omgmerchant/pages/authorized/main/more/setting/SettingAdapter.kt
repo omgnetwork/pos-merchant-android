@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.main.more.setting
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import network.omisego.omgmerchant.R

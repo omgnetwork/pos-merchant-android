@@ -7,9 +7,9 @@ package network.omisego.omgmerchant.pages.authorized.loading
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.TransactionConsumption
 import network.omisego.omgmerchant.extensions.logi

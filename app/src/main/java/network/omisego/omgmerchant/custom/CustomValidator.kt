@@ -1,11 +1,11 @@
 package network.omisego.omgmerchant.custom
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
 import android.util.Patterns
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import network.omisego.omgmerchant.model.ValidateResult
 
 /*

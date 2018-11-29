@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.setting
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import network.omisego.omgmerchant.databinding.ViewholderMoreMenuBinding
 
 /*

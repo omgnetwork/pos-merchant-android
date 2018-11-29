@@ -8,8 +8,8 @@ package network.omisego.omgmerchant.pages.authorized.scan
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 import network.omisego.omgmerchant.R

@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.more.setting
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event

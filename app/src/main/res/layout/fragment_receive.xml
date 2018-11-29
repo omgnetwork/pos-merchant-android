@@ -14,7 +14,7 @@
 
         <variable
             name="liveCalc"
-            type="android.arch.lifecycle.LiveData&lt;String&gt;" />
+            type="androidx.lifecycle.LiveData&lt;String&gt;" />
 
         <variable
             name="handler"
@@ -25,7 +25,7 @@
             type="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -96,7 +96,7 @@
             app:ms_text_color="@color/colorGray"
             tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -331,19 +331,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tvNumMinus"
             app:number="@{`=`}" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="32dp" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="196dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

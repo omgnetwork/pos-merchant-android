@@ -1,8 +1,8 @@
 package network.omisego.omgmerchant.databinding
 
-import android.databinding.BindingAdapter
-import android.support.annotation.RawRes
 import android.widget.ImageView
+import androidx.annotation.RawRes
+import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

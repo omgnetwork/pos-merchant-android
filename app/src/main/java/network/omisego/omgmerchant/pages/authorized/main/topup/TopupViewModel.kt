@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.topup
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import android.support.v4.content.ContextCompat
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.core.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.CalculatorInteraction

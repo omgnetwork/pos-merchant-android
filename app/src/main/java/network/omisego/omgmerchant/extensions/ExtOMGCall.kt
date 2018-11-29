@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.extensions
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.custom.retrofit2.adapter.OMGCall
 import co.omisego.omisego.model.APIError

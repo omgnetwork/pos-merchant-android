@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.unauthorized.signin
  */
 
 import android.content.DialogInterface
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

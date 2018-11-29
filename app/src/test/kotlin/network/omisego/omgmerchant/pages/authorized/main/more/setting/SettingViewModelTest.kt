@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.main.more.setting
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import network.omisego.omgmerchant.BuildConfig
 import org.amshove.kluent.mock
 import org.amshove.kluent.shouldEqual

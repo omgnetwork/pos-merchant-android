@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.model
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 
 class LiveCalculator(initValue: String = "") : MutableLiveData<String>() {
     init {

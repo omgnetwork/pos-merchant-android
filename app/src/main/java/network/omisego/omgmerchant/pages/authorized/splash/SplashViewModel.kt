@@ -8,8 +8,8 @@ package network.omisego.omgmerchant.pages.authorized.splash
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.model.Account
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.network.ParamsCreator

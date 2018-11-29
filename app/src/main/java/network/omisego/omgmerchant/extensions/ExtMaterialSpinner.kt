@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.extensions
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.pagination.PaginationList

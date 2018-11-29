@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError

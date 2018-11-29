@@ -12,7 +12,7 @@
             type="network.omisego.omgmerchant.pages.authorized.feedback.FeedbackViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".pages.authorized.feedback.FeedbackFragment">
@@ -175,5 +175,5 @@
             tools:text="dasdasdasdksodkaopdkapodskpoakdspokdopaskdoakspodkaspdkspdkapdskpsakdpaosdkopsakdoapskdaokdposada;sld,als;,fl;amfl;sdmgl;samfdsl;aml;dasmfkldsamfkldasmfkfld;s,f;lmfl;dsamf;dsamf;lasdmfl;dasmf;dasmfl;sdamfl;dsmf;lsamfs;ladmf;safm;dlsamf;lsadmfsd'f,'ds;lfsd'alf';daslf;'dlf;'dslf'd;slf';daslf;'sdl;flas" />
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

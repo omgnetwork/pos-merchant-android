@@ -1,9 +1,9 @@
 package network.omisego.omgmerchant.pages.unauthorized.signin
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build.VERSION_CODES.P
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 
 /*
  * OmiseGO

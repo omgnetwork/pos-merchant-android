@@ -1,19 +1,20 @@
 ext {
-    omisego = '1.2.0-alpha3'
-    supportLibrary = '28.0.0-beta01'
+    omisego = '1.2.1-alpha1'
+    supportLibrary = '1.0.0'
     retrofit = '2.4.0'
     rxandroid = '2.0.1'
     glide = '4.5.0'
     okhttp3 = '3.9.1'
-    arch = "1.1.0"
+    arch = "2.0.0-rc01"
     coroutines = "1.0.0"
 
     omisego = [
-        sdk: "co.omisego:omisego-admin:${omisego}",
+        core: "co.omisego:omisego-admin:${omisego}",
+        admin: "co.omisego:omisego-core:${omisego}"
     ]
     arch = [
-        viewmodel : "android.arch.lifecycle:viewmodel:${arch}",
-        extensions: "android.arch.lifecycle:extensions:${arch}"
+        viewmodel : "androidx.lifecycle:lifecycle-viewmodel:${arch}",
+        extensions: "androidx.lifecycle:lifecycle-extensions:${arch}"
     ]
     databinding = [
         compiler: "androidx.databinding:databinding-compiler:${rootProject.ext.androidGradleVersion}"
@@ -23,9 +24,9 @@ ext {
         navUI      : "android.arch.navigation:navigation-ui-ktx:${rootProject.ext.navigationVersion}"
     ]
     supportDependencies = [
-        design   : "com.android.support:design:${supportLibrary}",
-        appCompat: "com.android.support:appcompat-v7:${supportLibrary}",
-        cardView : "com.android.support:cardview-v7:${supportLibrary}"
+        design   : "com.google.android.material:material:1.0.0-rc01",
+        appCompat: "androidx.appcompat:appcompat:${supportLibrary}",
+        cardView : "androidx.cardview:cardview:${supportLibrary}"
     ]
     kotlinDependencies = [
         stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlinVersion}",
@@ -51,8 +52,8 @@ ext {
         "junit:junit:4.12",
         "org.amshove.kluent:kluent-android:1.30",
         "org.robolectric:robolectric:3.4.2",
-        "com.android.support.test:runner:1.0.2",
-        "android.arch.core:core-testing:1.0.0",
+        'androidx.test:runner:1.1.0',
+        'androidx.arch.core:core-testing:2.0.0-beta01',
         "com.squareup.okhttp3:mockwebserver:3.9.1"
     ]
     espresso = [
@@ -62,7 +63,7 @@ ext {
         crashlytics: "com.crashlytics.sdk.android:crashlytics:2.9.3"
     ]
     custom = [
-        constraintLayout: 'com.android.support.constraint:constraint-layout:1.1.2',
+        constraintLayout: 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2',
         stetho          : 'com.facebook.stetho:stetho-okhttp3:1.5.0',
         shimmer         : 'com.facebook.shimmer:shimmer:0.2.0',
         dropdown        : 'com.jaredrummler:material-spinner:1.2.5',

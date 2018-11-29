@@ -18,7 +18,7 @@
             type="co.omisego.omisego.model.Transaction" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutViewHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,5 +96,5 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/tvStatus"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

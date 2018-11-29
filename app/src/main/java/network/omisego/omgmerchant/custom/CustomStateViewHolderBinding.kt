@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.custom
 
-import android.databinding.ViewDataBinding
+import androidx.databinding.ViewDataBinding
 
 /*
  * OmiseGO

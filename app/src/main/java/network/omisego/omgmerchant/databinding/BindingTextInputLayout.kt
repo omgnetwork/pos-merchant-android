@@ -1,7 +1,7 @@
 package network.omisego.omgmerchant.databinding
 
-import android.databinding.BindingAdapter
-import android.support.design.widget.TextInputLayout
+import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputLayout
 import network.omisego.omgmerchant.custom.MinimalTextChangeListener
 import network.omisego.omgmerchant.custom.Validator
 import network.omisego.omgmerchant.model.ValidateResult

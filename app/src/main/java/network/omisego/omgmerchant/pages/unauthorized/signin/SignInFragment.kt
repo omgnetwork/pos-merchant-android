@@ -1,21 +1,23 @@
 package network.omisego.omgmerchant.pages.unauthorized.signin
 
-import android.arch.lifecycle.Observer
-import android.databinding.DataBindingUtil
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.AdminAuthenticationToken
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentSignInBinding
@@ -28,12 +30,16 @@ import network.omisego.omgmerchant.extensions.toast
 import network.omisego.omgmerchant.helper.runOnM
 import network.omisego.omgmerchant.helper.runOnMToP
 import network.omisego.omgmerchant.helper.runOnP
+import kotlin.coroutines.CoroutineContext
 
-class SignInFragment : BaseFragment() {
+class SignInFragment : BaseFragment(), CoroutineScope {
     private lateinit var binding: FragmentSignInBinding
     private lateinit var viewModel: SignInViewModel
     private lateinit var fingerprintViewModel: FingerprintBottomSheetViewModel
     private var scanFingerprintDialog: FingerprintBottomSheet? = null
+    private val uiScope by lazy { CoroutineScope(Dispatchers.Main) }
+    private val job by lazy { Job() }
+    override val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
     override fun onProvideViewModel() {
         viewModel = provideAndroidViewModel()
@@ -93,8 +99,8 @@ class SignInFragment : BaseFragment() {
     }
 
     private fun navigateToMain(data: AdminAuthenticationToken) {
-        launch(Dispatchers.Main) {
-            async {
+        launch {
+            async(Dispatchers.IO) {
                 viewModel.saveUserEmail(etEmail.text.toString())
                 viewModel.saveCredential(data)
             }

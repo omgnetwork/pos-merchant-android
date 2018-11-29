@@ -7,9 +7,9 @@ package network.omisego.omgmerchant.extensions
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.livedata.EventObserver
 

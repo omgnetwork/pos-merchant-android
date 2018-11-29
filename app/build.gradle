@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 apply plugin: 'androidx.navigation.safeargs'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.adarshr.test-logger'
 apply from: 'gradleScript/dependencies.gradle'
 
@@ -28,7 +28,7 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
         versionName appVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -50,10 +50,6 @@ android {
     }
     sourceSets {
         test.java.srcDirs += 'src/test/kotlin'
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
         enabled = true
@@ -89,7 +85,8 @@ repositories {
 
 dependencies {
     /* OmiseGO */
-    implementation omisego.sdk
+    implementation omisego.core
+    implementation omisego.admin
 
     /* Kotlin */
     implementation kotlinDependencies.stdlib

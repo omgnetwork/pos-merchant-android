@@ -17,9 +17,9 @@ LAST_RELEASE_TAG=$(git describe --abbrev=0 --tags ${LAST_REVISION})
 
 # Generate CHANGELOG.md
 github_changelog_generator \
-  -u $(cut -d "/" -f1 <<< $repo_slug) \
-  -p $(cut -d "/" -f2 <<< $repo_slug) \
-  --token $token \
+  -u $(cut -d "/" -f1 <<< ${repo_slug}) \
+  -p $(cut -d "/" -f2 <<< ${repo_slug}) \
+  --token ${token} \
   --no-issues \
   --since-tag ${LAST_RELEASE_TAG}
 

@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.main
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigator

@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.databinding
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LiveData
-import android.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.databinding.BindingAdapter
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
