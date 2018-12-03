@@ -1,14 +1,14 @@
 package network.omisego.omgmerchant.pages.authorized.main
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.ui.setupWithNavController
 import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.model.APIError
@@ -18,10 +18,12 @@ import network.omisego.omgmerchant.base.BaseFragment
 import network.omisego.omgmerchant.databinding.FragmentMainBinding
 import network.omisego.omgmerchant.extensions.findChildController
 import network.omisego.omgmerchant.extensions.findRootController
+import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.observeEventFor
 import network.omisego.omgmerchant.extensions.observeFor
 import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewModel
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
+import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
@@ -88,7 +90,9 @@ class MainFragment : BaseFragment() {
             observeFor(liveShowNext) {
                 menuNext?.isVisible = it
             }
+
             observeEventFor(liveDirection) { direction ->
+                logi("Current dest: ${findChildController().currentDestination?.label}, Next dest: ${direction::class.java.simpleName}")
                 if (findChildController().currentDestination?.id !in arrayOf(R.id.receive, R.id.topup)) {
                     findChildController().navigateUp()
                 }
@@ -157,7 +161,7 @@ class MainFragment : BaseFragment() {
                     amount,
                     token
                 )
-                findChildController().navigate(action)
+                mainViewModel.liveDirection.value = Event(action)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
