@@ -7,6 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.constant.enums.ErrorCode
@@ -17,6 +18,7 @@ import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionConsumptionStatus
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import co.omisego.omisego.operation.startListeningEvents
+import co.omisego.omisego.websocket.listener.SocketConnectionListener
 import co.omisego.omisego.websocket.listener.TransactionConsumptionListener
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.helper.HelperContext
@@ -36,7 +38,7 @@ class HandlerConsumeTransactionRequest(
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     lateinit var liveTransactionConsumptionCancelId: MutableLiveData<String>
     private val socketClient by lazy {
-        ClientProvider.socketClient
+        ClientProvider.createSocketClient(localRepository.loadCredential())
     }
 
     /**
@@ -52,9 +54,19 @@ class HandlerConsumeTransactionRequest(
             override fun success(response: OMGResponse<TransactionConsumption>) {
                 val data = response.data
                 if (data.transactionRequest.requireConfirmation) {
+                    socketClient.addConnectionListener(object : SocketConnectionListener {
+                        override fun onConnected() {
+                            Log.d("socketStatus", "onConnected")
+                            // emit transaction consumption id
+                            liveTransactionConsumptionCancelId.value = data.id
+                        }
+
+                        override fun onDisconnected(throwable: Throwable?) {
+                            Log.d("socketStatus", "disconnected: ${throwable?.message}")
+                        }
+                    })
+
                     data.stopListening(socketClient)
-                    // emit transaction consumption id
-                    liveTransactionConsumptionCancelId.value = data.id
                     data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
                         override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
                             data.stopListening(socketClient)
