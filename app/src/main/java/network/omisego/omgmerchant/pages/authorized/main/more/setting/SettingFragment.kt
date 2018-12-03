@@ -1,11 +1,11 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.setting
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_setting.*
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
