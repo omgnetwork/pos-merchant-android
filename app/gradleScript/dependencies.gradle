@@ -60,7 +60,7 @@ ext {
         core: "com.android.support.test.espresso:espresso-core:3.0.1",
     ]
     firebase = [
-        crashlytics: "com.crashlytics.sdk.android:crashlytics:2.9.3"
+        crashlytics: "com.crashlytics.sdk.android:crashlytics:2.9.6@aar"
     ]
     custom = [
         constraintLayout: 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2',
