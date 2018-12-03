@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.confirm
  */
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import android.view.View
 import androidx.navigation.NavDirections
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event
@@ -79,7 +79,7 @@ class ConfirmViewModel(
         handler.onHandlePayload(args.address)
     }
 
-    fun findConfirmHandler(): AbstractConfirmHandler {
+    internal fun findConfirmHandler(): AbstractConfirmHandler {
         return if (args.address.startsWith(PREFIX_TX_REQUEST)) {
             HandlerConsumeTransactionRequest(localRepository, remoteRepository).apply {
                 this.liveDirection = this@ConfirmViewModel.liveDirection
