@@ -12,9 +12,9 @@ import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
 import co.omisego.omisego.model.params.TransactionConsumptionActionParams
-import co.omisego.omisego.model.params.TransactionListParams
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
+import co.omisego.omisego.model.params.admin.TransactionListParams
 import network.omisego.omgmerchant.model.AmountFormat
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldStartWith
@@ -48,21 +48,20 @@ class ParamsCreatorTest {
     @Test
     fun `test create AccountWalletListParams`() {
         paramsCreator.createAccountWalletListParams("id", null) shouldEqual
-            AccountWalletListParams.create("id", searchTerm = null)
+            AccountWalletListParams.create("id")
     }
 
     @Test
     fun `test create LoadTransactionParams`() {
         paramsCreator.createLoadTransactionsParams(10, 20, null) shouldEqual TransactionListParams.create(
             page = 10,
-            perPage = 20,
-            searchTerm = null
+            perPage = 20
         )
     }
 
     @Test
     fun `test create ListTokensParams`() {
-        paramsCreator.createListTokensParams(30, null) shouldEqual TokenListParams.create(perPage = 30, searchTerm = null)
+        paramsCreator.createListTokensParams(30, null) shouldEqual TokenListParams.create(perPage = 30)
     }
 
     @Test
