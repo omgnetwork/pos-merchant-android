@@ -1,5 +1,5 @@
 ext {
-    omisego = '1.2.1-alpha7'
+    omisego = '1.2.1-alpha12'
     supportLibrary = '1.0.0'
     retrofit = '2.4.0'
     rxandroid = '2.0.1'
@@ -60,7 +60,7 @@ ext {
         core: "com.android.support.test.espresso:espresso-core:3.0.1",
     ]
     firebase = [
-        crashlytics: "com.crashlytics.sdk.android:crashlytics:2.9.6@aar"
+        crashlytics: "com.crashlytics.sdk.android:crashlytics:2.9.3"
     ]
     custom = [
         constraintLayout: 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2',
