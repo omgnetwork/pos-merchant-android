@@ -9,7 +9,6 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
@@ -22,10 +21,8 @@ import com.nhaarman.mockito_kotlin.timeout
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import network.omisego.omgmerchant.NavBottomNavigationDirections
-import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.helper.ResourceFile
 import network.omisego.omgmerchant.helper.mockEnqueueWithHttpCode
-import network.omisego.omgmerchant.helper.stringRes
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.network.ClientProvider
@@ -153,23 +150,6 @@ class HandlerConsumeTransactionRequestTest {
         spiedHandler.liveDirection.value?.peekContent() shouldEqual NavBottomNavigationDirections.ActionGlobalFeedbackFragment(
             Feedback.success(SCAN_RECEIVE, responseTransactionConsumption.data)
         )
-    }
-
-    @Test
-    fun `test handle rejected transaction consumption correctly`() {
-        mockHandlerArg(spiedHandler)
-
-        val data = responseRejectedTransactionConsumption.data
-        spiedHandler.handleSucceedToHandlePayload(data)
-
-         spiedHandler.liveDirection.value?.peekContent().toString().trim() shouldEqual NavBottomNavigationDirections.ActionGlobalFeedbackFragment(
-            Feedback.error(
-                spiedHandler.args,
-                data.transactionRequest.address,
-                data.transactionRequest.user,
-                APIError(ErrorCode.SDK_UNEXPECTED_ERROR, stringRes(R.string.feedback_user_reject))
-            )
-        ).toString().trim()
     }
 
     @Test

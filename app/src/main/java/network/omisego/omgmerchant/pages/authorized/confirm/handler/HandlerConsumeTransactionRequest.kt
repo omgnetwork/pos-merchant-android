@@ -7,10 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
-import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
@@ -18,10 +16,7 @@ import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.TransactionConsumptionStatus
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import co.omisego.omisego.operation.startListeningEvents
-import co.omisego.omisego.websocket.listener.SocketConnectionListener
 import co.omisego.omisego.websocket.listener.TransactionConsumptionListener
-import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.helper.HelperContext
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
@@ -54,18 +49,7 @@ class HandlerConsumeTransactionRequest(
             override fun success(response: OMGResponse<TransactionConsumption>) {
                 val data = response.data
                 if (data.transactionRequest.requireConfirmation) {
-                    socketClient.addConnectionListener(object : SocketConnectionListener {
-                        override fun onConnected() {
-                            Log.d("socketStatus", "onConnected")
-                            // emit transaction consumption id
-                            liveTransactionConsumptionCancelId.value = data.id
-                        }
-
-                        override fun onDisconnected(throwable: Throwable?) {
-                            Log.d("socketStatus", "disconnected: ${throwable?.message}")
-                        }
-                    })
-
+                    liveTransactionConsumptionCancelId.value = data.id
                     data.stopListening(socketClient)
                     data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
                         override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
@@ -95,17 +79,7 @@ class HandlerConsumeTransactionRequest(
                     )
                     liveDirection.value = Event(createDestinationFeedback(feedback))
                 }
-                TransactionConsumptionStatus.REJECTED -> {
-                    val feedback = Feedback.error(
-                        args,
-                        data.transactionRequest.address,
-                        data.transactionRequest.user,
-                        APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_user_reject))
-                    )
-                    liveDirection.value = Event(createDestinationFeedback(feedback))
-                }
                 else -> {
-                    throw UnsupportedOperationException("Need to handle.")
                 }
             }
         }
