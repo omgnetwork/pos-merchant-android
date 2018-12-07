@@ -43,4 +43,6 @@ abstract class AbstractConfirmHandler(
     abstract fun <T> handleSucceedToHandlePayload(data: T)
 
     abstract fun handleFailToHandlePayload(error: APIError)
+
+    abstract fun stopListening()
 }

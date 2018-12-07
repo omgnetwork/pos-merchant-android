@@ -27,6 +27,7 @@ class ConfirmViewModel(
     val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
+    var handler: AbstractConfirmHandler? = null
     lateinit var args: ConfirmFragmentArgs
     lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     lateinit var liveCancelTransactionConsumptionId: MutableLiveData<String>
@@ -73,10 +74,10 @@ class ConfirmViewModel(
     }
 
     fun handleQRPayload() {
-        val handler: AbstractConfirmHandler = findConfirmHandler()
-        liveDirection.value = Event(handler.createDestinationLoading())
-        handler.args = args
-        handler.onHandlePayload(args.address)
+        handler = findConfirmHandler()
+        liveDirection.value = Event(handler!!.createDestinationLoading())
+        handler!!.args = args
+        handler!!.onHandlePayload(args.address)
     }
 
     internal fun findConfirmHandler(): AbstractConfirmHandler {

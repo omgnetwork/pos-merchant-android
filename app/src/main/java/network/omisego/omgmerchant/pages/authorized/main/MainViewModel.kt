@@ -7,9 +7,9 @@ package network.omisego.omgmerchant.pages.authorized.main
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.Token
@@ -47,6 +47,9 @@ class MainViewModel(
 
     /* Control navigation to conditional destination e.g. the user hasn't load an account yet, should go to select account page. */
     val liveDirection: MutableLiveData<Event<NavDirections>> by lazy { MutableLiveData<Event<NavDirections>>() }
+
+    /* Control when transaction consumption has been cancelled */
+    val liveCancelTransactionConsumption: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     /* Navigation listener for taking a decision to whether switch a view to full-screen  */
     private val fullScreenPageIds = arrayOf(

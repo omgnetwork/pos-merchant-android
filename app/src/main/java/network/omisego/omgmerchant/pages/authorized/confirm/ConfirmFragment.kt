@@ -32,8 +32,6 @@ class ConfirmFragment : BaseFragment() {
         viewModel = provideMainFragmentAndroidViewModel()
         mainViewModel = provideMainFragmentViewModel()
         loadingViewModel = provideMainFragmentViewModel()
-
-        loadingViewModel.liveDirection = mainViewModel.liveDirection
         viewModel.liveCancelTransactionConsumptionId = loadingViewModel.liveTransactionConsumptionCancelId
     }
 

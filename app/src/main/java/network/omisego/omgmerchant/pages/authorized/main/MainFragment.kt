@@ -25,6 +25,7 @@ import network.omisego.omgmerchant.extensions.provideMainFragmentAndroidViewMode
 import network.omisego.omgmerchant.extensions.provideMainFragmentViewModel
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmViewModel
+import network.omisego.omgmerchant.pages.authorized.loading.LoadingViewModel
 import network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveViewModel
 import network.omisego.omgmerchant.pages.authorized.main.topup.TopupViewModel
 import network.omisego.omgmerchant.pages.authorized.scan.ScanViewModel
@@ -37,6 +38,7 @@ class MainFragment : BaseFragment() {
     private lateinit var confirmViewModel: ConfirmViewModel
     private lateinit var scanViewModel: ScanViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var loadingViewModel: LoadingViewModel
 
     /* Local */
     private lateinit var binding: FragmentMainBinding
@@ -48,11 +50,14 @@ class MainFragment : BaseFragment() {
         receiveViewModel = provideMainFragmentAndroidViewModel()
         topupViewModel = provideMainFragmentAndroidViewModel()
         scanViewModel = provideMainFragmentAndroidViewModel()
+        loadingViewModel = provideMainFragmentViewModel()
     }
 
     override fun onReceiveArgs() {
         confirmViewModel.liveDirection = mainViewModel.liveDirection
         scanViewModel.liveDirection = mainViewModel.liveDirection
+        loadingViewModel.liveDirection = mainViewModel.liveDirection
+        loadingViewModel.liveCancelTransactionConsumption = mainViewModel.liveCancelTransactionConsumption
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -109,6 +114,12 @@ class MainFragment : BaseFragment() {
                         }
                     }
                 })
+
+                observeFor(liveCancelTransactionConsumption) { cancelClick ->
+                    if (cancelClick) {
+                        confirmViewModel.handler?.stopListening()
+                    }
+                }
             }
         }
 

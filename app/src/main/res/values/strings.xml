@@ -51,6 +51,7 @@
     <string name="feedback_customer_name">by %s</string>
     <string name="feedback_customer_id">User ID: %s</string>
     <string name="feedback_canceled">The transaction consumption has been cancelled.</string>
+    <string name="feedback_rejected">The transaction consumption has been rejected.</string>
     <!-- Passing a calendar instance to formatter -->
     <string name="feedback_date_time">%1$Tb %1$te, %1$tY %1$tI:%1$tM %1$Tp</string>
     <string name="feedback_done">Done</string>

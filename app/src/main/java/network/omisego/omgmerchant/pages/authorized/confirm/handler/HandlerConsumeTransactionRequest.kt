@@ -9,6 +9,7 @@ package network.omisego.omgmerchant.pages.authorized.confirm.handler
 
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
+import co.omisego.omisego.constant.enums.ErrorCode
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
@@ -17,6 +18,8 @@ import co.omisego.omisego.model.TransactionConsumptionStatus
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import co.omisego.omisego.operation.startListeningEvents
 import co.omisego.omisego.websocket.listener.TransactionConsumptionListener
+import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.helper.HelperContext
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback
@@ -32,6 +35,7 @@ class HandlerConsumeTransactionRequest(
     override lateinit var args: ConfirmFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     lateinit var liveTransactionConsumptionCancelId: MutableLiveData<String>
+    private var txConsumption: TransactionConsumption? = null
     private val socketClient by lazy {
         ClientProvider.createSocketClient(localRepository.loadCredential())
     }
@@ -48,6 +52,7 @@ class HandlerConsumeTransactionRequest(
 
             override fun success(response: OMGResponse<TransactionConsumption>) {
                 val data = response.data
+                txConsumption = data
                 if (data.transactionRequest.requireConfirmation) {
                     liveTransactionConsumptionCancelId.value = data.id
                     data.stopListening(socketClient)
@@ -79,10 +84,23 @@ class HandlerConsumeTransactionRequest(
                     )
                     liveDirection.value = Event(createDestinationFeedback(feedback))
                 }
+                TransactionConsumptionStatus.REJECTED -> {
+                    val feedback = Feedback.error(
+                        args,
+                        data.transactionRequest.address,
+                        data.transactionRequest.user,
+                        APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_rejected))
+                    )
+                    liveDirection.value = Event(createDestinationFeedback(feedback))
+                }
                 else -> {
                 }
             }
         }
+    }
+
+    override fun stopListening() {
+        txConsumption?.stopListening(socketClient)
     }
 
     override fun handleFailToHandlePayload(error: APIError) {

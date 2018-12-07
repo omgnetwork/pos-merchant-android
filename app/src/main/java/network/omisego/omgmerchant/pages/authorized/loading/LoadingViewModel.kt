@@ -35,12 +35,14 @@ class LoadingViewModel(
     val liveTransactionConsumptionCancelId: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val liveTransactionConsumptionRejectResult: MutableLiveData<Event<APIResult>> by lazy { MutableLiveData<Event<APIResult>>() }
     val liveShowingCancelButton: LiveData<Boolean> by lazy { liveTransactionConsumptionCancelId.map { !it.isNullOrEmpty() } }
+    lateinit var liveCancelTransactionConsumption: MutableLiveData<Boolean>
     lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     var confirmFragmentArgs: ConfirmFragmentArgs? = null
 
     fun cancelTransactionConsumption() {
         val params = paramsCreator.createTransactionConsumptionActionParams(liveTransactionConsumptionCancelId.value!!)
         remoteRepository.rejectTransactionConsumption(params, liveTransactionConsumptionRejectResult)
+        liveCancelTransactionConsumption.value = true
     }
 
     fun handleRejectTransactionConsumptionSuccess(transactionConsumption: TransactionConsumption) {
@@ -53,6 +55,7 @@ class LoadingViewModel(
             APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_canceled))
         )
         liveDirection.value = Event(createDestinationFeedback(feedback))
+        liveCancelTransactionConsumption.value = false
     }
 
     fun handleRejectTransactionConsumptionFailed(error: APIError) {
@@ -60,5 +63,6 @@ class LoadingViewModel(
         val args = confirmFragmentArgs ?: return
         val feedback = Feedback.error(args, null, args.user, error)
         liveDirection.value = Event(createDestinationFeedback(feedback))
+        liveCancelTransactionConsumption.value = false
     }
 }
