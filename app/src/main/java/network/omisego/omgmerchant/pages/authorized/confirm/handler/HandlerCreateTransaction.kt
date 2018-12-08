@@ -13,7 +13,6 @@ import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.Transaction
-import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.model.params.admin.TransactionCreateParams
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.AmountFormat
