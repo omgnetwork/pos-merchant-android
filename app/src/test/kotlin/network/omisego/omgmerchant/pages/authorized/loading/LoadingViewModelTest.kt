@@ -56,6 +56,7 @@ class LoadingViewModelTest {
     @Test
     fun `test handle rejected transaction consumption correctly`() {
         mockHandlerArg(viewModel)
+        viewModel.liveCancelTransactionConsumption = mock()
 
         val data = responseRejectedTransactionConsumption.data
         viewModel.handleRejectTransactionConsumptionSuccess(data)
