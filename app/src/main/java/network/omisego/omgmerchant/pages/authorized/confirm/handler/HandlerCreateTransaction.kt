@@ -73,4 +73,8 @@ class HandlerCreateTransaction(
             }
         }
     }
+
+    override fun stopListening() {
+        // no-op
+    }
 }

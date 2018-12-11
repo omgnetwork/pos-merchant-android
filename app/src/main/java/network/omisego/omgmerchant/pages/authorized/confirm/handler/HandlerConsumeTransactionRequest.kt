@@ -35,8 +35,9 @@ class HandlerConsumeTransactionRequest(
     override lateinit var args: ConfirmFragmentArgs
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     lateinit var liveTransactionConsumptionCancelId: MutableLiveData<String>
+    private var txConsumption: TransactionConsumption? = null
     private val socketClient by lazy {
-        ClientProvider.socketClient
+        ClientProvider.createSocketClient(localRepository.loadCredential())
     }
 
     /**
@@ -51,10 +52,10 @@ class HandlerConsumeTransactionRequest(
 
             override fun success(response: OMGResponse<TransactionConsumption>) {
                 val data = response.data
+                txConsumption = data
                 if (data.transactionRequest.requireConfirmation) {
-                    data.stopListening(socketClient)
-                    // emit transaction consumption id
                     liveTransactionConsumptionCancelId.value = data.id
+                    data.stopListening(socketClient)
                     data.startListeningEvents(socketClient, listener = object : TransactionConsumptionListener() {
                         override fun onTransactionConsumptionFinalizedFail(transactionConsumption: TransactionConsumption, apiError: APIError) {
                             data.stopListening(socketClient)
@@ -88,15 +89,18 @@ class HandlerConsumeTransactionRequest(
                         args,
                         data.transactionRequest.address,
                         data.transactionRequest.user,
-                        APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_user_reject))
+                        APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_rejected))
                     )
                     liveDirection.value = Event(createDestinationFeedback(feedback))
                 }
                 else -> {
-                    throw UnsupportedOperationException("Need to handle.")
                 }
             }
         }
+    }
+
+    override fun stopListening() {
+        txConsumption?.stopListening(socketClient)
     }
 
     override fun handleFailToHandlePayload(error: APIError) {

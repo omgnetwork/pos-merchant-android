@@ -13,15 +13,7 @@ import co.omisego.omisego.model.Wallet
 import network.omisego.omgmerchant.model.Credential
 import network.omisego.omgmerchant.storage.Storage
 
-class LocalRepository() {
-
-    /* Feedback */
-
-    fun loadFeedback() = Storage.loadFeedback()
-
-    fun deleteFeedback() {
-        Storage.deleteFeedback()
-    }
+class LocalRepository {
 
     /* Wallet */
 

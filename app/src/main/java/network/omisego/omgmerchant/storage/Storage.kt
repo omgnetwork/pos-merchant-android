@@ -16,6 +16,7 @@ import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.extensions.decryptWith
 import network.omisego.omgmerchant.extensions.encryptWith
 import network.omisego.omgmerchant.extensions.get
+import network.omisego.omgmerchant.extensions.logi
 import network.omisego.omgmerchant.extensions.set
 import network.omisego.omgmerchant.helper.HelperContext.context
 import network.omisego.omgmerchant.model.Credential
@@ -42,6 +43,7 @@ object Storage {
     }
 
     fun saveCredential(credential: Credential): Deferred<Unit> {
+        logi("Saved credential: $credential")
         return GlobalScope.async(Dispatchers.IO) {
             sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN] = credential.authenticationToken encryptWith keyManager
             sharePref[StorageKey.KEY_USER_ID] = credential.userId encryptWith keyManager
@@ -55,15 +57,15 @@ object Storage {
         if (!hasCredential()) {
             return Credential("", "")
         }
-        try {
+        return try {
             val userId = sharePref[StorageKey.KEY_USER_ID]!!
             val authenticationToken = sharePref[StorageKey.KEY_AUTHENTICATION_TOKEN]!!
-            return Credential(
+            Credential(
                 userId decryptWith keyManager,
                 authenticationToken decryptWith keyManager
             )
         } catch (e: Exception) {
-            return Credential("", "")
+            Credential("", "")
         }
     }
 

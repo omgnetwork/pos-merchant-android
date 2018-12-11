@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.receive
  */
 
 import android.app.Application
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.core.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.Calculation
@@ -33,7 +33,6 @@ class ReceiveViewModel(
 
     override fun onAppend(char: Char) {
         if (char in '0'..'9' && liveCalculatorShowHelperText.value == true) return
-
         val lastNumberGroup = liveCalculator.value?.split("+", "-")?.last()
         if (lastNumberGroup?.contains(".") == true && char == '.') return
         if (liveCalculator.value == "0" && char != '.') liveCalculator.value = ""
@@ -57,8 +56,9 @@ class ReceiveViewModel(
 
     override fun shouldEnableNextButton(): Boolean {
         val calculatorValue = liveCalculator.value
-        return calculatorValue != "0" &&
-            calculatorValue?.indexOfAny(charArrayOf('-', '+')) == -1 &&
+        return !calculatorValue.isNullOrEmpty() &&
+            calculatorValue.indexOfAny(charArrayOf('-', '+', '%')) == -1 &&
+            calculatorValue.toDouble() != 0.0 &&
             liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 

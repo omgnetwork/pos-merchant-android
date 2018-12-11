@@ -32,12 +32,12 @@ object ClientProvider {
             credential.authenticationToken
         )
     }
+
     var client: OMGAPIAdmin
-    var socketClient: SocketClientContract.Client
+    lateinit var socketClient: SocketClientContract.Client
 
     init {
         client = create()
-        socketClient = createSocketClient()
     }
 
     fun create(debugUrl: HttpUrl? = null, executor: Executor = MainThreadExecutor()): OMGAPIAdmin {
@@ -50,16 +50,20 @@ object ClientProvider {
                 debugOkHttpInterceptors = mutableListOf(
                     StethoInterceptor(),
                     HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
+                        level = HttpLoggingInterceptor.Level.BASIC
                     }
                 )
             }.build()
         )
     }
 
-    private fun createSocketClient(): SocketClientContract.Client {
+    fun createSocketClient(credential: Credential): SocketClientContract.Client {
         return OMGSocketClient.Builder {
-            clientConfiguration = adminConfiguration.copy(baseURL = BuildConfig.CLIENT_API_SOCKET_BASE_URL)
+            clientConfiguration = adminConfiguration.copy(
+                baseURL = BuildConfig.CLIENT_API_SOCKET_BASE_URL,
+                authenticationToken = credential.authenticationToken,
+                userId = credential.userId
+            )
         }.build()
     }
 }

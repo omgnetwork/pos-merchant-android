@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.main.topup
  */
 
 import android.app.Application
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.core.content.ContextCompat
 import co.omisego.omisego.model.Token
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.calculator.CalculatorInteraction
@@ -51,7 +51,9 @@ class TopupViewModel(
     override fun onEvaluate(): Boolean = false
 
     override fun shouldEnableNextButton(): Boolean {
-        return liveCalculator.value != "0" &&
+        val calculatorValue = liveCalculator.value
+        return !calculatorValue.isNullOrEmpty() &&
+            calculatorValue.toDouble() != 0.0 &&
             liveCalculatorHelperText.value != app.getString(R.string.calculator_helper_exceed_maximum)
     }
 

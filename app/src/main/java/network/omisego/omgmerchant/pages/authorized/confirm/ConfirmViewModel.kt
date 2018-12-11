@@ -8,9 +8,9 @@ package network.omisego.omgmerchant.pages.authorized.confirm
  */
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import android.view.View
 import androidx.navigation.NavDirections
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.livedata.Event
@@ -27,6 +27,7 @@ class ConfirmViewModel(
     val localRepository: LocalRepository,
     val remoteRepository: RemoteRepository
 ) : AndroidViewModel(app) {
+    var handler: AbstractConfirmHandler? = null
     lateinit var args: ConfirmFragmentArgs
     lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
     lateinit var liveCancelTransactionConsumptionId: MutableLiveData<String>
@@ -73,13 +74,13 @@ class ConfirmViewModel(
     }
 
     fun handleQRPayload() {
-        val handler: AbstractConfirmHandler = findConfirmHandler()
-        liveDirection.value = Event(handler.createDestinationLoading())
-        handler.args = args
-        handler.onHandlePayload(args.address)
+        handler = findConfirmHandler()
+        liveDirection.value = Event(handler!!.createDestinationLoading())
+        handler!!.args = args
+        handler!!.onHandlePayload(args.address)
     }
 
-    fun findConfirmHandler(): AbstractConfirmHandler {
+    internal fun findConfirmHandler(): AbstractConfirmHandler {
         return if (args.address.startsWith(PREFIX_TX_REQUEST)) {
             HandlerConsumeTransactionRequest(localRepository, remoteRepository).apply {
                 this.liveDirection = this@ConfirmViewModel.liveDirection

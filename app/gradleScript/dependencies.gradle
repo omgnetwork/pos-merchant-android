@@ -1,5 +1,5 @@
 ext {
-    omisego = '1.2.1-alpha7'
+    omisego = '1.2.1-alpha13'
     supportLibrary = '1.0.0'
     retrofit = '2.4.0'
     rxandroid = '2.0.1'

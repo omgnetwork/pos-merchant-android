@@ -15,7 +15,7 @@ import network.omisego.omgmerchant.pages.authorized.main.CalculatorMode
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
 
-class NavDirectionCreator : MainNavDirectionCreator, ConfirmNavDirectionCreator {
+class NavDirectionCreator : MainNavDirectionCreator, ConfirmNavDirectionCreator, LoadingNavDirectionCreator {
     override fun createDestinationQRScan(
         mode: CalculatorMode,
         amount: String,

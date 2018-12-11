@@ -7,11 +7,11 @@ package network.omisego.omgmerchant.pages.authorized.confirm
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.BaseFragment
@@ -32,12 +32,12 @@ class ConfirmFragment : BaseFragment() {
         viewModel = provideMainFragmentAndroidViewModel()
         mainViewModel = provideMainFragmentViewModel()
         loadingViewModel = provideMainFragmentViewModel()
-
         viewModel.liveCancelTransactionConsumptionId = loadingViewModel.liveTransactionConsumptionCancelId
     }
 
     override fun onReceiveArgs() {
         viewModel.args = ConfirmFragmentArgs.fromBundle(arguments)
+        loadingViewModel.confirmFragmentArgs = viewModel.args
     }
 
     override fun onBindDataBinding() {
