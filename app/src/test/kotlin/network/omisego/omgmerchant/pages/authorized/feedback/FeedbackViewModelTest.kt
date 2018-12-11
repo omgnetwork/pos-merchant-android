@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.feedback
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.TransactionConsumption
 import co.omisego.omisego.utils.GsonProvider

@@ -1,8 +1,8 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.account
 
-import android.arch.lifecycle.MutableLiveData
-import android.databinding.BindingAdapter
-import android.support.v4.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.databinding.BindingAdapter
+import androidx.core.content.ContextCompat
 import android.view.View
 import android.widget.TextView
 import co.omisego.omisego.model.Account

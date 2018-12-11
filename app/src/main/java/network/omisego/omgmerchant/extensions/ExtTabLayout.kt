@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.extensions
 
-import android.support.design.widget.TabLayout
+import com.google.android.material.tabs.TabLayout
 
 /*
  * OmiseGO

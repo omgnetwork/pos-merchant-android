@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.unauthorized.signin
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import network.omisego.omgmerchant.BuildConfig
 import org.amshove.kluent.shouldEqual

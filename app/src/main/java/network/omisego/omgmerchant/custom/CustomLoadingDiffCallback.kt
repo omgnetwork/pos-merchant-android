@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.custom
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 
 /*
  * OmiseGO

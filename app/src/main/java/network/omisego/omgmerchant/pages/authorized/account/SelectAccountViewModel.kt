@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.account
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import co.omisego.omisego.model.Account
 import network.omisego.omgmerchant.custom.CustomStateViewHolderBinding
 import network.omisego.omgmerchant.databinding.ViewholderAccountBinding

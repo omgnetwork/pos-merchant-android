@@ -10,14 +10,14 @@
             type="network.omisego.omgmerchant.pages.authorized.main.more.setting.SettingViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="16dp"
         android:background="@color/colorWhiteWeak4"
         tools:context="network.omisego.omgmerchant.pages.authorized.main.receive.ReceiveFragment">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             tools:itemCount="3"
             tools:listitem="@layout/viewholder_more_menu" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                 tools:text="version_data" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvSignOut"
@@ -125,5 +125,5 @@
 
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

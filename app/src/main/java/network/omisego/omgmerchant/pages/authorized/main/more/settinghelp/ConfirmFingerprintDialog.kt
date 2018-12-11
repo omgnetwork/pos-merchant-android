@@ -1,24 +1,5 @@
 package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
 
-import android.arch.lifecycle.MutableLiveData
-import android.content.DialogInterface
-import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.AdminAuthenticationToken
-import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
-import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.launch
-import network.omisego.omgmerchant.R
-import network.omisego.omgmerchant.extensions.observeEventFor
-import network.omisego.omgmerchant.extensions.provideViewModel
-import network.omisego.omgmerchant.extensions.toast
-
 /*
  * OmiseGO
  *
@@ -26,9 +7,30 @@ import network.omisego.omgmerchant.extensions.toast
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
+import android.content.DialogInterface
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.lifecycle.MutableLiveData
+import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.AdminAuthenticationToken
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.bottom_sheet_enter_password.*
+import kotlinx.android.synthetic.main.bottom_sheet_enter_password.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.extensions.observeEventFor
+import network.omisego.omgmerchant.extensions.provideViewModel
+import network.omisego.omgmerchant.extensions.toast
+
 class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
     private lateinit var viewModel: ConfirmFingerprintViewModel
     private var liveAuthenticateSuccessful: MutableLiveData<Boolean>? = null
+    private val uiScope by lazy { CoroutineScope(Dispatchers.Main) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +81,7 @@ class ConfirmFingerprintDialog : BottomSheetDialogFragment() {
     }
 
     private fun handleSignInSuccess(data: AdminAuthenticationToken) {
-        launch(Dispatchers.Main) {
+        uiScope.launch {
             viewModel.saveCredential(data).await()
             viewModel.saveUserPassword(etPassword.text.toString())
             liveAuthenticateSuccessful?.value = true

@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.main.more.transaction
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.databinding.BindingAdapter
-import android.support.v4.content.ContextCompat
+import androidx.databinding.BindingAdapter
+import androidx.core.content.ContextCompat
 import android.widget.TextView
 import co.omisego.omisego.model.Account
 import co.omisego.omisego.model.Transaction

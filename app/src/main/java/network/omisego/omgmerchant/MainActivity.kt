@@ -1,8 +1,8 @@
 package network.omisego.omgmerchant
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import network.omisego.omgmerchant.extensions.logi
 

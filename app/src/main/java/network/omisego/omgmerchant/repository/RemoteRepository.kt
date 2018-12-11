@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.repository
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.custom.retrofit2.adapter.OMGCall
 import co.omisego.omisego.model.APIError
@@ -21,12 +21,14 @@ import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
 import co.omisego.omisego.model.params.TransactionConsumptionActionParams
-import co.omisego.omisego.model.params.TransactionListParams
+import co.omisego.omisego.model.params.admin.TransactionListParams
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
 import co.omisego.omisego.model.params.admin.TransactionCreateParams
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import network.omisego.omgmerchant.extensions.subscribe
 import network.omisego.omgmerchant.extensions.subscribeEvent
 import network.omisego.omgmerchant.livedata.Event
@@ -46,7 +48,7 @@ class RemoteRepository {
     }
 
     fun loadWalletAndSave(params: AccountWalletListParams) {
-        async {
+        GlobalScope.async(Dispatchers.IO) {
             ClientProvider.client
                 .getAccountWallets(params)
                 .enqueue(object : OMGCallback<PaginationList<Wallet>> {

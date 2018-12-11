@@ -7,10 +7,10 @@ package network.omisego.omgmerchant.pages.authorized.main.more.settinghelp
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import co.omisego.omisego.model.AdminAuthenticationToken
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.APIResult
 import network.omisego.omgmerchant.model.Credential

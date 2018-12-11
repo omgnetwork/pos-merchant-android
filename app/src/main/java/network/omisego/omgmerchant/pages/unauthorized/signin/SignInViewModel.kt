@@ -8,14 +8,14 @@ package network.omisego.omgmerchant.pages.unauthorized.signin
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import co.omisego.omisego.model.AdminAuthenticationToken
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import network.omisego.omgmerchant.BuildConfig
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.base.LiveState

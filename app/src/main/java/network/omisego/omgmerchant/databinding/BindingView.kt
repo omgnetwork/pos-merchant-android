@@ -7,14 +7,14 @@ package network.omisego.omgmerchant.databinding
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.LiveData
-import android.databinding.BindingAdapter
 import android.view.View
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 
 object BindingView {
 
     @JvmStatic
-    @BindingAdapter("visible")
+    @BindingAdapter("app:visible")
     fun visible(view: View, visible: Boolean) = if (visible) {
         view.visibility = View.VISIBLE
     } else {
@@ -22,7 +22,7 @@ object BindingView {
     }
 
     @JvmStatic
-    @BindingAdapter("liveVisible")
+    @BindingAdapter("app:liveVisible")
     fun liveVisible(view: View, liveVisible: LiveData<Boolean>) {
         liveVisible.observeForever { show ->
             if (show == true) {

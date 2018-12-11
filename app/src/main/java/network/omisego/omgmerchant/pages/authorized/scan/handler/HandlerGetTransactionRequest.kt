@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.scan.handler
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError

@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.pages.authorized.main
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections

@@ -8,8 +8,8 @@ package network.omisego.omgmerchant.pages.authorized.confirm
  */
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import android.view.View
 import androidx.navigation.NavDirections
 import network.omisego.omgmerchant.R

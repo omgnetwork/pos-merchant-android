@@ -7,8 +7,8 @@ package network.omisego.omgmerchant
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import network.omisego.omgmerchant.network.ParamsCreator
 import network.omisego.omgmerchant.pages.authorized.NavDirectionCreator
 import network.omisego.omgmerchant.pages.authorized.account.SelectAccountViewModel

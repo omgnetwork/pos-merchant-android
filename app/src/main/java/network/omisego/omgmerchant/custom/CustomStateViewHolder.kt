@@ -7,8 +7,8 @@ package network.omisego.omgmerchant.custom
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 sealed class CustomStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,6 +1,6 @@
 package network.omisego.omgmerchant.livedata
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 
 /**
  * An [Observer] for [Event]s, simplifying the pattern of checking if the [Event]'s content has

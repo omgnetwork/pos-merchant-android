@@ -9,7 +9,7 @@ package network.omisego.omgmerchant.pages.authorized.feedback
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.model.AmountFormat
 import network.omisego.omgmerchant.model.Feedback

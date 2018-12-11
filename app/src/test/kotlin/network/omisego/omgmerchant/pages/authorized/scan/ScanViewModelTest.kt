@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.scan
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.omisego.omisego.extension.bd
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.spy

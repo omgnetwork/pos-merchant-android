@@ -12,7 +12,7 @@ import co.omisego.omisego.model.params.AccountWalletListParams
 import co.omisego.omisego.model.params.LoginParams
 import co.omisego.omisego.model.params.TokenListParams
 import co.omisego.omisego.model.params.TransactionConsumptionActionParams
-import co.omisego.omisego.model.params.TransactionListParams
+import co.omisego.omisego.model.params.admin.TransactionListParams
 import co.omisego.omisego.model.params.TransactionRequestParams
 import co.omisego.omisego.model.params.WalletParams
 import co.omisego.omisego.model.params.admin.TransactionConsumptionParams
@@ -40,11 +40,11 @@ class ParamsCreator {
         id: String,
         searchTerm: String? = null
     ): AccountWalletListParams {
-        return AccountWalletListParams.create(id, searchTerm = searchTerm)
+        return AccountWalletListParams.create(id)
     }
 
     fun createLoadAccountParams(searchTerm: String? = null): AccountListParams {
-        return AccountListParams.create(searchTerm = searchTerm)
+        return AccountListParams.create()
     }
 
     fun createGetTransactionRequestParams(formattedId: String): TransactionRequestParams {
@@ -58,13 +58,12 @@ class ParamsCreator {
     ): TransactionListParams {
         return TransactionListParams.create(
             page = page,
-            perPage = perPage,
-            searchTerm = searchTerm
+            perPage = perPage
         )
     }
 
     fun createListTokensParams(perPage: Int = 30, searchTerm: String? = null): TokenListParams {
-        return TokenListParams.create(perPage = perPage, searchTerm = searchTerm)
+        return TokenListParams.create(perPage = perPage)
     }
 
     fun createTransactionCreateParams(

@@ -16,7 +16,7 @@
         android:orientation="vertical"
         tools:context="network.omisego.omgmerchant.pages.authorized.main.MainFragment">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_authorized_flow" />
 
-        <android.support.design.widget.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

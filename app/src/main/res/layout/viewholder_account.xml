@@ -14,7 +14,7 @@
             type="co.omisego.omisego.model.Account" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_select_account"
@@ -53,5 +53,5 @@
             app:layout_constraintStart_toEndOf="@+id/ivAccountLogo"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Account one" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

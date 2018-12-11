@@ -7,7 +7,7 @@ package network.omisego.omgmerchant.pages.authorized.main.receive
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.omisego.omisego.extension.bd
 import network.omisego.omgmerchant.R
 import network.omisego.omgmerchant.helper.colorRes
