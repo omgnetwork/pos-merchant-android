@@ -2,7 +2,7 @@
 
 # POS Client Application (Unreleased)
 
-[![Build Status](https://travis-ci.org/omisego/pos-merchant-android.svg?branch=master)](https://travis-ci.org/omisego/pos-merchant-android)
+[![Build Status](https://travis-ci.com/omisego/pos-merchant-android.svg?branch=master)](https://travis-ci.com/omisego/pos-merchant-android)
 
 This is a small gif showing the main feature of the app.
 
