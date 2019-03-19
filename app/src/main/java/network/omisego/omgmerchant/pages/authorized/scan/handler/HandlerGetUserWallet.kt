@@ -39,9 +39,7 @@ class HandlerGetUserWallet(
     }
 
     override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
-        if (data is Wallet) {
-            liveDirection.value = Event(createActionForConfirmPage(data.address, data.user!!))
-        } else {
+        if (data is Wallet) else {
             throw UnsupportedOperationException("Need to handle.")
         }
     }

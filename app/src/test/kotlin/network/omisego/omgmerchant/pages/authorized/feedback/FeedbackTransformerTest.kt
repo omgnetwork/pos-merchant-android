@@ -76,7 +76,7 @@ class FeedbackTransformerTest {
     fun `test user id should be returned correctly`() {
         whenever(mockFeedback.source).thenReturn(mock())
         whenever(mockFeedback.source.userId).thenReturn("user_01")
-        transformer.transformUserId(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_id, "user_01")
+        transformer.transformId(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_id, "user_01")
     }
 
     @Test
@@ -86,10 +86,10 @@ class FeedbackTransformerTest {
         whenever(mockFeedback.source.user?.username).thenReturn("username")
 
         whenever(mockFeedback.source.user?.email).thenReturn("user@email.com")
-        transformer.transformUserName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "user@email.com")
+        transformer.transformName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "user@email.com")
 
         whenever(mockFeedback.source.user?.email).thenReturn(null)
-        transformer.transformUserName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "username")
+        transformer.transformName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "username")
     }
 
     @Test

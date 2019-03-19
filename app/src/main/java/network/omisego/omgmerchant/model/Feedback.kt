@@ -12,8 +12,8 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.Token
 import co.omisego.omisego.model.Transaction
 import co.omisego.omisego.model.TransactionConsumption
+import co.omisego.omisego.model.TransactionRequest
 import co.omisego.omisego.model.TransactionSource
-import co.omisego.omisego.model.User
 import kotlinx.android.parcel.Parcelize
 import network.omisego.omgmerchant.pages.authorized.confirm.ConfirmFragmentArgs
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
@@ -60,18 +60,18 @@ data class Feedback(
                     token = transactionConsumption.token,
                     userId = transactionConsumption.transactionRequest.user?.id,
                     user = transactionConsumption.transactionRequest.user,
-                    accountId = null,
-                    account = null
+                    accountId = transactionConsumption.transactionRequest.account?.id,
+                    account = transactionConsumption.transactionRequest.account
                 )
             )
         }
 
-        fun error(args: ScanFragmentArgs, address: String?, user: User?, error: APIError?): Feedback {
-            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, user, error)
+        fun error(args: ScanFragmentArgs, address: String?, transactionRequest: TransactionRequest?, error: APIError?): Feedback {
+            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, transactionRequest, error)
         }
 
-        fun error(args: ConfirmFragmentArgs, address: String?, user: User?, error: APIError?): Feedback {
-            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, user, error)
+        fun error(args: ConfirmFragmentArgs, address: String?, transactionRequest: TransactionRequest?, error: APIError?): Feedback {
+            return createError(args.token, args.transactionType, args.amount.toBigDecimal(), address, transactionRequest, error)
         }
 
         private fun createError(
@@ -79,7 +79,7 @@ data class Feedback(
             transactionType: String,
             amount: BigDecimal,
             address: String?,
-            user: User?,
+            transactionRequest: TransactionRequest?,
             error: APIError?
         ): Feedback {
             val source = TransactionSource(
@@ -87,10 +87,10 @@ data class Feedback(
                 AmountFormat.Unit(amount, token.subunitToUnit).toSubunit().amount,
                 token.id,
                 token,
-                user?.id,
-                user,
-                null,
-                null
+                transactionRequest?.user?.id,
+                transactionRequest?.user,
+                transactionRequest?.account?.id,
+                transactionRequest?.account
             )
 
             return if (transactionType.equals(SCAN_RECEIVE, true)) Feedback(

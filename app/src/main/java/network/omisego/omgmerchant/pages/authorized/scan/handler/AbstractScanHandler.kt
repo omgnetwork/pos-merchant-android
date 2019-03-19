@@ -10,7 +10,7 @@ package network.omisego.omgmerchant.pages.authorized.scan.handler
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import co.omisego.omisego.model.APIError
-import co.omisego.omisego.model.User
+import co.omisego.omisego.model.TransactionRequest
 import network.omisego.omgmerchant.NavBottomNavigationDirections
 import network.omisego.omgmerchant.livedata.Event
 import network.omisego.omgmerchant.model.Feedback
@@ -34,15 +34,15 @@ interface AbstractScanHandler {
         return NavBottomNavigationDirections.ActionGlobalFeedbackFragment(feedback)
     }
 
-    fun createActionForConfirmPage(address: String, user: User): NavDirections {
+    fun createActionForConfirmPage(address: String, transactionRequest: TransactionRequest?): NavDirections {
         return when (args.transactionType) {
             SCAN_RECEIVE -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(args.token, user, address)
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(args.token, transactionRequest, address)
                     .setAmount(args.amount)
                     .setTransactionType(SCAN_RECEIVE)
             }
             SCAN_TOPUP -> {
-                NavBottomNavigationDirections.ActionGlobalConfirmFragment(args.token, user, address)
+                NavBottomNavigationDirections.ActionGlobalConfirmFragment(args.token, transactionRequest, address)
                     .setAmount(args.amount)
                     .setTransactionType(SCAN_TOPUP)
             }

@@ -29,11 +29,15 @@ class HandlerGetTransactionRequest(
     override lateinit var liveDirection: MutableLiveData<Event<NavDirections>>
 
     override fun retrieve(payload: String) {
-        val transactionRequestIds = payload.split("|")
-        val transactionRequestId = if (args.transactionType == SCAN_TOPUP) {
-            transactionRequestIds[0]
+        val transactionRequestId = if (payload.contains("|")) {
+            val transactionRequestIds = payload.split("|")
+            if (args.transactionType == SCAN_TOPUP) {
+                transactionRequestIds[0]
+            } else {
+                transactionRequestIds[1]
+            }
         } else {
-            transactionRequestIds[1]
+            payload
         }
         val params = paramsCreator.createGetTransactionRequestParams(transactionRequestId)
         val request = remoteRepository.loadTransactionRequest(params)
@@ -50,7 +54,7 @@ class HandlerGetTransactionRequest(
 
     override fun <R> handleSucceedToRetrieveUserInformation(data: R) {
         if (data is TransactionRequest) {
-            liveDirection.value = Event(createActionForConfirmPage(data.formattedId, data.user!!))
+            liveDirection.value = Event(createActionForConfirmPage(data.formattedId, data))
         } else {
             throw UnsupportedOperationException("Need to handle.")
         }

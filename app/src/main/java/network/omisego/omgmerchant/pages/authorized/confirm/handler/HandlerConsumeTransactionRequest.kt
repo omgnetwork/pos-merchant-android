@@ -88,7 +88,7 @@ class HandlerConsumeTransactionRequest(
                     val feedback = Feedback.error(
                         args,
                         data.transactionRequest.address,
-                        data.transactionRequest.user,
+                        data.transactionRequest,
                         APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_rejected))
                     )
                     liveDirection.value = Event(createDestinationFeedback(feedback))
@@ -104,7 +104,7 @@ class HandlerConsumeTransactionRequest(
     }
 
     override fun handleFailToHandlePayload(error: APIError) {
-        val feedback = Feedback.error(args, null, args.user, error)
+        val feedback = Feedback.error(args, null, args.transactionRequest, error)
         liveDirection.value = Event(createDestinationFeedback(feedback))
     }
 
