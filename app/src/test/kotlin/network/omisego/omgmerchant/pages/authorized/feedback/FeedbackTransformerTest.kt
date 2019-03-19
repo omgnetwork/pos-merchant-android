@@ -10,11 +10,11 @@ package network.omisego.omgmerchant.pages.authorized.feedback
 import android.content.Context
 import com.nhaarman.mockito_kotlin.whenever
 import network.omisego.omgmerchant.R
+import network.omisego.omgmerchant.helper.drawableRes
+import network.omisego.omgmerchant.helper.stringRes
 import network.omisego.omgmerchant.model.Feedback
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_RECEIVE
 import network.omisego.omgmerchant.pages.authorized.scan.SCAN_TOPUP
-import network.omisego.omgmerchant.helper.drawableRes
-import network.omisego.omgmerchant.helper.stringRes
 import org.amshove.kluent.mock
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldEqualTo
@@ -80,7 +80,7 @@ class FeedbackTransformerTest {
     }
 
     @Test
-    fun `test username should be returned correctly`() {
+    fun `test user should be returned correctly`() {
         whenever(mockFeedback.source).thenReturn(mock())
         whenever(mockFeedback.source.user).thenReturn(mock())
         whenever(mockFeedback.source.user?.username).thenReturn("username")
@@ -90,6 +90,21 @@ class FeedbackTransformerTest {
 
         whenever(mockFeedback.source.user?.email).thenReturn(null)
         transformer.transformName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "username")
+    }
+
+    @Test
+    fun `test account id should be returned correctly`() {
+        whenever(mockFeedback.source).thenReturn(mock())
+        whenever(mockFeedback.source.accountId).thenReturn("account_01")
+        transformer.transformId(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_id, "account_01")
+    }
+
+    @Test
+    fun `test account should be returned correctly`() {
+        whenever(mockFeedback.source).thenReturn(mock())
+        whenever(mockFeedback.source.account).thenReturn(mock())
+        whenever(mockFeedback.source.account?.name).thenReturn("account")
+        transformer.transformName(context, mockFeedback) shouldEqualTo context.getString(R.string.feedback_customer_name, "account")
     }
 
     @Test
