@@ -178,17 +178,6 @@ class HandlerConsumeTransactionRequestTest {
         whenever(mockHandler.args.token.id).thenReturn("omg_id")
     }
 
-    private fun mockHandlerAccountArg(mockHandler: HandlerConsumeTransactionRequest) {
-        whenever(mockHandler.args.amount).thenReturn("1000")
-        whenever(mockHandler.args.token).thenReturn(mock())
-        whenever(mockHandler.args.transactionRequest).thenReturn(mock())
-        whenever(mockHandler.args.transactionRequest?.account).thenReturn(mock())
-        whenever(mockHandler.args.transactionRequest?.account?.id).thenReturn("id")
-        whenever(mockHandler.args.transactionType).thenReturn(SCAN_RECEIVE)
-        whenever(mockHandler.args.token.subunitToUnit).thenReturn(100.bd)
-        whenever(mockHandler.args.token.id).thenReturn("omg_id")
-    }
-
     private fun initMockWebServer() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
