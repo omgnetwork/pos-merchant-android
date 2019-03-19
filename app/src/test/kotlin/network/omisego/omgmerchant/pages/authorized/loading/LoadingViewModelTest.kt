@@ -76,6 +76,7 @@ class LoadingViewModelTest {
         whenever(viewModel.confirmFragmentArgs?.amount).thenReturn("1000")
         whenever(viewModel.confirmFragmentArgs?.token).thenReturn(mock())
         whenever(viewModel.confirmFragmentArgs?.transactionRequest).thenReturn(mock())
+        whenever(viewModel.confirmFragmentArgs?.transactionRequest?.user).thenReturn(mock())
         whenever(viewModel.confirmFragmentArgs?.transactionRequest?.user?.id).thenReturn("user_id")
         whenever(viewModel.confirmFragmentArgs?.transactionType).thenReturn(SCAN_RECEIVE)
         whenever(viewModel.confirmFragmentArgs?.token?.subunitToUnit).thenReturn(100.bd)

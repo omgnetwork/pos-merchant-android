@@ -110,7 +110,7 @@ class HandlerConsumeTransactionRequestTest {
 
         whenever(spiedHandler.paramsCreator).thenReturn(mockParamsCreator)
         mockLocalRepository()
-        mockHandlerArg(spiedHandler)
+        mockHandlerUserArg(spiedHandler)
 
         spiedHandler.onHandlePayload("payload")
 
@@ -134,7 +134,7 @@ class HandlerConsumeTransactionRequestTest {
 
         whenever(spiedHandler.paramsCreator).thenReturn(mockParamsCreator)
         mockLocalRepository()
-        mockHandlerArg(spiedHandler)
+        mockHandlerUserArg(spiedHandler)
 
         spiedHandler.onHandlePayload("payload")
 
@@ -143,7 +143,7 @@ class HandlerConsumeTransactionRequestTest {
 
     @Test
     fun `test handle confirmed transaction consumption correctly`() {
-        mockHandlerArg(spiedHandler)
+        mockHandlerUserArg(spiedHandler)
 
         spiedHandler.handleSucceedToHandlePayload(responseTransactionConsumption.data)
 
@@ -154,10 +154,10 @@ class HandlerConsumeTransactionRequestTest {
 
     @Test
     fun `test handle payload when receive APIError`() {
-        mockHandlerArg(spiedHandler)
+        mockHandlerUserArg(spiedHandler)
         spiedHandler.handleFailToHandlePayload(responseAPIError.data)
         spiedHandler.liveDirection.value?.peekContent().toString().trim() shouldEqual NavBottomNavigationDirections.ActionGlobalFeedbackFragment(
-            Feedback.error(spiedHandler.args, null, spiedHandler.args.user, responseAPIError.data)
+            Feedback.error(spiedHandler.args, null, spiedHandler.args.transactionRequest, responseAPIError.data)
         ).toString().trim()
     }
 
@@ -167,11 +167,23 @@ class HandlerConsumeTransactionRequestTest {
         whenever(mockLocalRepository.loadAccount()).thenReturn(null)
     }
 
-    private fun mockHandlerArg(mockHandler: HandlerConsumeTransactionRequest) {
+    private fun mockHandlerUserArg(mockHandler: HandlerConsumeTransactionRequest) {
         whenever(mockHandler.args.amount).thenReturn("1000")
         whenever(mockHandler.args.token).thenReturn(mock())
-        whenever(mockHandler.args.user).thenReturn(mock())
-        whenever(mockHandler.args.user.id).thenReturn("user_id")
+        whenever(mockHandler.args.transactionRequest).thenReturn(mock())
+        whenever(mockHandler.args.transactionRequest?.user).thenReturn(mock())
+        whenever(mockHandler.args.transactionRequest?.user?.id).thenReturn("id")
+        whenever(mockHandler.args.transactionType).thenReturn(SCAN_RECEIVE)
+        whenever(mockHandler.args.token.subunitToUnit).thenReturn(100.bd)
+        whenever(mockHandler.args.token.id).thenReturn("omg_id")
+    }
+
+    private fun mockHandlerAccountArg(mockHandler: HandlerConsumeTransactionRequest) {
+        whenever(mockHandler.args.amount).thenReturn("1000")
+        whenever(mockHandler.args.token).thenReturn(mock())
+        whenever(mockHandler.args.transactionRequest).thenReturn(mock())
+        whenever(mockHandler.args.transactionRequest?.account).thenReturn(mock())
+        whenever(mockHandler.args.transactionRequest?.account?.id).thenReturn("id")
         whenever(mockHandler.args.transactionType).thenReturn(SCAN_RECEIVE)
         whenever(mockHandler.args.token.subunitToUnit).thenReturn(100.bd)
         whenever(mockHandler.args.token.id).thenReturn("omg_id")
