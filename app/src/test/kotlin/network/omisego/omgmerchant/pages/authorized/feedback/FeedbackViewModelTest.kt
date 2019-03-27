@@ -90,14 +90,14 @@ class FeedbackViewModelTest {
 
     @Test
     fun `test liveFeedback should be transformed to userId correctly`() {
-        viewModel.userId.observeForever { }
-        verify(mockTransformer).transformUserId(app, mockFeedback)
+        viewModel.id.observeForever { }
+        verify(mockTransformer).transformId(app, mockFeedback)
     }
 
     @Test
     fun `test liveFeedback should be transformed to username correctly`() {
-        viewModel.userName.observeForever { }
-        verify(mockTransformer).transformUserName(app, mockFeedback)
+        viewModel.name.observeForever { }
+        verify(mockTransformer).transformName(app, mockFeedback)
     }
 
     @Test

@@ -51,7 +51,7 @@ class LoadingViewModel(
         val feedback = Feedback.error(
             args,
             transactionConsumption.transactionRequest.address,
-            transactionConsumption.transactionRequest.user,
+            transactionConsumption.transactionRequest,
             APIError(ErrorCode.SDK_UNEXPECTED_ERROR, HelperContext.context.getString(R.string.feedback_canceled))
         )
         liveDirection.value = Event(createDestinationFeedback(feedback))
@@ -61,7 +61,7 @@ class LoadingViewModel(
     fun handleRejectTransactionConsumptionFailed(error: APIError) {
         logi("Cannot cancel the transaction request :${error.description}")
         val args = confirmFragmentArgs ?: return
-        val feedback = Feedback.error(args, null, args.user, error)
+        val feedback = Feedback.error(args, null, args.transactionRequest, error)
         liveDirection.value = Event(createDestinationFeedback(feedback))
         liveCancelTransactionConsumption.value = false
     }

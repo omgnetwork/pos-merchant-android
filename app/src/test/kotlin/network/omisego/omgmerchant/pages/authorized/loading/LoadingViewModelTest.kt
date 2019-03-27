@@ -65,7 +65,7 @@ class LoadingViewModelTest {
             Feedback.error(
                 viewModel.confirmFragmentArgs!!,
                 data.transactionRequest.address,
-                data.transactionRequest.user,
+                data.transactionRequest,
                 APIError(ErrorCode.SDK_UNEXPECTED_ERROR, stringRes(R.string.feedback_canceled))
             )
         ).toString().trim()
@@ -75,8 +75,9 @@ class LoadingViewModelTest {
         viewModel.confirmFragmentArgs = mock()
         whenever(viewModel.confirmFragmentArgs?.amount).thenReturn("1000")
         whenever(viewModel.confirmFragmentArgs?.token).thenReturn(mock())
-        whenever(viewModel.confirmFragmentArgs?.user).thenReturn(mock())
-        whenever(viewModel.confirmFragmentArgs?.user?.id).thenReturn("user_id")
+        whenever(viewModel.confirmFragmentArgs?.transactionRequest).thenReturn(mock())
+        whenever(viewModel.confirmFragmentArgs?.transactionRequest?.user).thenReturn(mock())
+        whenever(viewModel.confirmFragmentArgs?.transactionRequest?.user?.id).thenReturn("user_id")
         whenever(viewModel.confirmFragmentArgs?.transactionType).thenReturn(SCAN_RECEIVE)
         whenever(viewModel.confirmFragmentArgs?.token?.subunitToUnit).thenReturn(100.bd)
         whenever(viewModel.confirmFragmentArgs?.token?.id).thenReturn("omg_id")

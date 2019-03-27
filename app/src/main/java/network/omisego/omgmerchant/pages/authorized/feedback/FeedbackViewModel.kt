@@ -8,10 +8,10 @@ package network.omisego.omgmerchant.pages.authorized.feedback
  */
 
 import android.app.Application
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.graphics.drawable.Drawable
 import network.omisego.omgmerchant.extensions.map
 import network.omisego.omgmerchant.model.Feedback
 
@@ -26,8 +26,8 @@ class FeedbackViewModel(
     val iconText: LiveData<String> = liveFeedback.map { transformer.transformIconText(app, it) }
     val title: LiveData<String> = liveFeedback.map { transformer.transformTitle(app, it) }
     val amount: LiveData<String> = liveFeedback.map { transformer.transformAmount(app, it) }
-    val userId: LiveData<String> = liveFeedback.map { transformer.transformUserId(app, it) }
-    val userName: LiveData<String> = liveFeedback.map { transformer.transformUserName(app, it) }
+    val id: LiveData<String> = liveFeedback.map { transformer.transformId(app, it) }
+    val name: LiveData<String> = liveFeedback.map { transformer.transformName(app, it) }
     val date: LiveData<String> = liveFeedback.map { transformer.transformDate(app, it) }
     val errorCode: LiveData<String> = liveFeedback.map { transformer.transformErrorCode(app, it) }
     val errorDescription: LiveData<String> = liveFeedback.map { transformer.transformErrorDescription(app, it) }

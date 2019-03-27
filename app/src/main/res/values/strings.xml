@@ -48,8 +48,8 @@
     <string name="feedback_success_topup_title">Topup successful</string>
     <string name="feedback_fail_payment_title">Payment failed</string>
     <string name="feedback_fail_topup_title">Topup failed</string>
-    <string name="feedback_customer_name">by %s</string>
-    <string name="feedback_customer_id">User ID: %s</string>
+    <string name="feedback_customer_name">Customer: %s</string>
+    <string name="feedback_customer_id">Customer ID: %s</string>
     <string name="feedback_canceled">The transaction consumption has been cancelled.</string>
     <string name="feedback_rejected">The transaction consumption has been rejected.</string>
     <!-- Passing a calendar instance to formatter -->

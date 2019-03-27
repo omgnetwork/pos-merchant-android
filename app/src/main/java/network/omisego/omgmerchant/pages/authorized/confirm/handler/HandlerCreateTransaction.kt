@@ -49,7 +49,7 @@ class HandlerCreateTransaction(
     }
 
     override fun handleFailToHandlePayload(error: APIError) {
-        val feedback = Feedback.error(args, null, args.user, error)
+        val feedback = Feedback.error(args, null, args.transactionRequest, error)
         liveDirection.value = Event(createDestinationFeedback(feedback))
     }
 
